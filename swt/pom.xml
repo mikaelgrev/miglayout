@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.miglayout</groupId>
+		<artifactId>miglayout-parent</artifactId>
+		<version>4.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>miglayout-swt</artifactId>
+	<packaging>jar</packaging>
+	
+	<dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>miglayout-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+	</dependencies>
+
+    <profiles>
+        <profile>
+			<id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                    <arch>x86</arch>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.swt.win32.win32</groupId>
+                    <artifactId>x86</artifactId>
+                    <version>3.3.0-v3346</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+			<id>unix_i386</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>i386</arch>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.swt.gtk.linux</groupId>
+                    <artifactId>x86</artifactId>
+                    <version>3.3.0-v3346</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+			<id>unix_amd64</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.swt.gtk.linux</groupId>
+                    <artifactId>x86_64</artifactId>
+                    <version>3.3.0-v3346</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+			<id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.swt.carbon</groupId>
+                    <artifactId>macosx</artifactId>
+                    <version>3.3.0-v3346</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+	
+</project>
