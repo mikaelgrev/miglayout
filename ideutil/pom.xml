@@ -10,7 +10,9 @@
 	</parent>
 	<artifactId>miglayout-ideutil</artifactId>
 	<packaging>jar</packaging>
-	
+	<name>MiGLayout IDEUtil</name>
+    <description>MiGLayout - IDEUtil class for EDI integration</description>
+
 	<dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

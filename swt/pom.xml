@@ -10,7 +10,9 @@
 	</parent>
 	<artifactId>miglayout-swt</artifactId>
 	<packaging>jar</packaging>
-	
+	<name>MiGLayout SWT</name>
+    <description>MiGLayout - Java Layout Manager for SWT</description>
+
 	<dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

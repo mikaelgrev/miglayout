@@ -10,6 +10,8 @@
 	</parent>
 	<artifactId>miglayout-demo</artifactId>
 	<packaging>jar</packaging>
+    <name>MiGLayout Demo</name>
+    <description>MiGLayout - Demo's for Swing and SWT</description>
 	
 	<dependencies>
         <dependency>

@@ -10,6 +10,8 @@
 	</parent>
 	<artifactId>miglayout-core</artifactId>
 	<packaging>jar</packaging>
+    <name>MiGLayout Core</name>
+    <description>MiGLayout - core layout logic</description>
 	
 	<dependencies>
 	</dependencies>

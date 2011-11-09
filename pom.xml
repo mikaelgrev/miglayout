@@ -97,10 +97,15 @@
         </license>
     </licenses>
 	
+	<scm>
+    	<connection>scm:git:https://code.google.com/p/miglayout/</connection>
+    	<developerConnection>scm:git:https://code.google.com/p/miglayout/</developerConnection>
+    	<url>http://code.google.com/p/miglayout/source/browse/</url>
+  	</scm>
+	
     <developers>
         <developer>
             <id>mikaelgrev</id>
-            <!-- scm login -->
             <name>Mikael Grev</name>
             <email>mikael.grev@miginfocom.com</email>
             <roles>
@@ -112,7 +117,6 @@
 
         <developer>
             <id>joeluckelman</id>
-            <!-- scm login -->
             <name>Joel Uckelman</name>
             <email>uckelman@nomic.net</email>
             <roles>
@@ -124,7 +128,6 @@
 
         <developer>
             <id>anavarro</id>
-            <!-- scm login -->
             <name>Alexandre Navarro</name>
             <email>navarroa@free.fr</email>
             <roles>
@@ -136,7 +139,6 @@
 
         <developer>
             <id>tuomashuhtanen</id>
-            <!-- scm login -->
             <name>Tuomas Huhtanen</name>
             <email>unknown@foo.com</email>
             <roles>
@@ -144,6 +146,17 @@
             </roles>
             <timezone>+1</timezone>
             <url>http://unknown.foo.com/</url>
+        </developer>
+
+        <developer>
+            <id>tbee</id>
+            <name>Tom Eugelink</name>
+            <email>tbee@tbee.org</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+            <url>http://www.tbee.org/</url>
         </developer>
     </developers>
 
