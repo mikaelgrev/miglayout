@@ -106,8 +106,8 @@
 	</licenses>
 	
 	<scm>
-		<connection>scm:git:https://code.google.com/p/miglayout/</connection>
-		<developerConnection>scm:git:https://code.google.com/p/miglayout/</developerConnection>
+		<connection>scm:git:https://code.google.com/p/miglayout</connection>
+		<developerConnection>scm:git:https://code.google.com/p/miglayout</developerConnection>
 		<url>http://code.google.com/p/miglayout/source/browse/</url>
   	</scm>
 	
