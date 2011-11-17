@@ -23,3 +23,5 @@
 /swt/.settings
 /swt/target
 /swt/.classpath
+/target
+/release.properties

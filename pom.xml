@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -9,12 +8,12 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>4.1-SNAPSHOT</version>
+	<version>4.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
-    <name>MiGLayout</name>
-    <description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
-    <inceptionYear>2007</inceptionYear>
-    <url>http://www.miglayout.com/</url>
+	<name>MiGLayout</name>
+	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
+	<inceptionYear>2007</inceptionYear>
+	<url>http://www.miglayout.com/</url>
 	
 	<modules>
 		<module>core</module>
@@ -26,13 +25,13 @@
 	</modules>
 
 	<dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	
 	<build>
 		<plugins>
@@ -86,78 +85,87 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>	  
 		</plugins>
-    </build>
+	</build>
 	
-    <licenses>
-        <license>
-            <name>BSD</name>
-            <url>http://www.debian.org/misc/bsd.license</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>BSD</name>
+			<url>http://www.debian.org/misc/bsd.license</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	
 	<scm>
-    	<connection>scm:git:https://code.google.com/p/miglayout/</connection>
-    	<developerConnection>scm:git:https://code.google.com/p/miglayout/</developerConnection>
-    	<url>http://code.google.com/p/miglayout/source/browse/</url>
+		<connection>scm:git:https://code.google.com/p/miglayout</connection>
+		<developerConnection>scm:git:https://code.google.com/p/miglayout</developerConnection>
+		<url>http://code.google.com/p/miglayout/source/browse/</url>
   	</scm>
 	
-    <developers>
-        <developer>
-            <id>mikaelgrev</id>
-            <name>Mikael Grev</name>
-            <email>mikael.grev@miginfocom.com</email>
-            <roles>
-                <role>Project Lead</role>
-            </roles>
-            <timezone>+1</timezone>
-            <url>http://www.miglayout.com/</url>
-        </developer>
+	<developers>
+		<developer>
+			<id>mikaelgrev</id>
+			<name>Mikael Grev</name>
+			<email>mikael.grev@miginfocom.com</email>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+			<timezone>+1</timezone>
+			<url>http://www.miglayout.com/</url>
+		</developer>
 
-        <developer>
-            <id>joeluckelman</id>
-            <name>Joel Uckelman</name>
-            <email>uckelman@nomic.net</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>+1</timezone>
-            <url>http://www.nomic.net/</url>
-        </developer>
+		<developer>
+			<id>joeluckelman</id>
+			<name>Joel Uckelman</name>
+			<email>uckelman@nomic.net</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+			<url>http://www.nomic.net/</url>
+		</developer>
 
-        <developer>
-            <id>anavarro</id>
-            <name>Alexandre Navarro</name>
-            <email>navarroa@free.fr</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>+1</timezone>
-            <url>http://javageek.free.fr/</url>
-        </developer>
+		<developer>
+			<id>anavarro</id>
+			<name>Alexandre Navarro</name>
+			<email>navarroa@free.fr</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+			<url>http://javageek.free.fr/</url>
+		</developer>
 
-        <developer>
-            <id>tuomashuhtanen</id>
-            <name>Tuomas Huhtanen</name>
-            <email>unknown@foo.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>+1</timezone>
-            <url>http://unknown.foo.com/</url>
-        </developer>
+		<developer>
+			<id>tuomashuhtanen</id>
+			<name>Tuomas Huhtanen</name>
+			<email>unknown@foo.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+			<url>http://unknown.foo.com/</url>
+		</developer>
 
-        <developer>
-            <id>tbee</id>
-            <name>Tom Eugelink</name>
-            <email>tbee@tbee.org</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>+1</timezone>
-            <url>http://www.tbee.org/</url>
-        </developer>
-    </developers>
+		<developer>
+			<id>tbee</id>
+			<name>Tom Eugelink</name>
+			<email>tbee@tbee.org</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+			<url>http://www.tbee.org/</url>
+		</developer>
+	</developers>
 
 </project>
