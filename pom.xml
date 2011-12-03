@@ -19,6 +19,7 @@
 		<module>core</module>
 		<module>swing</module>
 		<module>swt</module>
+		<module>javafx</module>
 		<module>ideutil</module>
 		<module>demo</module>
 		<module>examples</module>
@@ -86,6 +87,7 @@
 				</executions>
 			</plugin>
 			
+			<!-- autoversion submodules -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
