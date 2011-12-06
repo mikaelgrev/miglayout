@@ -69,7 +69,7 @@ public final class LayoutUtil
         try {
             LayoutUtil.class.getClassLoader().loadClass("java.beans.Beans");
             return true;
-        } catch (ClassNotFoundException e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -83,7 +83,7 @@ public final class LayoutUtil
 	 */
 	public static String getVersion()
 	{
-		return "4.0.1";
+		return "4.2";
 	}
 
 	/** If global debug should be on or off. If &gt; 0 then debug is turned on for all MigLayout
