@@ -1,0 +1,17 @@
+The JavaFX runtime is not available in any public Maven repository, it has to be installed in the local repository manually using the command below:
+
+	mvn install:install-file -Dfile=/path-to/javafx-sdk2.0-beta/rt/lib/jfxrt.jar -DgroupId=com.oracle -DartifactId=javafx-runtime -Dversion=2.0 -Dpackaging=jar -DgeneratePom=true 
+
+Naturally the path-to must be your path to where the JavaFX SDK is installed and make sure that the specified version matches the actual JavaFX release version (and naturally that should be the one the miglayout-javafx artifact depends on).
+
+This is enough to get the JavaFX plugin to compile, but the test classes cannot be run because the JavaFX binaries are missing.
+To run the test classes in the IDE, the easiest way is to modify the classpath or java library path to include the libs directory of the corresponding JavaFX installation.
+The easiest way to do this is to manually include the JavaFX runtime jar (C:\Program Files\Oracle\JavaFX Runtime 2.0\lib\jfxrt.jar) and make sure it is positioned before the maven dependency in your EDI.
+
+Some IDE's may be stubborn when the project is created from the POM and do not allow additional classpath entries, in this case specifying it in the run configuration of each test class will help.
+For example in Eclipse the run configuration of a test could be modified to include the following as "VM arguments":
+	-Djava.library.path=C:\Progra~1\Oracle\JAVAFX~1.0\bin
+	
+However, all this does not solve the actual problem, it just will get the test code to run in an EDI, and that is the reason why there are no unittest at this time.
+The JFXtras project has a workaround where the binaries are uploaded as a separate Maven artifact and a prelaunch method is used to make sure they are on the classpath, but we do not want MigLayout-JavaFX depending on JFXtras.
+So for now we have to live with this and wait for Oracle to improve the Maven support in JavaFX.

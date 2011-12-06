@@ -1,0 +1,16 @@
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import org.tbee.javafx.scene.layout.fxml.*?>
+
+<MigPane fx:controller="org.tbee.javafx.scene.layout.test.MigPaneTest8Controller" fx:id="migPanel" layout="insets 30" cols="[][grow]" rows="" xmlns:fx="http://javafx.com/fxml" >
+	<Label text="First Name:" />	
+	<TextField fx:id="firstNameField" text="" MigPane.cc="growx, wrap" />
+	
+	<Label text="Last Name:" />		
+	<TextField fx:id="lastNameField" text="" MigPane.cc="growx, wrap" />
+	
+	<Button text="Enter" onAction="#handleButtonAction" MigPane.cc="skip, gap :push, gaptop 15, wrap" />
+	
+	<Label fx:id="messageLabel" text="" MigPane.cc="span, growx, gaptop 15" />
+</MigPane>    

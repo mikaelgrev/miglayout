@@ -25,3 +25,7 @@
 /swt/.classpath
 /target
 /release.properties
+/javafx/.project
+/javafx/.settings
+/javafx/target
+/javafx/.classpath
