@@ -14,7 +14,7 @@
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
 	<inceptionYear>2007</inceptionYear>
 	<url>http://www.miglayout.com/</url>
-	
+
 	<modules>
 		<module>core</module>
 		<module>swing</module>
@@ -33,10 +33,10 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
-		
+
 			<!-- assumes java 1.5 as the minimal JDK -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -48,7 +48,7 @@
 					<compilerArgument>-g:none</compilerArgument>
 				</configuration>
 			</plugin>
-			
+
 			<!-- surefire 2.7+ runs test classes by annotation instead of classname pattern -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -86,7 +86,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<!-- autoversion submodules -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -95,24 +95,56 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
-			</plugin>	  
+			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>2.8</version>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-changes-plugin</artifactId>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>changes-report</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+                    </reportPlugins>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
-	
-	<licenses>
+
+    <licenses>
 		<license>
 			<name>BSD</name>
 			<url>http://www.debian.org/misc/bsd.license</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<scm>
 		<connection>scm:git:https://code.google.com/p/miglayout</connection>
 		<developerConnection>scm:git:https://code.google.com/p/miglayout</developerConnection>
 		<url>http://code.google.com/p/miglayout/source/browse/</url>
   	</scm>
-	
+
 	<developers>
 		<developer>
 			<id>mikaelgrev</id>

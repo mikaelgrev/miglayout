@@ -1,0 +1,278 @@
+<document>
+	<properties>
+		<title>MiGLayout</title>
+		<author email="mikael.grev@miginfocom.com">mikael</author>
+	</properties>
+	<body>
+        <release version="4.2" date="2011-12-09" description="Release 4.2">
+            <action dev="tbee" type="enhancement">
+                Added JavaFX2 code into the main MigLayout project.
+            </action>
+        </release>
+        <release version="4.1" date="2011-11-20" description="Release 4.1">
+            <action dev="tbee" type="enhancement">
+                Updated the Maven poms and moved the releases to the Sonatype Central Repo.
+            </action>
+        </release>
+
+        <release version="4.0" date="2011-08-20" description="Release 4.0">
+            <action dev="mikaelgrev" type="fix">
+                If using design time (in IDEUtil.java) is turned on (normally just by IDEs with MigLayout support) there was a memory leak.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                SWT had a memory leak. When disposing Controls they were held strongly by MigLayout.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                In SWT after setting a new LayoutData on a control it sometime wasn't picked up. And when it was all constraints were recreated which was slow.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Introduced a fail safe for buggy Swing applications/containers so that there's less risk for memory leaks.
+            </action>
+            <action dev="mikaelgrev" type="feature">
+                Reduced heap memory consumption for components that doesn't have a constraint. Now a CC is reused instead of recreated with Grid.
+            </action>
+        </release>
+
+        <release version="4.0" date="2011-08-14" description="Release 4.0">
+            <action dev="mikaelgrev" type="feature">
+                MigLayout now requires at least Java 5 and the code base has been updated to for-each loops and no explicit value unboxing or boxing.
+            </action>
+            <action dev="tuomashuhtanen" type="feature">
+                Made Beans package load only if it exist. It doesn't on Android for instance and there might be other places where it doesn't exist.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Layout Constraint "align" with only one argument used that for the vertical dimension also which wasn't correct.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Fixed a Negative Array Exception that could happen in rare circumstances.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Fixed a bug where some layout changes didn't re-layout the container.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                IDEUtil did output "hideMode" instead of "hidemode".
+            </action>
+        </release>
+
+        <release version="3.7.4" date="2011-01-30" description="Release 3.7.4">
+            <action dev="mikaelgrev" type="fix">
+                Fixed most FindBugs warnings in the library.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                "debug" mode had a javax.swing.Timer going and it seems it hinders shutdown without explicit exit.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Fixed a NPE in DimConstraint. Thanks to Stephan for the test code.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Made IDEUtil drop the trailing null if possible for "gapx" recreation.
+            </action>
+        </release>
+
+        <release version="3.7.3.1" date="2010-05-01" description="Release 3.7.3.1">
+            <action dev="mikaelgrev" type="fix">
+                Fixed IDEUtil's reparsing of "height xxx!" type values. Thanks to Konstantin Scheglov from Instantiations, Inc for the bug report.
+            </action>
+        </release>
+
+        <release version="3.7.3" date="2010-04-30" description="Release 3.7.3">
+            <action dev="mikaelgrev" type="fix">
+                Fixed a regression that the performance fix in 3.7.1 introduced. Thanks to Ingo Kegel ej-technologies for the fix.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Added a fix that makes spanning components in multiple rows works more consistent.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Made it clear in the White Paper that sizes can't contain links.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Removed a debug print statement from 3.7.2
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Made the documentation concerning docking clearer in the White Paper.
+            </action>
+        </release>
+
+        <release version="3.7.2" date="2009-12-22" description="Release 3.7.2">
+            <action dev="mikaelgrev" type="fix">
+                "pos" pointing to "visual" or "container" didn't work in SWT and possibly Swing if the container was resized during layout.
+            </action>
+            <action dev="mikaelgrev" type="add">
+                Changed so that two or more consecutive spaces in an expression is the same as one.
+            </action>
+            <action dev="mikaelgrev" type="add">
+                Added some API to the API version (e.g. new CC().slit()) which made it more complete. Thanks tbee.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                DPI in SWT on Mac OS X in Java 6 was wrong. DPI was changed in Swing from 72 to 96 DPI in Java 6 by Apple. I have now forced it to be 72 when at least one
+                SWT MigLayout is created. It is not possible to have correct DPI in both Swing and SWT on OS X with Java 6 and above.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                'aligny baseline' for the Layout Constraint was accepted by the parser but failed for layout. Now the parser correctly throws an IllegalArgumentException.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Baseline alignment broken, at least on Mac, since 3.7.1.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                There was a problem to serialize a layout for a container that wasn't a part of a component hierarchy.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                If "skip" during a "span" then an extra cell was skipped.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Fixed a race condition regression introduced in 3.6.1.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Made IDEUtil design time empty row/column gap override default to 0 instead of 15. This is so that design time is always the same as
+                normal unless IDE vendors opt in to have special empty row size. See LayoutUtil.setDesignTimeEmptySize(int pixels).
+            </action>
+        </release>
+        <release version="3.7.1" date="2009-08-03" description="Release 3.7.1">
+            <action dev="mikaelgrev" type="fix">
+                Fixed a performance bug that made deeply nested MigLayout containers really slow in some circumstances. Now an invalid parent for a layout
+                will only re-check the sizes for all children once. Please post a bug report with a runnable demo that shows this regression and I will try
+                to make a version that doesn't suffer from this performance bug and which are without regressions. Thanks to Jermo from the forums which
+                posted the bug report. Note that this might also be a performance problem in the SWT version, which is unpatched.
+            </action>
+        </release>
+
+        <release version="3.7" date="2009-03-01" description="Release 3.7">
+            <action dev="mikaelgrev" type="fix">
+                Turned off baseline alignment support for components that has BaselineResizeBehavior == OTHER. This means that for instance JLabel with HTML
+                content will now be aligned vertically as CENTER rather than BASELINE. This is because the HTML implementation in Swing doesn't return
+                a reasonable baseline value anyway. For instance, it quite often returns different values for the same arguments when called twice in
+                sequence and every now and again returns a negative value indicating it doesn't support baseline alignment.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Improved SWT text components having the Swt.WRAP property set. They should now get a more correct height that is dependant on the width.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Component constraints "push", "pushx" and "pushy" was still affecting the layout even if the component was invisible in hidemode
+                2 and 3. Now that will happen only in hidemode 0 and 1.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                There was still a case when "skip" did not skip the correct number of cells.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                A cell spanning many columns did not transfer its minimum size in an optimal way. Now a column will get more pixels if its preferred size
+                is larger than its minimum size. Before, the last column was increased to a size more than its preferred while another column could get
+                somewhere between its minimum size and preferred size. Basically all columns will now be pushed to their preferred size before the last
+                column will be increased. Still, if there is a "push" component/column it will be increased before any other column. Rows and columns are
+                interchangeable in this context.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                If a component had a 'grow' constraint it would affect the column and/or row to take up more space if the whole layout was set
+                to 'fill' the bounds. This was a legacy from the time when 'push' did not exist. 'push' now does that so it is not logical that
+                'grow' should do it as well. 'grow' now only affects the component so that it will take up as much space as it can without
+                affecting the grid. It should be noted that everything now works as the documentation has stated the whole time.
+                If your layouts change to not grow in some way due to this then look for 'grow' (or growx/growy) and add a similar 'push' next
+                to it.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                If there were more than 512 rows or columns in the grid the preferred size was sometimes wrong (negative).
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Made the persistence delegate for UnitValue and BoundsSize not look for the BeanInfo classes, since they will never exist and it
+                delays startup as an Applet. Thanks Anthony.
+            </action>
+        </release>
+
+        <release version="3.6.3" date="2009-01-16" description="Release 3.6.3">
+            <action dev="joeluckelman" type="add">
+                Added Linux/Gnome platform defaults. This means that Gnome Human Interface Guidelines' gaps and sizes are now correct on Linux.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                MigLayout in a Serialized component throws a NPE.
+            </action>
+        </release>
+
+        <release version="3.6.2" date="2008-12-16" description="Release 3.6.2">
+            <action dev="mikaelgrev" type="fix">
+                "skip" skipped cells before they where checked if there was a spanning component. This meant that "skip" did sometimes not skip a cell,
+                instead it skipped the cell that would be skipped anyway since there was another component (spanning) there already. This is unlikely
+                to affect many and if it does you are probably overusing the "skip" keyword anyway. :)
+            </action>
+        </release>
+
+        <release version="3.6.1" date="2008-12-15" description="Release 3.6.1">
+            <action dev="mikaelgrev" type="fix">
+                "skip" did not take automatic layout wrapping (wrap in the Layout Constraints) into account. So if you skipped the last cells on a row the component did not end
+                up in the next row as expected but on the same row. "skip" now alwats skips the correct number of cells and move to new rows as
+                needed.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                If "newline size" or "wrap size" was used with "span" the size was attached to the wrong row. Also, if there was a wrap
+                on one line and a newline on the next the extra row was removed, which was also a bug.
+            </action>
+			<action dev="mikaelgrev" type="fix">
+				Fixed a strange shrinkage of some components due to calling Window.getPreferedSize() within the layout loop. This seem to be a workaround
+				for a Swing bug rather than a big in MigLayout but it is hard to know.
+			</action>
+		</release>
+
+		<release version="3.6" date="2008-09-03" description="Release 3.6">
+			<action dev="mikaelgrev" type="fix">
+				The parser now throws an IllegalArgmentException if links to other components are in the min/pref/max width or height keywords.
+				Prior to this the link was silently evaluated to 0.
+			</action>
+            <action dev="mikaelgrev" type="fix">
+                Made "sg" and "sizegroup" set the size group for both width and height. This might break old code but this way is more compliant
+	            with for instance "grow", which is also a short for both dimensions. It was not documented either way so I thought I would make it
+	            the most logical choice. If you have bugs because of this make sure you don't have "sg" or "sizegroup" without the trailing "x" or "y".
+            </action>
+			<!--<action dev="mikaelgrev" type="fix">-->
+				<!--Fixed links <b>to</b> a component's width and/or height. Note that links to properties of another component can only be made in an absolute-->
+				<!--setting, e.g "pos (comp1.x+comp1.width/2) 200".-->
+			<!--</action>-->
+		</release>
+
+        <release version="3.5.6" date="2008-08-22" description="Release 3.5.6">
+            <action dev="mikaelgrev" type="fix">
+                Fixed a bug that linked sizegroupx and sizegroupy in certain circumstances.
+            </action>
+			<action dev="mikaelgrev" type="fix">
+				Fixed a memory leak that pegged the layout instance in memory when debug mode was used. Thanks Dieter Krachtus.
+			</action>
+		</release>
+
+        <release version="3.5.5" date="2008-06-16" description="Release 3.5.5">
+			<action dev="mikaelgrev" type="fix">
+				Added a compensation for a probable Swing bug introduced in java 6.0. In Swing when calling component.getBaseline(width, height) on a component that has
+				embedded HTML and at least one BR or P section, Swing always revalidates the layout. This leads to a new call to component.getBaseline(width, height) and the loop
+				goes on forever. It is unclear how to get out of this loop, if there even exist a simple all-working solution. In the mean time you can set "aligny center" or
+				"aligny top" to make it not call that method from this version.
+			</action>
+			<action dev="mikaelgrev" type="fix">
+				IDEUtil: Fixed a formatting error in IDEUtil where gaps was not recreated correctly.
+			</action>
+			<action dev="mikaelgrev" type="fix">
+				IDEUtil: Fixed a formatting error in IDEUtil where width/height was used together with maxWidth/maxHeight.
+			</action>
+			<action dev="mikaelgrev" type="fix">
+				If there was an active "split" in progress a docking component would be in that split instead of docked.
+			</action>
+			<action dev="anavarro" type="add">
+				Converted MigLayout project to Maven 2 for build and deploy management. See the Maven part of the site for information on how to use MigLayout though Maven.
+			</action>
+		</release>
+		<release version="3.5.4" date="2008-06-07" description="Release 3.5.4">
+			<action dev="mikaelgrev" type="add">
+				IDEUtil: Added option to get which cells in the layout
+				grid the components end up in. Good for IDE
+				Integrators..
+			</action>
+		</release>
+		<release version="3.5.3" date="2008-06-01" description="Release 3.5.3">
+			<action dev="mikaelgrev" type="fix">
+				If aligny baseline was specified for a textfield
+				component it might get x and w that were wrong. Thanks
+				Konstantin Scheglov - Instantiations, SwingDesigner.
+			</action>
+			<action dev="mikaelgrev" type="fix">
+				TextFields in a baseline does not align the first layout
+				if it has size 0, 0 before. Thanks Konstantin Scheglov -
+				Instantiations, SwingDesigner
+			</action>
+		</release>
+	</body>
+</document>

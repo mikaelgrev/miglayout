@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="MiGLayout">
+    <body>
+        <menu name="MiGLayout">
+            <item name="For Maven Users" href="index.html"/>
+        </menu>
+        <menu ref="reports"/>
+    </body>
+    <skin>
+       <groupId>org.apache.maven.skins</groupId>
+       <artifactId>maven-classic-skin</artifactId>
+       <version>1.0</version>
+     </skin>
+</project>

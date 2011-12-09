@@ -1,0 +1,20 @@
+Maven Users Site
+
+	This site is for Maven users. Please go to the main site for generic information about the project {{http://www.miglayout.com}}.
+
+	Usage:
+
++-------------+
+<groupId>com.miglayout</groupId>
+<artifactId>miglayout</artifactId>
+
+Use classifiers to distiguish between different MigLayout artifact compilations.
+
+(No classifier)                          - All classes in Java 1.5 class file format. Includes Demos, SWT and Swing.
+
+<classifier>swing</classifier>           - Swing .jar for Swing development.
+<classifier>swt</classifier>             - SWT .jar for SWT development.
+<classifier>ideutil</classifier>         - IDE integration helper.
+<classifier>sources</classifier>         - MigLayout sources.
+<classifier>javadoc</classifier>         - JavaDoc for all classes.
++-------------+

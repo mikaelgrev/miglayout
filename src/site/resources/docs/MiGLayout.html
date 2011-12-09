@@ -1,0 +1,106 @@
+<h2>Introducing MigLayout. The One Layout Manager to Rule Them All!?</h2>
+<p>
+MigLayout is a the most versatile SWT/Swing layout manager written, yet incredibly simple to use. It is use-case optimized for manually coded layouts and is using string constraints to format the layout. And for many the most important thing: <b>It's free to use and will be Open Source</b>.</p>
+<h3>Quick Start</h3>
+<p>
+We are all inpatient and pressed for time. To see a demo application showing off what MigLayout can do, launch the sand boxed Swing version <a href="http://www.miglayout.com/swingdemoapp.jnlp">here</a> and the SWT version <a href="http://www.miglayout.com/swtdemoapp.jnlp">here</a>. They both need Java v1.5 to be installed. The Swing demo application even works as a very poor man's IDE, right click any component or container and you can change its constraints! You can view the source code for the demo applications here: <a href="http://www.miglayout.com/swingdemosource.html" target="_blank">Swing source code</a> and <a href="http://www.miglayout.com/swtdemosource.html" target="_blank">SWT source code</a>.</p>
+<p>
+To read a more technical paper about how MigLayout works you can find that <a href="http://www.miglayout.com/whitepaper.html" target="_blank">here</a>. If printable Cheat Sheets are your thing you can find a very <a href="http://www.miglayout.com/cheatsheet.pdf" target="_blank">printable PDF</a> with all currently supported layout constrains  and also a <a href="http://www.miglayout.com/cheatsheet.html" target="_blank">HTML version</a>.</p>
+<h3>Problems to Solve</h3>
+<p>
+For manually coded GUIs the layout managers delivered with Swing are all reasonably good at exactly what they do. They lack options, but they do their job for simple layouts. The problem starts when you want to change the layout slightly or need to tweak the layout to for instance follow platform defaults. Since all layout managers, except GridBagLayout, have very few options to tweak you'd better like what they do or you need to switch layout manager. The problem is that since all layout managers have quite different use-cases, moving from one type to another is .. hmm .. interesting..
+</p>
+<p>
+Another problem is that there are layout managers for Swing and others for SWT. If you work with both toolkits, like many do, you need to learn two sets of layout managers. MigLayout works for both Swing <b>and</b> SWT. The GUI toolkit has been completely abstracted away and to make it work for yet another GUI toolkit all that is needed is to create three simple wrapper implementations. As a comparison, converting the Swing version to SWT took four hours, and I had never seen SWT code before that. It took another four hours to convert the demo application from Swing to SWT since I didn't use any of the SWT widget wrapper frameworks available.
+</p>
+<p>
+To preempt the mandatory reply that JGoodies <code>FormLayout</code> has many things figured out already I can only concur with this estimation, it is a good layout manager. I set out to make things even simpler, and especially more flexible and powerful. As you'll note, should you run the web-started the demos linked at the top, it partly looks a lot like the JGoodies' demo application. It was intentionally done this way (with Karsten Lentzsch's permission of course) to be sure that it'd cover everything <code>FormLayout</code> can do, and much more.
+</p>
+<h2>Design Choices</h2>
+<p>
+There are always design choices that have to be weighed against each other, and sometimes what you gain in one place you lose in another. With a clear definition of these choices one knows what corners to cut and why something was done the way it was. Here are the major design choices for MigLayout.
+</p>
+<h3>Layout Constraint Proximity</h3>
+<p>
+All constraints for making layouts should be settable in the layout manager's constructor or in the constraint used when adding a component to the container. Most other advanced layout managers, if not all, use extra lines of code to specify constraints. This scatters the layout choices over many places and they can be hard to find or easy to forget. GUI creation code is usually quite verbose in that there are many SLOC (Source Lines Of Code) and if layout affecting code is scattered, it gets bad quickly.
+</p>
+<h3>String Constraints</h3>
+<p>
+The lowdown is that string constraints are short to type and easy to understand, but they lacks type safety. Normally I prefer type safety but when it comes to things like this, where for instance there is no refactoring happening, I think it is a reasonable trade of. I'm not so comfortable in that decision that the layout is reading directly form the string into the layout engine though. There is type safety in the background. The constraints are parsed directly and a currently package private struct-class is holding the information. It would be a simple thing to make it public and thus allow for full type safety, maybe with a builder. Another reason that makes type unsafe strings work here is that the constraint is parsed and any errors in the string is reported directly and without mercy (i.e. RuntimeExeption).
+</p>
+<p>
+An added advantage with both paragraphs above is that implementing basic support for MigLayout in RAD IDEs is trivial.
+</p>
+<h3>Toolkit Agnostic</h3>
+<p>
+MigLayout currently exist for the SWT and Swing GUI toolkits. It would be quite easy to convert it to for instance .NET. As long as a widget has a preferred size and the parent container holds a number of widgets there should be no major problems converting it to any platform or GUI toolkit. The code is free of javax.swing.* code which makes everything easier.
+</p>
+<h3>Flexibility and Extensibility</h3>
+<p>
+For a layout manager to be successful it is important that it can be used in many contexts and that the user isn't constrained by lack of features. This is why you can do almost anything with MigLayout. It is a docking layout manager, a grid layout manager, an absolute positioning layout manager, a flowing layout manager, a panel factory. And.. there's more.
+</p>
+<h3>No Panels in Panels</h3>
+<p>
+Nested layouts (a.k.a. panels in panels) is an abomination if you want to create exact and clean layouts with predictable results. The built in layout managers in Swing forces you by design to use nested panels. The problem is that since the different layout managers behaves differently regarding the interpretation and adherence to minimum, preferred and maximum sizes they get hard to handle when nested, and <b>you</b> must figure out for instance why the minimum size is disregarded, and at which panel level...
+</p>
+<p>
+The flexibility of MigLayout should get rid of almost any panel-in-panel urges. In fact, when I was doing the mandatory research for how general layouts looked like (using Windows XP's and Mac OS X's standard dialogs as examples) the goal was to create a layout manager that was so flexible that every dialog could be done with one layout for every tab.
+</p>
+<h3>Units, Platform Defaults and Visual Bounds</h3>
+<p>
+You can use any units that are normally used in layouts. Pixels, font size compensated pixels, millimeters, inches, percentage of container size, percentage of screen size, and more, works out of the box. If you want more units it is easy to install converters. There are also logical gap sizes, such as “related”, “unrelated”, “paragraph” and “indent” that will be interpreted on a platform basis. For instance Mac OS X has larger spacing between components compared to Windows XP. Further, button order in button bars are supported natively without the use of button bar builders or the like. They are configurable and more platforms can be added or the built in defaults can be changed by the developer.
+</p>
+<p>
+Visual vs Actual bounds are compensated for on a Component by Component basis. For instance Windows XP's <code>JTabbedPane</code> has a three pixel drop shadow that makes the bounds not the same as the human interpretation of the bounds. This is compensated for with on-the-fly padding. Currently only that component is padded but the support is there and can be extended to include more compensations. It is of course also possible to turn this feature off with a simple constraint.
+</p>
+<h3>Component Sizes</h3>
+<p>
+The min/preferred/max size of a component is usually delivered by the UI delegate, and that for a good reason; the delegate has intricate knowledge of the component and how it will look its best. Now, that is true for the component, but it is <em>you</em> that want to say how it should look, taking these sizes into account. Changing these component sizes directly on the component/widget, for the sake of making the layout look right, is the wrong way to go since the interpretation of these sizes is different for different layout managers. This is especially true for text components, where you can't change the preferred size in one dimension without changing the other as well.
+</p>
+<p>
+In MigLayout you can override these sizes directly in the layout constraints, where that information belongs. This also helps with narrowing the Layout Constraint Proximity to zero. All layout information in one place and if you for instance want to swap that <code>JTextArea</code> for a <code>JEditorPane</code> you just do it and the layout stays in place! And when the layout doesn't do as you expect, you have only one place (or maybe two) to look. If you don't agree on this design choice, don't worry, you can still do it the component centric way. MigLayout honors all component sizes the intended way.
+</p>
+<h3>Baseline Support</h3>
+<p>
+Nothing that doesn't support baseline alignment would be cool in Mustang and later, yet nothing that requires baseline support will work in anything before Mustang. MiGLayout supports baseline alignment through reflection, which means it will use baseline alignment, if so selected, in Mustang and above but will fall back to centered alignment for 1.5 and 1.4.
+</p>
+<h3>Smaller is Better</h3>
+<p>
+I like small stuff since it is easy to carry around. A small .jar size was a major design goal. The .jar has just turned 60k. Compared to  other advanced layout managers this is small enough. FormLayout is 85k, GroupLayout (Matisse's layout manager) is 70k. With Pack200 (as is used for the JRE downloads) all of these will be even smaller, about a third of that.
+</p>
+<h3>XUL Friendly</h3>
+<p>
+Since all constraints are string based, the layout manager should be a dream come true for XUL implementations. There is no need to synthesize a XML to Java code bridge in the XML since constraint can be set in MigLayout's constructor or as a single string when adding a component to a container. This means that component layout in XML might even be readable!
+</p>
+<h2>How MigLayout Works</h2>
+<p>
+I'm actually going to be quite brief here. There is a white paper (linked at the top) on how it works and this article would be too long if that information was re-iterated here. But let's list the main features.
+</p>
+<h3>Grid Based</h3>
+<p>
+The layout engine is in its core grid based, with all the advantages that mean regarding the aligning of components. The problem with grids are that they are square and sometimes the layout isn't. This isn't a problem with this grid though since all cells can be merged and/or split in any dimension (as long as we stick to two dimensions). There is even a “nogrid” mode where the layout manager behaves like <code>FlowLayout</code>, but with oodles of options and without the annoying auto-wrapping that my doctor has forbidden me to mention.
+</p>
+<h3>Component Docking</h3>
+<p>
+First I actually set out to fix the Swing layout problem by creating two layout managers. MiGLayout and a docking one. But when the layout engine was done I realized that docking components actually fitted nicely with it. This was an unexpected but pleasant discovery. If you have done GUIs on the “unmentionable” platform (“.NET”. Oops..)  you know that a docking layout is an excellent way to layout panels. It can be used to do almost anything though. Swing has a poor excuse for a docking layout manager called <code>BorderLayout</code>. It lacks any kind of features and of you aren't happy with having the “north” panel over the “west” one, here's a present for you: “Panels in panels”. And if you want to change that later, here's another present: “Gray hair”.
+</p>
+<p>
+MigLayout supports docking the proper way, with options to tweak it the way you want. And since it is the same layout engine as for the grid layout you can use all the gaps, insets and alignment constraints. This does however mean that if you actually <em>like</em> putting the intended decorating border in a <code>CompoundBorder</code> to make the spacing with an <code>EmptyBorder</code> you will have less fun in the future. But you will be more productive and can spend more time at the golf court as a poor compensation (or whatever you do when you don't do GUIs).
+</p>
+<h3>Gaps and White Space</h3>
+<p>
+MigLayout has extensive support for gaps and white space. You don't need surrogate rows and columns to accommodate them as with other layout managers, you just specify their size and it works. And they even work they way humans think they should! This requires an explanation, I know. Example. If person A want a 2 meter space around him (for reasons unknown) and person B requires 1 meter, how close could/would you put them in a confined space? Also for reasons unknown they will have 3(!) meters between them if current gap-supporting layout managers would decide. Why? It's easier to code it that way... As mentioned MigLayout does it the human understandable way, where the components are spaced to the other component's bounds and not to where their gap ends.
+</p>
+<p>
+Gaps in MigLayout can even have min, preferred and max size set. This means you can create glues (pushing, expanding spaces) with gaps and don't have to resort to using “glue components” that take up memory and complicates the layout.
+</p>
+<h2>Free like Lotto Coupons or Free Like a Bird?</h2>
+<p>
+MigLayout will be free to use for just about any purpose. It will be Open Source, though I'm not sure which license to use. There was a sizable amount of resources used for the creation of this layout manager and I would not like it if it was immediately forked, renamed, and re-released under a different name/vendor.
+</p>
+<p>
+One question is whether we should push for MigLayout to be included in JDK 7. It would be good if everyone had a powerful layout manager at their disposal, both for Swing and for SWT.
+</p>
+<p>
+Now, please use it. Test it. See what you think and post your constructive criticism either here or at www.miginfocom.com/forum under the MiG Layout section. There might still be room for improvements and the API can be changed if need arises.
+</p>
