@@ -5,16 +5,23 @@ Maven Users Site
 	Usage:
 
 +-------------+
-<groupId>com.miglayout</groupId>
-<artifactId>miglayout</artifactId>
 
-Use classifiers to distiguish between different MigLayout artifact compilations.
+Each environment in which MigLayout is used has it own artifact:
+* <artifactId>miglayout-swing</artifactId>
+* <artifactId>miglayout-swt</artifactId>
+* <artifactId>miglayout-javafx</artifactId>
 
-(No classifier)                          - All classes in Java 1.5 class file format. Includes Demos, SWT and Swing.
+And there also are supporting artifacts like:
+* <artifactId>miglayout-ideutil</artifactId>
+* <artifactId>miglayout-demo</artifactId>
+* <artifactId>miglayout-examples</artifactId>
 
-<classifier>swing</classifier>           - Swing .jar for Swing development.
-<classifier>swt</classifier>             - SWT .jar for SWT development.
-<classifier>ideutil</classifier>         - IDE integration helper.
-<classifier>sources</classifier>         - MigLayout sources.
-<classifier>javadoc</classifier>         - JavaDoc for all classes.
+All directly or indirectly use the central artifact:
+* <artifactId>miglayout-core</artifactId>
+
+All artifacts share the same group:
+* <groupId>com.miglayout</groupId>
+
+All artifacts have related sources and javadoc artifacts using the similarly named classifier.
+
 +-------------+
