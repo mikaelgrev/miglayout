@@ -6,7 +6,7 @@ Maven Users Site
 
 +-------------+
 
-Each environment in which MigLayout is used has it own artifact:
+Each environment in which MigLayout is used has its own artifact:
 * <artifactId>miglayout-swing</artifactId>
 * <artifactId>miglayout-swt</artifactId>
 * <artifactId>miglayout-javafx</artifactId>
