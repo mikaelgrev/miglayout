@@ -16,6 +16,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import net.miginfocom.layout.AC;
@@ -381,27 +384,32 @@ public class MigPane extends javafx.scene.layout.Pane
 		MigPane.this.getChildren().removeAll(this.debugRectangles);
 		this.debugRectangles.clear();
 	}
-	final private List<Rectangle> debugRectangles = new ArrayList<Rectangle>();
-	
+	final private List<Node> debugRectangles = new ArrayList<Node>();
+
 	/*
 	 * 
 	 */
 	private void addDebugRectangle(double x, double y, double w, double h, DebugRectangleType type)
 	{
-		Rectangle lRectangle = new DebugRectangle( x, y, w, h );
+		DebugRectangle lRectangle = new DebugRectangle( x, y, w, h );
 		if (type == DebugRectangleType.CELL) { 
-			//System.out.print("paintDebugCell ");
-			lRectangle.setStroke(Color.RED);
+			//System.out.print(getId() + ": " + "paintDebugCell ");
+			lRectangle.setStroke(getDebugCellColor());
 			lRectangle.getStrokeDashArray().addAll(3d,3d);
 		}
 		else if (type == DebugRectangleType.EXTERNAL) { 
-			//System.out.print("paintDebugExternal ");
-			lRectangle.setStroke(Color.ORANGE);
+			//System.out.print(getId() + ": " + "paintDebugExternal ");
+			lRectangle.setStroke(getDebugExternalColor());
 			lRectangle.getStrokeDashArray().addAll(6d,6d);
 		}
-		else if (type == DebugRectangleType.OUTLINE || type == DebugRectangleType.CONTAINER_OUTLINE) { 
-			//System.out.print("paintDebugOutline ");
-			lRectangle.setStroke(Color.GREEN);
+		else if (type == DebugRectangleType.OUTLINE) { 
+			//System.out.print(getId() + ": " + "paintDebugOutline ");
+			lRectangle.setStroke(getDebugOutlineColor());
+			lRectangle.getStrokeDashArray().addAll(4d,4d);
+		}
+		else if (type == DebugRectangleType.CONTAINER_OUTLINE) { 
+			//System.out.print(getId() + ": " + "paintDebugContainerOutline ");
+			lRectangle.setStroke(getDebugContainerOutlineColor());
 			lRectangle.getStrokeDashArray().addAll(4d,4d);
 		}
 		else { 
@@ -410,17 +418,40 @@ public class MigPane extends javafx.scene.layout.Pane
 		//System.out.println(lRectangle.getX() + "," + lRectangle.getY() + "/" + lRectangle.getWidth() + "x" + lRectangle.getHeight());
 		//lRectangle.setStrokeWidth(0.5f);
 		lRectangle.setFill(null);
+		//lRectangle.mouseTransparentProperty().set(true);
+
 		MigPane.this.getChildren().add(lRectangle);
 		this.debugRectangles.add(lRectangle); 
 	}
-	enum DebugRectangleType { CELL, OUTLINE, CONTAINER_OUTLINE, EXTERNAL } 
+	enum DebugRectangleType { CELL, OUTLINE, CONTAINER_OUTLINE, EXTERNAL }	
+
 	class DebugRectangle extends Rectangle 
 	{
-		public DebugRectangle(double arg0, double arg1, double arg2, double arg3)
+		public DebugRectangle(double x, double y, double w, double h)
 		{
-			super(arg0, arg1, arg2, arg3);
+			super(x,y,w,h);
 		}
 	}
+	
+	/** debugCellColor */
+	public Color getDebugCellColor() { return this.debugCellColor; }
+	public void setDebugCellColor(Color value) { this.debugCellColor = value; }
+	private Color debugCellColor = Color.RED;
+	
+	/** debugExternalColor */
+	public Color getDebugExternalColor() { return this.debugExternalColor; }
+	public void setDebugExternalColor(Color value) { this.debugExternalColor = value; }
+	private Color debugExternalColor = Color.ORANGE;
+	
+	/** debugOutlineColor */
+	public Color getDebugOutlineColor() { return this.debugOutlineColor; }
+	public void setDebugOutlineColor(Color value) { this.debugOutlineColor = value; }
+	private Color debugOutlineColor = Color.GREEN;
+	
+	/** debugContainerOutlineColor */
+	public Color getDebugContainerOutlineColor() { return this.debugContainerOutlineColor; }
+	public void setDebugContainerOutlineColor(Color value) { this.debugContainerOutlineColor = value; }
+	private Color debugContainerOutlineColor = Color.DARKGREEN;
 	
 	// ============================================================================================================
 	// ContainerWrapper
