@@ -16,9 +16,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import net.miginfocom.layout.AC;
@@ -400,7 +397,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		else if (type == DebugRectangleType.EXTERNAL) { 
 			//System.out.print(getId() + ": " + "paintDebugExternal ");
 			lRectangle.setStroke(getDebugExternalColor());
-			lRectangle.getStrokeDashArray().addAll(6d,6d);
+			lRectangle.getStrokeDashArray().addAll(5d,5d);
 		}
 		else if (type == DebugRectangleType.OUTLINE) { 
 			//System.out.print(getId() + ": " + "paintDebugOutline ");
@@ -410,7 +407,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		else if (type == DebugRectangleType.CONTAINER_OUTLINE) { 
 			//System.out.print(getId() + ": " + "paintDebugContainerOutline ");
 			lRectangle.setStroke(getDebugContainerOutlineColor());
-			lRectangle.getStrokeDashArray().addAll(4d,4d);
+			lRectangle.getStrokeDashArray().addAll(7d,7d);
 		}
 		else { 
 			throw new IllegalStateException("Unknown debug rectangle type");
@@ -418,8 +415,9 @@ public class MigPane extends javafx.scene.layout.Pane
 		//System.out.println(lRectangle.getX() + "," + lRectangle.getY() + "/" + lRectangle.getWidth() + "x" + lRectangle.getHeight());
 		//lRectangle.setStrokeWidth(0.5f);
 		lRectangle.setFill(null);
-		//lRectangle.mouseTransparentProperty().set(true);
-
+		lRectangle.mouseTransparentProperty().set(true); // just to be sure
+		
+		// add as child
 		MigPane.this.getChildren().add(lRectangle);
 		this.debugRectangles.add(lRectangle); 
 	}
@@ -441,7 +439,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	/** debugExternalColor */
 	public Color getDebugExternalColor() { return this.debugExternalColor; }
 	public void setDebugExternalColor(Color value) { this.debugExternalColor = value; }
-	private Color debugExternalColor = Color.ORANGE;
+	private Color debugExternalColor = Color.BLUE;
 	
 	/** debugOutlineColor */
 	public Color getDebugOutlineColor() { return this.debugOutlineColor; }
@@ -451,7 +449,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	/** debugContainerOutlineColor */
 	public Color getDebugContainerOutlineColor() { return this.debugContainerOutlineColor; }
 	public void setDebugContainerOutlineColor(Color value) { this.debugContainerOutlineColor = value; }
-	private Color debugContainerOutlineColor = Color.DARKGREEN;
+	private Color debugContainerOutlineColor = Color.PURPLE;
 	
 	// ============================================================================================================
 	// ContainerWrapper
@@ -494,16 +492,12 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public void paintDebugOutline() {
 			// to be frank: this is done via trail and error 
-			Bounds lBoundsInParent = this.node.getBoundsInParent();
-			Bounds lLayoutBounds = this.node.getLayoutBounds();
-			double lPaddingW = lBoundsInParent.getMinX() + (lBoundsInParent.getMaxX() - lLayoutBounds.getMaxX());
-			double lPaddingH = lBoundsInParent.getMinY() + (lBoundsInParent.getMaxY() - lLayoutBounds.getMaxY());
-			addDebugRectangle( this.node.getLayoutX() + lLayoutBounds.getMinX() - lPaddingW
-					         , this.node.getLayoutY() + lLayoutBounds.getMinY() - lPaddingH
-					         , getWidth() + lPaddingW
-					         , getHeight() + lPaddingH
+			addDebugRectangle( 0
+					         , 0
+					         , getWidth()
+					         , getHeight()
 					         , DebugRectangleType.CONTAINER_OUTLINE
-					         ); 
+					         );			
 		}
 	}
 	
@@ -692,7 +686,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		    if (this.node.getId().length() > 0) {
 		        lHashCode += this.node.getId().hashCode();
 		    }
-			return 0;
+			return lHashCode; // 0;
 		}
 
 		// as of JDK 1.6: @Override
