@@ -36,7 +36,11 @@ package net.miginfocom.swing;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics2D;
 
 /**
  */

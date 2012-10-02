@@ -1,6 +1,7 @@
 package net.miginfocom.layout;
 
 import javax.swing.*;
+
 import java.util.HashMap;
 /*
  * License (BSD):

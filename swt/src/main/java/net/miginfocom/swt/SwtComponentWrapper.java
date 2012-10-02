@@ -38,8 +38,24 @@ import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.PlatformDefaults;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Scrollable;
+import org.eclipse.swt.widgets.Slider;
+import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 
 /**
  */

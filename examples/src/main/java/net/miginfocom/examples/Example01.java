@@ -1,8 +1,7 @@
 package net.miginfocom.examples;
 
-import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
+import net.miginfocom.swing.MigLayout;
 /*
  * License (BSD):
  * ==============

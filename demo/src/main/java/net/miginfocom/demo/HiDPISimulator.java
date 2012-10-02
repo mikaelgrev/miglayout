@@ -1,23 +1,8 @@
 package net.miginfocom.demo;
 
-import net.miginfocom.layout.PlatformDefaults;
-import net.miginfocom.layout.UnitValue;
-import net.miginfocom.swing.MigLayout;
 //import org.jvnet.substance.SubstanceLookAndFeel;
 //import org.jvnet.substance.fonts.SubstanceFontUtilities;
 //import org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.FontUIResource;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.util.*;
 
 /*
  * License (BSD):

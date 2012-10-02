@@ -1,14 +1,25 @@
 package net.miginfocom.demo;
 
+import javax.swing.*;
 import net.miginfocom.layout.BoundSize;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.LayoutCallback;
 import net.miginfocom.layout.UnitValue;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.IdentityHashMap;
 
 /*

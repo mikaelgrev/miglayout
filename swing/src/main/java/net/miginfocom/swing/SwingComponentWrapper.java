@@ -32,12 +32,13 @@ package net.miginfocom.swing;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.PlatformDefaults;
 
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Method;

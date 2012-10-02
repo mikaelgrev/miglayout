@@ -1,9 +1,9 @@
 package net.miginfocom.examples;
 
+import javax.swing.*;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 /*
  * License (BSD):
  * ==============

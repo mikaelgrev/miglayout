@@ -1,6 +1,10 @@
 package net.miginfocom.layout;
 
-import java.io.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectStreamException;
 /*
  * License (BSD):
  * ==============

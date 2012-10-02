@@ -33,15 +33,42 @@ package net.miginfocom.swing;
  *         Date: 2006-sep-08
  */
 
-import net.miginfocom.layout.*;
-
 import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
+import net.miginfocom.layout.AC;
+import net.miginfocom.layout.BoundSize;
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.ComponentWrapper;
+import net.miginfocom.layout.ConstraintParser;
+import net.miginfocom.layout.ContainerWrapper;
+import net.miginfocom.layout.Grid;
+import net.miginfocom.layout.LC;
+import net.miginfocom.layout.LayoutCallback;
+import net.miginfocom.layout.LayoutUtil;
+import net.miginfocom.layout.PlatformDefaults;
+import net.miginfocom.layout.UnitValue;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
+import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectStreamException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /** A very flexible layout manager.
  * <p>
@@ -561,7 +588,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 		}
 	}
 
-	/** Checks the parent window if its size is within parameters as set by the LC.
+	/** Checks the parent window/popup if its size is within parameters as set by the LC.
 	 * @param parent The parent who's window to possibly adjust the size for.
 	 */
 	private void adjustWindowSize(ContainerWrapper parent)
@@ -572,19 +599,62 @@ public final class MigLayout implements LayoutManager2, Externalizable
 		if (wBounds == null && hBounds == null)
 			return;
 
-		Window win = ((Window) SwingUtilities.getAncestorOfClass(Window.class, (Component) parent.getComponent()));
-		if (win == null)
-			return;
+		Container packable = getPackable((Component) parent.getComponent());
 
-		Dimension prefSize = win.getPreferredSize();
-		int targW = constrain(checkParent(win), win.getWidth(), prefSize.width, wBounds);
-		int targH = constrain(checkParent(win), win.getHeight(), prefSize.height, hBounds);
+		if (packable != null) {
+			Dimension prefSize = packable.getPreferredSize();
+			int targW = constrain(checkParent(packable), packable.getWidth(), prefSize.width, wBounds);
+			int targH = constrain(checkParent(packable), packable.getHeight(), prefSize.height, hBounds);
 
-		int x = Math.round(win.getX() - ((targW - win.getWidth()) * (1 - lc.getPackWidthAlign())));
-		int y = Math.round(win.getY() - ((targH - win.getHeight()) * (1 - lc.getPackHeightAlign())));
+			Point p = packable.isShowing() ? packable.getLocationOnScreen() : packable.getLocation();
 
-		win.setBounds(x, y, targW, targH);
+			int x = Math.round(p.x - ((targW - packable.getWidth()) * (1 - lc.getPackWidthAlign())));
+			int y = Math.round(p.y - ((targH - packable.getHeight()) * (1 - lc.getPackHeightAlign())));
+
+			if (packable instanceof JPopupMenu) {
+				JPopupMenu popupMenu = (JPopupMenu) packable;
+				popupMenu.setVisible(false);
+				popupMenu.setPopupSize(targW, targH);
+				Component invoker = popupMenu.getInvoker();
+				Point popPoint = new Point(x, y);
+				SwingUtilities.convertPointFromScreen(popPoint, invoker);
+				((JPopupMenu) packable).show(invoker, popPoint.x, popPoint.y);
+
+				packable.setPreferredSize(null); // Reset preferred size so we don't read it again.
+
+			} else {
+				packable.setBounds(x, y, targW, targH);
+			}
+		}
 	}
+
+	/** Returns a high level window or popup to pack, if any.
+	 * @return May be null.
+	 */
+	private Container getPackable(Component comp)
+	{
+		JPopupMenu popup = findType(JPopupMenu.class, comp);
+		if (popup != null) { // Lightweight/HeavyWeight popup must be handled separately
+			Container popupComp = popup;
+			while (popupComp != null) {
+				if (popupComp.getClass().getName().contains("HeavyWeightWindow"))
+					return popupComp; // Return the heavyweight window for normal processing
+				popupComp = popupComp.getParent();
+			}
+			return popup; // Return the JPopup.
+		}
+
+		return findType(Window.class, comp);
+	}
+
+	public static <E> E findType(Class<E> clazz, Component comp)
+	{
+		while (comp != null && !clazz.isInstance(comp))
+			comp = comp.getParent();
+
+		return (E) comp;
+	}
+
 
 	private int constrain(ContainerWrapper parent, int winSize, int prefSize, BoundSize constrain)
 	{

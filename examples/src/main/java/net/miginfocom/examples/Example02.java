@@ -1,11 +1,10 @@
 package net.miginfocom.examples;
 
-import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import net.miginfocom.swing.MigLayout;
 /*
  * License (BSD):
  * ==============

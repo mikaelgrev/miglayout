@@ -1,10 +1,13 @@
 package net.miginfocom.examples;
 
-import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import java.awt.*;
+import net.miginfocom.swing.MigLayout;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
 /*
  * License (BSD):
  * ==============
