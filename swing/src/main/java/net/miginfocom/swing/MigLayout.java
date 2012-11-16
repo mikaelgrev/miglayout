@@ -596,7 +596,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 		BoundSize wBounds = lc.getPackWidth();
 		BoundSize hBounds = lc.getPackHeight();
 
-		if (wBounds == null && hBounds == null)
+		if (wBounds == BoundSize.NULL_SIZE && hBounds == BoundSize.NULL_SIZE)
 			return;
 
 		Container packable = getPackable((Component) parent.getComponent());
