@@ -11,21 +11,22 @@
 	<packaging>jar</packaging>
     <name>MiGLayout JavaFX</name>
     <description>MiGLayout - Layout Manager for JavaFX</description>
-	
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-		<dependency>	
-			<groupId>com.oracle</groupId> 					
-			<artifactId>javafx-runtime</artifactId>			
-			<version>2.0</version>				
-			<scope>provided</scope>	
+		<dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx</artifactId>
+            <version>${javafx.version}</version>
+            <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+			<scope>provided</scope>
 		</dependency>
     </dependencies>
-		
+
 	<developers>
 		<developer>
 			<id>tbee</id>

@@ -211,6 +211,8 @@ public class SwingDemo extends JFrame
 				new SwingDemo();
 			}
 		});
+
+
 	}
 
 	public SwingDemo()
@@ -311,7 +313,6 @@ public class SwingDemo extends JFrame
 					descrTextArea.setText(panels[ix][1]);
 					descrTextArea.setCaretPosition(0);
 					contentPanel.revalidate();
-
 				} catch (Exception e1) {
 					e1.printStackTrace();   // Should never happen...
 				}

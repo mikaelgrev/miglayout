@@ -420,8 +420,12 @@ public final class UnitValue implements Serializable
 			return isHor ? PlatformDefaults.getDefaultHorizontalUnit() : PlatformDefaults.getDefaultVerticalUnit();
 
 		Integer u = UNIT_MAP.get(unitStr);
-		if (u != null)
+		if (u != null) {
+			if (!isHor && (u == BUTTON || u == LABEL_ALIGN))
+				throw new IllegalArgumentException("Not valid in vertical contexts: '" + unitStr + "'");
+
 			return u;
+		}
 
 		if (unitStr.equals("lp"))
 			return isHor ? LPX : LPY;

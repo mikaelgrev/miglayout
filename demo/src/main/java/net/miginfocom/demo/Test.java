@@ -1,51 +1,48 @@
 package net.miginfocom.demo;
 
-import net.miginfocom.layout.CC;
-import net.miginfocom.swing.MigLayout;
+import net.miginfocom.swt.MigLayout;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.*;
 
-/**
- * @author Gili Tzabari
- */
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
-import javax.swing.JTree;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.EmptyBorder;
-import net.miginfocom.layout.AC;
-import net.miginfocom.layout.LC;
-
-
-import net.miginfocom.swing.MigLayout;
-
-import javax.swing.*;
-import java.awt.*;
-
-/**
-* @author Mikael Grev, MiG InfoCom AB
-*         Date: 7/29/11
-*         Time: 10:30 AM
-*/
-public class Test
+public class Test extends Dialog
 {
-	public static void main(String[] args)
-	{
-		JFrame frame = new JFrame();
+	Test(Shell parent) {
+		super(parent);
+	}
 
-		JPanel panel = new JPanel(new MigLayout("debug, align right"));
-		panel.add(new JLabel("Three"), "wrap");
-		panel.add(new JLabel("Six"));
+	public void open() {
+		Shell parent = getParent();
+		Shell dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		dialog.setSize(300, 200);
+		dialog.setText("Java Source and Support");
 
-		frame.add(panel);
-		frame.setBounds(500, 500, 500, 500);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		// Gridlayout works
+		//dialog.setLayout(new GridLayout(2, false));
+
+		// The following Miglayout doesn't work
+		//    dialog.setLayout(new MigLayout("wrap 2"));
+
+//		The following Miglayout works !!! Obviously rtl and ltr are mixed up
+		dialog.setLayout(new MigLayout("wrap 2"));
+
+		createControls(dialog);
+
+		dialog.open();
+		Display display = parent.getDisplay();
+		while (!dialog.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		display.dispose();
+	}
+
+	private void createControls(Shell dialog) {
+		Label label = new Label(dialog, SWT.NONE);
+		label.setText("Test:");
+		Text text = new Text(dialog, SWT.BORDER);
+	}
+
+	public static void main(String[] argv) {
+		new Test(new Shell(SWT.RIGHT_TO_LEFT)).open();
 	}
 }

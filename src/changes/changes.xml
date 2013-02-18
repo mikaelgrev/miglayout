@@ -4,6 +4,14 @@
 		<author email="mikael.grev@miginfocom.com">mikael</author>
 	</properties>
 	<body>
+        <release version="4.3" date="2013-02-18" description="Release 4.3">
+            <action dev="mikaelgrev" type="enhancement">
+                Fixed the gaps on Windows to adhere to Windows 7 style guide.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                Some parsing errors didn't throw an exception.
+            </action>
+        </release>
         <release version="4.2" date="2011-12-09" description="Release 4.2">
             <action dev="tbee" type="enhancement">
                 Added JavaFX2 code into the main MigLayout project.

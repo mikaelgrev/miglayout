@@ -165,11 +165,11 @@ public final class PlatformDefaults
 	{
 		switch (plaf) {
 			case WINDOWS_XP:
-				setRelatedGap(LPX4, LPY4);
-				setUnrelatedGap(LPX7, LPY9);
-				setParagraphGap(LPX14, LPY14);
-				setIndentGap(LPX9, LPY9);
-				setGridCellGap(LPX4, LPY4);
+				setRelatedGap(LPX7, LPY7);
+				setUnrelatedGap(LPX11, LPY11);
+				setParagraphGap(LPX20, LPY20);
+				setIndentGap(LPX11, LPY11);
+				setGridCellGap(LPX7, LPY7);
 
 				setMinimumButtonWidth(new UnitValue(75, UnitValue.LPX, null));
 				setButtonOrder("L_E+U+YNBXOCAH_R");
@@ -177,11 +177,11 @@ public final class PlatformDefaults
 				setPanelInsets(LPY7, LPX7, LPY7, LPX7);
 				break;
 			case MAC_OSX:
-				setRelatedGap(LPX4, LPY4);
-				setUnrelatedGap(LPX7, LPY9);
-				setParagraphGap(LPX14, LPY14);
-				setIndentGap(LPX10, LPY10);
-				setGridCellGap(LPX4, LPY4);
+				setRelatedGap(LPX7, LPY7);
+				setUnrelatedGap(LPX11, LPY11);
+				setParagraphGap(LPX20, LPY20);
+				setIndentGap(LPX11, LPY11);
+				setGridCellGap(LPX7, LPY7);
 
 				setMinimumButtonWidth(new UnitValue(68, UnitValue.LPX, null));
 				setButtonOrder("L_HE+U+NYBXCOA_R");
