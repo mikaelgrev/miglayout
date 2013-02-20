@@ -1,17 +1,14 @@
 package net.miginfocom.swing;
 
-import java.awt.Toolkit;
-import java.util.logging.Logger;
-
-import javax.swing.JButton;
-
 import junit.framework.TestCase;
 import net.miginfocom.layout.PlatformDefaults;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.logging.Logger;
+//import org.junit.runners.JUnit4;
 
 /**
  * MigLayoutTest
@@ -19,7 +16,7 @@ import org.junit.runners.JUnit4;
  * @author anavarro
  * @author Jeanette Winzenburg, Berlin
  */
-@RunWith(JUnit4.class)
+//@RunWith(JUnit4.class)
 public class MigLayoutTest extends TestCase{
 
     // reported: http://migcalendar.com/forums/viewtopic.php?f=8&t=3833
@@ -29,15 +26,15 @@ public class MigLayoutTest extends TestCase{
     @Test
     public void testDPIScaling() {
        if (Toolkit.getDefaultToolkit().getScreenResolution() == PlatformDefaults.getDefaultDPI()) {
-           LOG.info("dpi == default, nothing to test: " + 
+           LOG.info("dpi == default, nothing to test: " +
                    Toolkit.getDefaultToolkit().getScreenResolution());
            return;
        }
        float factor = (float) Toolkit.getDefaultToolkit().getScreenResolution() / PlatformDefaults.getDefaultDPI();
-       
+
        SwingComponentWrapper wrapper = new SwingComponentWrapper(new JButton());
        assertEquals("dpi scaling factor", factor, wrapper.getPixelUnitFactor(true));
-       
+
     }
 
     // reported: http://migcalendar.com/forums/viewtopic.php?f=8&t=3834
@@ -51,7 +48,7 @@ public class MigLayoutTest extends TestCase{
 
     /**
      * Set PlatformDefaults properties to defaults.
-     * 
+     *
      */
     private void setPlatformDefaults() {
 //        PlatformDefaults.setPlatform(PlatformDefaults.WINDOWS_XP);
@@ -59,8 +56,8 @@ public class MigLayoutTest extends TestCase{
         PlatformDefaults.setHorizontalScaleFactor(null);
         PlatformDefaults.setVerticalScaleFactor(null);
     }
-    
-    
+
+
     @Override
     @Before
     public void setUp() throws Exception {

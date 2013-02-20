@@ -1140,7 +1140,7 @@ public final class ConstraintParser
 				return new UnitValue(value, numParts[1], isHor, oper, cs);
 
 			} catch(Exception e) {
-				throw new IllegalArgumentException("Malformed UnitValue: '" + s + "'");
+				throw new IllegalArgumentException("Malformed UnitValue: '" + s + "'", e);
 			}
 		}
 	}
