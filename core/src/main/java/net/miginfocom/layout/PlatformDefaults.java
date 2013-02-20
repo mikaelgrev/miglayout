@@ -336,7 +336,7 @@ public final class PlatformDefaults
 	public static void setLogicalPixelBase(int base)
 	{
 		if (LP_BASE != base) {
-			if (base < BASE_FONT_SIZE || base > BASE_SCALE_FACTOR)
+			if (base < BASE_FONT_SIZE || base > BASE_REAL_PIXEL)
 				throw new IllegalArgumentException("Unrecognized base: " + base);
 
 			LP_BASE = base;

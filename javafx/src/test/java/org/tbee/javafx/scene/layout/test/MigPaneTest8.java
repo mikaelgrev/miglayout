@@ -35,7 +35,7 @@ public class MigPaneTest8 extends Application {
         Scene scene = new Scene(lRoot, 800, 300);
 
         // create stage
-        stage.setTitle("FXML Test");
+        stage.setTitle(this.getClass().getSimpleName());
         stage.setScene(scene);
         stage.show();
     }

@@ -244,14 +244,21 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return p != null ? new SwingContainerWrapper(p) : null;
 	}
 
-	public final int getHorizontalScreenDPI()
-	{
-		return PlatformDefaults.getDefaultDPI();
-	}
+    public final int getHorizontalScreenDPI() {
+        try {
+            return c.getToolkit().getScreenResolution();
+        } catch (HeadlessException ex) {
+            return PlatformDefaults.getDefaultDPI();
+        }
+    }
 
 	public final int getVerticalScreenDPI()
 	{
-		return PlatformDefaults.getDefaultDPI();
+	        try {
+	            return c.getToolkit().getScreenResolution();
+	        } catch (HeadlessException ex) {
+	            return PlatformDefaults.getDefaultDPI();
+	        }
 	}
 
 	public final int getScreenWidth()

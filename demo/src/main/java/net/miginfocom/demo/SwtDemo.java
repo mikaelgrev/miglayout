@@ -1,10 +1,6 @@
 package net.miginfocom.demo;
 
-import net.miginfocom.layout.AC;
-import net.miginfocom.layout.CC;
-import net.miginfocom.layout.LC;
-import net.miginfocom.layout.LayoutUtil;
-import net.miginfocom.layout.PlatformDefaults;
+import net.miginfocom.layout.*;
 import net.miginfocom.swt.MigLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
