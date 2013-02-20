@@ -488,6 +488,9 @@ public final class MigLayout extends Layout implements Externalizable
 
 	protected void layout(Composite parent, boolean flushCache)
 	{
+		if (flushCache)
+			grid = null;
+
 		checkCache(parent);
 
 		Rectangle r = parent.getClientArea();

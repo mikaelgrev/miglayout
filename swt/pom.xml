@@ -20,6 +20,13 @@
         </dependency>
 	</dependencies>
 
+    <repositories>
+        <repository>
+            <id>swt-repo</id>
+            <url>https://swt-repo.googlecode.com/svn/repo/</url>
+        </repository>
+    </repositories>
+
     <profiles>
         <profile>
 			<id>windows</id>
@@ -31,9 +38,12 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.eclipse.swt.win32.win32</groupId>
-                    <artifactId>x86</artifactId>
-                    <version>3.3.0-v3346</version>
+                    <!--<groupId>org.eclipse.swt.win32.win32</groupId>-->
+                    <!--<artifactId>x86</artifactId>-->
+                    <!--<version>3.3.0-v3346</version>-->
+                    <groupId>org.eclipse.swt</groupId>
+                    <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+                    <version>4.2.1</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -48,9 +58,12 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.eclipse.swt.gtk.linux</groupId>
-                    <artifactId>x86</artifactId>
-                    <version>3.3.0-v3346</version>
+                    <!--<groupId>org.eclipse.swt.gtk.linux</groupId>-->
+                    <!--<artifactId>x86</artifactId>-->
+                    <!--<version>3.3.0-v3346</version>-->
+                    <groupId>org.eclipse.swt</groupId>
+                    <artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+                    <version>4.2.1</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -65,9 +78,12 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.eclipse.swt.gtk.linux</groupId>
-                    <artifactId>x86_64</artifactId>
-                    <version>3.3.0-v3346</version>
+                    <!--<groupId>org.eclipse.swt.gtk.linux</groupId>-->
+                    <!--<artifactId>x86</artifactId>-->
+                    <!--<version>3.3.0-v3346</version>-->
+                    <groupId>org.eclipse.swt</groupId>
+                    <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+                    <version>4.2.1</version>
                 </dependency>
             </dependencies>
         </profile>
@@ -81,9 +97,13 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.eclipse.swt.carbon</groupId>
-                    <artifactId>macosx</artifactId>
-                    <version>3.3.0-v3346</version>
+                    <!--<groupId>org.eclipse.swt.carbon</groupId>-->
+                    <!--<artifactId>macosx</artifactId>-->
+                    <!--<version>3.3.0-v3346</version>-->
+                    <groupId>org.eclipse.swt</groupId>
+                    <!--<artifactId>org.eclipse.swt.cocoa.macosx</artifactId>-->
+                    <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+                    <version>4.2.1</version>
                 </dependency>
             </dependencies>
         </profile>
