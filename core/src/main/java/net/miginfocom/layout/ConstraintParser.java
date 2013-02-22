@@ -872,7 +872,7 @@ public final class ConstraintParser
 				throw new IllegalArgumentException("Unknown keyword.");
 
 			} catch (Exception ex) {
-				throw new IllegalArgumentException("Illegal Constraint: '" + part + "'\n" + ex.getMessage());
+				throw new IllegalArgumentException("Error parsing Constraint: '" + part + "'", ex);
 			}
 		}
 

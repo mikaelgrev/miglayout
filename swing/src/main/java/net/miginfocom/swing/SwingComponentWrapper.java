@@ -41,7 +41,6 @@ import net.miginfocom.layout.PlatformDefaults;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
 
 /**
@@ -68,19 +67,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	public final int getBaseline(int width, int height)
 	{
-		if (BL_METHOD == null)
-			return -1;
-
-		try {
-			Object[] args = new Object[] {
-				width < 0 ? c.getWidth() : width,
-				height < 0 ? c.getHeight() : height
-			};
-
-			return (Integer) BL_METHOD.invoke(c, args);
-		} catch (Exception e) {
-			return -1;
-		}
+		return c.getBaseline(width < 0 ? c.getWidth() : width, height < 0 ? c.getHeight() : height);
 	}
 
 	public final Object getComponent()
@@ -228,14 +215,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	private boolean isMaxSet(Component c)
 	{
-		if (IMS_METHOD != null) {
-			try {
-				return (Boolean) IMS_METHOD.invoke(c, (Object[]) null);
-			} catch (Exception e) {
-				IMS_METHOD = null;  // So we do not try every time.
-			}
-		}
-		return isMaxSizeSetOn1_4();
+		return c.isMaximumSizeSet();
 	}
 
 	public final ContainerWrapper getParent()
@@ -283,12 +263,13 @@ public class SwingComponentWrapper implements ComponentWrapper
 	{
 		if (bl == null) {
 			try {
-				if (BL_RES_METHOD == null || BL_RES_METHOD.invoke(c).toString().equals("OTHER")) {
-					bl = Boolean.FALSE;
-				} else {
+				// Removed since OTHER is sometimes returned even though there is a valid baseline (e.g. an empty JComboBox)
+//				if (c.getBaselineResizeBehavior() == Component.BaselineResizeBehavior.OTHER) {
+//					bl = Boolean.FALSE;
+//				} else {
 					Dimension d = c.getMinimumSize();
 					bl = getBaseline(d.width, d.height) > -1;
-				}
+//				}
 			} catch (Throwable ex) {
 				bl = Boolean.FALSE;
 			}
@@ -321,11 +302,17 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return null;
 	}
 
+	/**
+	 * @deprecated Java 1.4 is not supported anymore
+	 */
 	public static boolean isMaxSizeSetOn1_4()
 	{
 		return maxSet;
 	}
 
+	/**
+	 * @deprecated Java 1.4 is not supported anymore
+	 */
 	public static void setMaxSizeSetOn1_4(boolean b)
 	{
 		maxSet = b;
@@ -445,23 +432,11 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return getComponent().equals(((ComponentWrapper) o).getComponent());
 	}
 
-	/** Cached method used for getting base line with reflection.
-	 */
-	private static Method BL_METHOD = null;
-	private static Method BL_RES_METHOD = null;
-	static {
-		try {
-			BL_METHOD = Component.class.getDeclaredMethod("getBaseline", new Class[] {int.class, int.class});
-			BL_RES_METHOD = Component.class.getDeclaredMethod("getBaselineResizeBehavior"); // 3.7.2: Removed Class<?> null since that made the method inaccessible.
-		} catch (Throwable e) { // No such method or security exception
-		}
-	}
-
-	private static Method IMS_METHOD = null;
-	static {
-		try {
-			IMS_METHOD = Component.class.getDeclaredMethod("isMaximumSizeSet", (Class[]) null);
-		} catch (Throwable e) { // No such method or security exception
-		}
-	}
+//	private static Method IMS_METHOD = null;
+//	static {
+//		try {
+//			IMS_METHOD = Component.class.getDeclaredMethod("isMaximumSizeSet", (Class[]) null);
+//		} catch (Throwable e) { // No such method or security exception
+//		}
+//	}
 }

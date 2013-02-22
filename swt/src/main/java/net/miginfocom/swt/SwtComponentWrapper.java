@@ -373,4 +373,9 @@ public class SwtComponentWrapper implements ComponentWrapper
 
 		return getComponent().equals(((ComponentWrapper) o).getComponent());
 	}
+
+	public String toString()
+	{
+		return getClass().getSimpleName() + "{" + c + "}";
+	}
 }

@@ -5,6 +5,24 @@
 	</properties>
 	<body>
         <release version="4.3" date="2013-02-18" description="Release 4.3">
+            <action dev="mikaelgrev" type="enhancement">
+                Better exceptions when parsing.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                SwingComponentWrapper must query Toolkit-provided screen resolution for dpi scaling. Thanks to Kleopatra for the patch.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Fixed a NullPointerException that happened when a ancestor was a BoxLayout or an OverlayLayout. Thanks to "uckelman" for the patch.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                A memory leak in the Swing version when components where removed from the layout.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Baseline of an empty JComboBox was interpreted as not valid.
+            </action>
+            <action dev="mikaelgrev" type="fix">
+                Fixed a memory leak in SWT where a disposed widget could be referenced from the MigLayout instance.
+            </action>
             <action dev="mikaelgrev" type="fix">
                 Cache wasn't flushed even if flushCache was true in MigLayout.layout(..) for SWT.
             </action>
@@ -13,6 +31,9 @@
             </action>
             <action dev="mikaelgrev" type="fix">
                 Some parsing errors didn't throw an exception.
+            </action>
+            <action dev="mikaelgrev" type="feature">
+                MigLayout now requires at least Java 6.
             </action>
         </release>
         <release version="4.3" date="2011-12-09" description="Release 4.2">

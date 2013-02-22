@@ -602,6 +602,16 @@ public final class MigLayout implements LayoutManager2, Externalizable
 		Container packable = getPackable((Component) parent.getComponent());
 
 		if (packable != null) {
+
+			Component pc = (Component) parent.getComponent();
+
+			Container c = pc instanceof Container ? (Container) pc : pc.getParent();
+			for (; c != null; c = c.getParent()) {
+				LayoutManager layout = c.getLayout();
+				if (layout instanceof BoxLayout || layout instanceof OverlayLayout)
+					((LayoutManager2) layout).invalidateLayout(c);
+			}
+
 			Dimension prefSize = packable.getPreferredSize();
 			int targW = constrain(checkParent(packable), packable.getWidth(), prefSize.width, wBounds);
 			int targH = constrain(checkParent(packable), packable.getHeight(), prefSize.height, hBounds);
@@ -741,6 +751,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 		synchronized(comp.getParent().getTreeLock()) {
 			scrConstrMap.remove(comp);
 			ccMap.remove(new SwingComponentWrapper(comp));
+			grid = null; // To clear references
 		}
 	}
 

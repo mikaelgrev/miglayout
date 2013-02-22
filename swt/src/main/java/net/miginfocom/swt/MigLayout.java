@@ -442,7 +442,7 @@ public final class MigLayout extends Layout implements Externalizable
 		Iterator<Map.Entry<ComponentWrapper, CC>> ccIt = ccMap.entrySet().iterator();
 		while(ccIt.hasNext()) {
 			Control c = (Control) ccIt.next().getKey().getComponent();
-			if (parentCompSet.contains(c) == false) {
+			if (c.isDisposed() || parentCompSet.contains(c) == false) {
 				ccIt.remove();
 				scrConstrMap.remove(c);
 			}

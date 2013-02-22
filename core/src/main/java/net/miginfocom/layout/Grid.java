@@ -2322,7 +2322,7 @@ public final class Grid
 		if (PARENT_ROWCOL_SIZES_MAP == null)
 			return null;
 
-		return (int[][]) PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].get(parComp);
+		return PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].get(parComp);
 	}
 
 	private static WeakHashMap<Object, ArrayList<WeakCell>> PARENT_GRIDPOS_MAP = null;
