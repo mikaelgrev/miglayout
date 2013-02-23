@@ -439,6 +439,7 @@ public final class MigLayout extends Layout implements Externalizable
 			if (c.isDisposed() || parentCompSet.contains(c) == false) {
 				ccIt.remove();
 				scrConstrMap.remove(c);
+				grid = null; // To clear any references to a removed widget
 			}
 		}
 
