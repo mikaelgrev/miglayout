@@ -56,6 +56,8 @@ public final class CC implements Externalizable
 
 	private UnitValue[] padding = null;   // top, left, bottom, right
 
+	private UnitValue[] visualPadding = null;   // top, left, bottom, right
+
 	private Boolean flowX = null;
 
 	private int skip = 0;
@@ -1549,6 +1551,26 @@ public final class CC implements Externalizable
 	public void setPadding(UnitValue[] sides)
 	{
 		this.padding = sides != null ? new UnitValue[] {sides[0], sides[1], sides[2], sides[3]} : null;
+	}
+
+	/** Returns the visual padding used when laying out this Component. May be <code>null</code> and elements may be <code>null</code>.
+	 * <p>
+	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
+	 * @return The current value. <code>null</code> or of length 4.
+	 */
+	public UnitValue[] getVisualPadding()
+	{
+		return visualPadding != null ? new UnitValue[] {visualPadding[0], visualPadding[1], visualPadding[2], visualPadding[3]} : null;
+	}
+
+	/** Sets the visual padding used when laying out this Component.
+	 * <p>
+	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
+	 * @param sides top, left, bottom right. Must be <code>null</code> or of length 4.
+	 */
+	public void setVisualPadding(UnitValue[] sides)
+	{
+		this.visualPadding = sides != null ? new UnitValue[] {sides[0], sides[1], sides[2], sides[3]} : null;
 	}
 
 	/** Returns how many cells in the grid that should be skipped <b>before</b> the component that this constraint belongs to.

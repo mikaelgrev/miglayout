@@ -306,7 +306,7 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return h;
 	}
 
-	public final void paintDebugOutline()
+	public final void paintDebugOutline(boolean useVisaualPadding)
 	{
 		if (c.isDisposed())
 			return;

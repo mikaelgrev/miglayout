@@ -55,6 +55,12 @@ public class SwingComponentWrapper implements ComponentWrapper
 	 */
 	private static final Color DB_COMP_OUTLINE = new Color(0, 0, 200);
 
+	/** Property to use in LAF settings and as JComponent client property
+	 * to specify the visual padding.
+	 * <p>
+	 */
+	private static final String VISUAL_PADDING_PROPERTY = net.miginfocom.layout.PlatformDefaults.VISUAL_PADDING_PROPERTY;
+
 	private final Component c;
 	private int compType = TYPE_UNSET;
 	private Boolean bl = null;
@@ -234,11 +240,11 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	public final int getVerticalScreenDPI()
 	{
-	        try {
-	            return c.getToolkit().getScreenResolution();
-	        } catch (HeadlessException ex) {
-	            return PlatformDefaults.getDefaultDPI();
-	        }
+        try {
+            return c.getToolkit().getScreenResolution();
+        } catch (HeadlessException ex) {
+            return PlatformDefaults.getDefaultDPI();
+        }
 	}
 
 	public final int getScreenWidth()
@@ -294,12 +300,106 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	public final int[] getVisualPadding()
 	{
-		if (vp && c instanceof JTabbedPane) {
-			if (UIManager.getLookAndFeel().getClass().getName().endsWith("WindowsLookAndFeel"))
-				return new int[] {-1, 0, 2, 2};
-		}
+		int[] padding = null;
+		if (isVisualPaddingEnabled()) {
+			//First try "visualPadding" client property
+			if (c instanceof JComponent) {
+				JComponent jcomponent = (JComponent) c;
+				Object padValue = jcomponent.getClientProperty(VISUAL_PADDING_PROPERTY);
 
-		return null;
+				if (padValue instanceof int[] ) {
+					//client property value could be an int[]
+					padding = (int[]) padValue;
+				} else if (padValue instanceof Insets) {
+					//OR client property value could be an Insets
+					Insets padInsets = (Insets) padValue;
+					padding = new int[] { padInsets.top, padInsets.left, padInsets.bottom, padInsets.right };
+				}
+
+				if (padding == null) {
+					//No client property set on the individual JComponent,
+					//	so check for a LAF setting for the component type.
+					String classID;
+					switch (getComponetType(false)) {
+						case TYPE_BUTTON:
+							classID = "Button";
+							break;
+						case TYPE_CHECK_BOX:
+							classID = "CheckBox";
+							break;
+						case TYPE_COMBO_BOX:
+							classID = "ComboBox";
+							break;
+						case TYPE_CONTAINER:
+							classID = "Container";
+							break;
+						case TYPE_IMAGE:
+							classID = "Image";
+							break;
+						case TYPE_LABEL:
+							classID = "Label";
+							break;
+						case TYPE_LIST:
+							classID = "List";
+							break;
+						case TYPE_PANEL:
+							classID = "Panel";
+							break;
+						case TYPE_PROGRESS_BAR:
+							classID = "ProgressBar";
+							break;
+						case TYPE_SCROLL_BAR:
+							classID = "ScrollBar";
+							break;
+						case TYPE_SCROLL_PANE:
+							classID = "ScrollPane";
+							break;
+						case TYPE_SEPARATOR:
+							classID = "Separator";
+							break;
+						case TYPE_SLIDER:
+							classID = "Slider";
+							break;
+						case TYPE_SPINNER:
+							classID = "Spinner";
+							break;
+						case TYPE_TABLE:
+							classID = "Table";
+							break;
+						case TYPE_TABBED_PANE:
+							classID = "TabbedPane";
+							break;
+						case TYPE_TEXT_AREA:
+							classID = "TextArea";
+							break;
+						case TYPE_TEXT_FIELD:
+							classID = "TextField";
+							break;
+						case TYPE_TREE:
+							classID = "Tree";
+							break;
+						case TYPE_UNKNOWN:
+							classID = "Other";
+							break;
+						case TYPE_UNSET:
+						default:
+							classID = "";
+							break;
+					}
+
+					padValue = UIManager.get(classID + "." + VISUAL_PADDING_PROPERTY);
+					if (padValue instanceof int[]) {
+						//client property value could be an int[]
+						padding = (int[]) padValue;
+					} else if (padValue instanceof Insets) {
+						//OR client property value could be an Insets
+						Insets padInsets = (Insets) padValue;
+						padding = new int[] { padInsets.top, padInsets.left, padInsets.bottom, padInsets.right };
+					}
+				}
+			}
+		}
+		return padding;
 	}
 
 	/**
@@ -328,7 +428,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		vp = b;
 	}
 
-	public final void paintDebugOutline()
+	public final void paintDebugOutline(boolean showVisualPadding)
 	{
 		if (c.isShowing() == false)
 			return;
@@ -340,6 +440,14 @@ public class SwingComponentWrapper implements ComponentWrapper
 		g.setPaint(DB_COMP_OUTLINE);
 		g.setStroke(new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10f, new float[] {2f, 4f}, 0));
 		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+
+		if (showVisualPadding && isVisualPaddingEnabled()) {
+			int[] padding = getVisualPadding();
+			if (padding != null) {
+				g.setColor(Color.GREEN);
+				g.drawRect(padding[1], padding[0], (getWidth() - 1) - (padding[1] + padding[3]), (getHeight() - 1) - (padding[0] + padding[2]));
+			}
+		}
 	}
 
 	public int getComponetType(boolean disregardScrollPane)
@@ -392,7 +500,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		} else if (c instanceof AbstractButton || c instanceof Button) {
 			return TYPE_BUTTON;
 		} else if (c instanceof JComboBox || c instanceof Choice) {
-			return TYPE_LABEL;
+			return TYPE_COMBO_BOX;
 		} else if (c instanceof JTextComponent || c instanceof TextComponent) {
 			return TYPE_TEXT_AREA;
 		} else if (c instanceof JPanel || c instanceof Canvas) {
@@ -405,6 +513,8 @@ public class SwingComponentWrapper implements ComponentWrapper
 			return TYPE_SEPARATOR;
 		} else if (c instanceof JSpinner) {
 			return TYPE_SPINNER;
+		} else if (c instanceof JTabbedPane) {
+			return TYPE_TABBED_PANE;
 		} else if (c instanceof JProgressBar) {
 			return TYPE_PROGRESS_BAR;
 		} else if (c instanceof JSlider) {
@@ -431,12 +541,4 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 		return getComponent().equals(((ComponentWrapper) o).getComponent());
 	}
-
-//	private static Method IMS_METHOD = null;
-//	static {
-//		try {
-//			IMS_METHOD = Component.class.getDeclaredMethod("isMaximumSizeSet", (Class[]) null);
-//		} catch (Throwable e) { // No such method or security exception
-//		}
-//	}
 }

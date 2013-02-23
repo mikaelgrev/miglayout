@@ -428,13 +428,13 @@ public final class ConstraintParser
 				dimConstraint.setSize(parseBoundSize(part, false, isCols));
 
 			} catch (Exception ex) {
-				throw new IllegalArgumentException("Illegal contraint: '" + part + "'\n" + ex.getMessage());
+				throw new IllegalArgumentException("Illegal constraint: '" + part + "'\n" + ex.getMessage());
 			}
 		}
 		return dimConstraint;
 	}
 
-	/** Parses all component constraints and stores the parsed values in the transient (cache) member varables.
+	/** Parses all component constraints and stores the parsed values in the transient (cache) member variables.
 	 * @param constrMap The constraints as <code>String</code>s. Strings <b>must be lower case and trimmed</b>
 	 * @return The parsed constraints. Never <code>null</code>.
 	 */
@@ -452,7 +452,7 @@ public final class ConstraintParser
 
 	/** Parses one component constraint and returns the parsed value.
 	 * @param s The string to parse. Should not be <code>null</code> and <b>must be lower case and trimmed</b>.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @throws RuntimeException if the constraint was not valid.
 	 * @return The parsed constraint. Never <code>null</code>.
 	 */
 	public static CC parseComponentConstraint(String s)
@@ -853,6 +853,19 @@ public final class ConstraintParser
 						cc.getVertical().setGrow(100f);
 						cc.setPushX(100f);
 						cc.setPushY(100f);
+						continue;
+					}
+				}
+
+				if (c == 'v') {
+					ix = startsWithLenient(part, new String[] {"visualpadding", "vp"}, new int[] {3, 2}, true);
+					if (ix > -1) {
+						UnitValue[] p = parseInsets(part.substring(ix).trim(), false);
+						cc.setVisualPadding(new UnitValue[] {
+							p[0],
+							p.length > 1 ? p[1] : null,
+							p.length > 2 ? p[2] : null,
+							p.length > 3 ? p[3] : null});
 						continue;
 					}
 				}

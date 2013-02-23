@@ -73,6 +73,7 @@ public interface ComponentWrapper
 	public static final int TYPE_CHECK_BOX = 16;
 	public static final int TYPE_SCROLL_BAR = 17;
 	public static final int TYPE_SEPARATOR = 18;
+	public static final int TYPE_TABBED_PANE = 19;
 
 	/** Returns the actual object that this wrapper is aggregating. This might be needed for getting
 	 * information about the object that the wrapper interface does not provide.
@@ -280,8 +281,9 @@ public interface ComponentWrapper
 	public int[] getVisualPadding();
 
 	/** Paints component outline to indicate where it is.
+	 * @param showVisualPadding If the visual padding should be shown in the debug drawing.
 	 */
-	public abstract void paintDebugOutline();
+	public abstract void paintDebugOutline(boolean showVisualPadding);
 
 	/** Returns the type of component that this wrapper is wrapping.
 	 * <p>

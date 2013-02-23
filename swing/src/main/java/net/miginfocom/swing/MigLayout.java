@@ -76,6 +76,12 @@ import java.util.Map;
  */
 public final class MigLayout implements LayoutManager2, Externalizable
 {
+//	static {
+//		// Mac Swing defaults to 96 DPI from Java6 though SWT is still on 72.
+//		if (PlatformDefaults.getPlatform() == PlatformDefaults.MAC_OSX)
+//			PlatformDefaults.setDefaultDPI(71);
+//	}
+
 	// ******** Instance part ********
 
 	/** The component to string constraints mappings.

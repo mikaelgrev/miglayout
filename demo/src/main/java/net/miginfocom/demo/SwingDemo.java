@@ -14,6 +14,7 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutUtil;
 import net.miginfocom.layout.PlatformDefaults;
 import net.miginfocom.swing.MigLayout;
+import net.miginfocom.swing.SwingComponentWrapper;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -153,6 +154,13 @@ public class SwingDemo extends JFrame
 
 	public static void main(String args[])
 	{
+		new MigLayout();
+		System.out.println("PlafDef: " + PlatformDefaults.getPlatformDPI(PlatformDefaults.MAC_OSX));
+		System.out.println("Def    : " + PlatformDefaults.getDefaultDPI());
+		System.out.println("Toolkit: " + Toolkit.getDefaultToolkit().getScreenResolution());
+		System.out.println("CompHor: " + new SwingComponentWrapper(new JButton()).getHorizontalScreenDPI());
+		System.out.println("CompVer: " + new SwingComponentWrapper(new JButton()).getVerticalScreenDPI());
+
 		try {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "MiGLayout Swing Demo");
@@ -235,8 +243,6 @@ public class SwingDemo extends JFrame
 				new SwingDemo();
 			}
 		});
-
-
 	}
 
 	public SwingDemo()
@@ -920,7 +926,7 @@ public class SwingDemo extends JFrame
 		p2.add(createTextArea("A JTextArea", 1, 100), "grow, aligny bottom, wmin 100");
 
 		tabbedPane.addTab("Visual Bounds (Not Corrected)", p1);
-		tabbedPane.addTab("Visual Bounds (Corrected on XP)", p2);
+		tabbedPane.addTab("Visual Bounds (Corrected)", p2);
 
 		// Disregard. Just forgetting the source code text close to the source code.
 		setSource("JTabbedPane tabbedPane = new JTabbedPane();\n" +
@@ -957,7 +963,7 @@ public class SwingDemo extends JFrame
 		          "p2.add(createTextArea(\"A JTextArea\", 1, 100), \"grow, aligny bottom, wmin 100\");\n" +
 		          "\n" +
 		          "tabbedPane.addTab(\"Visual Bounds (Not Corrected)\", p1);\n" +
-		          "tabbedPane.addTab(\"Visual Bounds (Corrected on XP)\", p2);");
+		          "tabbedPane.addTab(\"Visual Bounds (Corrected)\", p2);");
 
 		return tabbedPane;
 	}

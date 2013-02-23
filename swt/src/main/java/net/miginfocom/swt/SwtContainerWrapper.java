@@ -76,29 +76,12 @@ public final class SwtContainerWrapper extends SwtComponentWrapper implements Co
 	public final void paintDebugCell(int x, int y, int width, int height)
 	{
 		// A Composite can not draw above its children, so the cells can not be painted.
-
-//		if (c.isDisposed())
-//			return;
-//		GC gc = new GC(c);
-//
-//		gc.setLineStyle(SWT.LINE_DASHDOTDOT);
-//		gc.setLineJoin(SWT.JOIN_MITER);
-//		gc.setLineCap(SWT.CAP_SQUARE);
-//
-//		gc.setBackground(DB_CELL_BG);
-//		gc.fillRectangle(x, y, width, height);
-//
-//		gc.setForeground(DB_CELL_OUTLINE);
-//		gc.drawRectangle(x, y, width - 1, height - 1);
-//
-//		gc.dispose();
 	}
 
 	public int getComponetType(boolean disregardScrollPane)
 	{
 		return TYPE_CONTAINER;
 	}
-
 
 	public int getLayoutHashCode()
 	{

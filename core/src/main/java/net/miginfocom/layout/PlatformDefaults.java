@@ -2,6 +2,7 @@ package net.miginfocom.layout;
 
 import javax.swing.*;
 
+import java.awt.Toolkit;
 import java.util.HashMap;
 /*
  * License (BSD):
@@ -43,6 +44,12 @@ import java.util.HashMap;
  */
 public final class PlatformDefaults
 {
+	/** Property to use in LAF settings and as JComponent client property
+	 * to specify the visual padding.
+	 * <p>
+	 */
+	public static String VISUAL_PADDING_PROPERTY = "visualPadding";
+
 	private static int DEF_H_UNIT = UnitValue.LPX;
 	private static int DEF_V_UNIT = UnitValue.LPY;
 
@@ -50,25 +57,27 @@ public final class PlatformDefaults
 
 	private static volatile int MOD_COUNT = 0;
 
-	private static final UnitValue LPX4 = new UnitValue(4, UnitValue.LPX, null);
+	private static final UnitValue LPX1 = new UnitValue(1, UnitValue.LPX, null);
+//	private static final UnitValue LPX4 = new UnitValue(4, UnitValue.LPX, null);
 	private static final UnitValue LPX6 = new UnitValue(6, UnitValue.LPX, null);
 	private static final UnitValue LPX7 = new UnitValue(7, UnitValue.LPX, null);
-//	private static final UnitValue LPX8 = new UnitValue(8, UnitValue.LPX, null);
-	private static final UnitValue LPX9 = new UnitValue(9, UnitValue.LPX, null);
-	private static final UnitValue LPX10 = new UnitValue(10, UnitValue.LPX, null);
+	private static final UnitValue LPX8 = new UnitValue(8, UnitValue.LPX, null);
+//	private static final UnitValue LPX9 = new UnitValue(9, UnitValue.LPX, null);
+//	private static final UnitValue LPX10 = new UnitValue(10, UnitValue.LPX, null);
 	private static final UnitValue LPX11 = new UnitValue(11, UnitValue.LPX, null);
 	private static final UnitValue LPX12 = new UnitValue(12, UnitValue.LPX, null);
-	private static final UnitValue LPX14 = new UnitValue(14, UnitValue.LPX, null);
+//	private static final UnitValue LPX14 = new UnitValue(14, UnitValue.LPX, null);
 	private static final UnitValue LPX16 = new UnitValue(16, UnitValue.LPX, null);
 	private static final UnitValue LPX18 = new UnitValue(18, UnitValue.LPX, null);
 	private static final UnitValue LPX20 = new UnitValue(20, UnitValue.LPX, null);
 
-	private static final UnitValue LPY4 = new UnitValue(4, UnitValue.LPY, null);
+	private static final UnitValue LPY1 = new UnitValue(1, UnitValue.LPY, null);
+//	private static final UnitValue LPY4 = new UnitValue(4, UnitValue.LPY, null);
 	private static final UnitValue LPY6 = new UnitValue(6, UnitValue.LPY, null);
 	private static final UnitValue LPY7 = new UnitValue(7, UnitValue.LPY, null);
-//	private static final UnitValue LPY8 = new UnitValue(8, UnitValue.LPY, null);
-	private static final UnitValue LPY9 = new UnitValue(9, UnitValue.LPY, null);
-	private static final UnitValue LPY10 = new UnitValue(10, UnitValue.LPY, null);
+	private static final UnitValue LPY8 = new UnitValue(8, UnitValue.LPY, null);
+//	private static final UnitValue LPY9 = new UnitValue(9, UnitValue.LPY, null);
+//	private static final UnitValue LPY10 = new UnitValue(10, UnitValue.LPY, null);
 	private static final UnitValue LPY11 = new UnitValue(11, UnitValue.LPY, null);
 	private static final UnitValue LPY12 = new UnitValue(12, UnitValue.LPY, null);
 	private static final UnitValue LPY14 = new UnitValue(14, UnitValue.LPY, null);
@@ -166,6 +175,7 @@ public final class PlatformDefaults
 	{
 		switch (plaf) {
 			case WINDOWS_XP:
+				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {1, 0, 2, 2});
 				setRelatedGap(LPX7, LPY7);
 				setUnrelatedGap(LPX11, LPY11);
 				setParagraphGap(LPX20, LPY20);
@@ -177,29 +187,25 @@ public final class PlatformDefaults
 				setDialogInsets(LPY11, LPX11, LPY11, LPX11);
 				setPanelInsets(LPY7, LPX7, LPY7, LPX7);
 				break;
+
 			case MAC_OSX:
+				UIManager.put("Button." + VISUAL_PADDING_PROPERTY, new int[] {3, 6, 5, 6});
+				UIManager.put("ComboBox." + VISUAL_PADDING_PROPERTY, new int[] {2, 4, 4, 5});
+				UIManager.put("TextField." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 3});
+				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {4, 8, 11, 8});
+
 				setRelatedGap(LPX7, LPY7);
 				setUnrelatedGap(LPX11, LPY11);
 				setParagraphGap(LPX20, LPY20);
 				setIndentGap(LPX11, LPY11);
 				setGridCellGap(LPX7, LPY7);
 
-				setMinimumButtonWidth(new UnitValue(68, UnitValue.LPX, null));
+				setMinimumButtonWidth(new UnitValue(70, UnitValue.LPX, null));
 				setButtonOrder("L_HE+U+NYBXCOA_R");
 				setDialogInsets(LPY14, LPX20, LPY20, LPX20);
 				setPanelInsets(LPY16, LPX16, LPY16, LPX16);
-
-//				setRelatedGap(LPX8, LPY8);
-//				setUnrelatedGap(LPX12, LPY12);
-//				setParagraphGap(LPX16, LPY16);
-//				setIndentGap(LPX10, LPY10);
-//				setGridCellGap(LPX8, LPY8);
-//
-//				setMinimumButtonWidth(new UnitValue(68, UnitValue.LPX, null));
-//				setButtonOrder("L_HE+U+NYBXCOA_R");
-//				setDialogInsets(LPY14, LPX20, LPY20, LPX20);
-//				setPanelInsets(LPY16, LPX16, LPY16, LPX16);
 				break;
+
 			case GNOME:
 				setRelatedGap(LPX6, LPY6);                    // GNOME HIG 8.2.3
 				setUnrelatedGap(LPX12, LPY12);                // GNOME HIG 8.2.3
@@ -220,18 +226,19 @@ public final class PlatformDefaults
 		BASE_DPI = BASE_DPI_FORCED != null ? BASE_DPI_FORCED : getPlatformDPI(plaf);
 	}
 
-	private static int getPlatformDPI(int plaf)
+	public static int getPlatformDPI(int plaf)
 	{
 		switch (plaf) {
 			case WINDOWS_XP:
 			case GNOME:
 				return 96;
 			case MAC_OSX:
-				try {
-					return System.getProperty("java.version").compareTo("1.6") < 0 ? 72 : 96; // Default DPI was 72 prior to JSE 1.6
-				} catch (Throwable t) {
-					return 72;
-				}
+				return Toolkit.getDefaultToolkit().getScreenResolution();
+//				try {
+//					return System.getProperty("java.version").compareTo("1.6") < 0 ? 72 : 96; // Default DPI was 72 prior to JSE 1.6
+//				} catch (Throwable t) {
+//					return 72;
+//				}
 			default:
 				throw new IllegalArgumentException("Unknown platform: " + plaf);
 		}
