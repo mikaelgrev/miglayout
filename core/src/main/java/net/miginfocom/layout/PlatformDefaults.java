@@ -57,11 +57,11 @@ public final class PlatformDefaults
 
 	private static volatile int MOD_COUNT = 0;
 
-	private static final UnitValue LPX1 = new UnitValue(1, UnitValue.LPX, null);
+//	private static final UnitValue LPX1 = new UnitValue(1, UnitValue.LPX, null);
 //	private static final UnitValue LPX4 = new UnitValue(4, UnitValue.LPX, null);
 	private static final UnitValue LPX6 = new UnitValue(6, UnitValue.LPX, null);
 	private static final UnitValue LPX7 = new UnitValue(7, UnitValue.LPX, null);
-	private static final UnitValue LPX8 = new UnitValue(8, UnitValue.LPX, null);
+//	private static final UnitValue LPX8 = new UnitValue(8, UnitValue.LPX, null);
 //	private static final UnitValue LPX9 = new UnitValue(9, UnitValue.LPX, null);
 //	private static final UnitValue LPX10 = new UnitValue(10, UnitValue.LPX, null);
 	private static final UnitValue LPX11 = new UnitValue(11, UnitValue.LPX, null);
@@ -71,11 +71,11 @@ public final class PlatformDefaults
 	private static final UnitValue LPX18 = new UnitValue(18, UnitValue.LPX, null);
 	private static final UnitValue LPX20 = new UnitValue(20, UnitValue.LPX, null);
 
-	private static final UnitValue LPY1 = new UnitValue(1, UnitValue.LPY, null);
+//	private static final UnitValue LPY1 = new UnitValue(1, UnitValue.LPY, null);
 //	private static final UnitValue LPY4 = new UnitValue(4, UnitValue.LPY, null);
 	private static final UnitValue LPY6 = new UnitValue(6, UnitValue.LPY, null);
 	private static final UnitValue LPY7 = new UnitValue(7, UnitValue.LPY, null);
-	private static final UnitValue LPY8 = new UnitValue(8, UnitValue.LPY, null);
+//	private static final UnitValue LPY8 = new UnitValue(8, UnitValue.LPY, null);
 //	private static final UnitValue LPY9 = new UnitValue(9, UnitValue.LPY, null);
 //	private static final UnitValue LPY10 = new UnitValue(10, UnitValue.LPY, null);
 	private static final UnitValue LPY11 = new UnitValue(11, UnitValue.LPY, null);
@@ -175,7 +175,7 @@ public final class PlatformDefaults
 	{
 		switch (plaf) {
 			case WINDOWS_XP:
-				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {1, 0, 2, 2});
+				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {1, 0, 1, 2});
 				setRelatedGap(LPX7, LPY7);
 				setUnrelatedGap(LPX11, LPY11);
 				setParagraphGap(LPX20, LPY20);

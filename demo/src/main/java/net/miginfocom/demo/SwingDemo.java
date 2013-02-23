@@ -14,7 +14,6 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutUtil;
 import net.miginfocom.layout.PlatformDefaults;
 import net.miginfocom.swing.MigLayout;
-import net.miginfocom.swing.SwingComponentWrapper;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -154,13 +153,6 @@ public class SwingDemo extends JFrame
 
 	public static void main(String args[])
 	{
-		new MigLayout();
-		System.out.println("PlafDef: " + PlatformDefaults.getPlatformDPI(PlatformDefaults.MAC_OSX));
-		System.out.println("Def    : " + PlatformDefaults.getDefaultDPI());
-		System.out.println("Toolkit: " + Toolkit.getDefaultToolkit().getScreenResolution());
-		System.out.println("CompHor: " + new SwingComponentWrapper(new JButton()).getHorizontalScreenDPI());
-		System.out.println("CompVer: " + new SwingComponentWrapper(new JButton()).getVerticalScreenDPI());
-
 		try {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "MiGLayout Swing Demo");
