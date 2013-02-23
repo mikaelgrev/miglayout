@@ -72,12 +72,6 @@ import java.util.TimerTask;
  */
 public final class MigLayout extends Layout implements Externalizable
 {
-	static {
-		// Mac Swing defaults to 96 DPI from Java6 though SWT is still on 72.
-		if (PlatformDefaults.getPlatform() == PlatformDefaults.MAC_OSX)
-			PlatformDefaults.setDefaultDPI(72);
-	}
-
 	// ******** Instance part ********
 
 	/** The component to String or CC constraints mappings.

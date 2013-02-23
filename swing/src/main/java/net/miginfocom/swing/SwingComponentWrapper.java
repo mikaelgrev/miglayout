@@ -103,9 +103,9 @@ public class SwingComponentWrapper implements ComponentWrapper
 			case PlatformDefaults.BASE_SCALE_FACTOR:
 
 				Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
-				if (s != null)
-					return s;
-				return (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
+				if (s == null)
+					s = 1.0f;
+				return s * (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
 
 			default:
 				return 1f;
