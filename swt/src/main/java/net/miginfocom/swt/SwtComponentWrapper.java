@@ -323,7 +323,7 @@ public class SwtComponentWrapper implements ComponentWrapper
 		gc.dispose();
 	}
 
-	public int getComponetType(boolean disregardScrollPane)
+	public int getComponentType(boolean disregardScrollPane)
 	{
 		if (compType == TYPE_UNSET)
 			compType = checkType();

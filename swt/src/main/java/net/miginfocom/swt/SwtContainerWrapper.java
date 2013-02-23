@@ -78,7 +78,7 @@ public final class SwtContainerWrapper extends SwtComponentWrapper implements Co
 		// A Composite can not draw above its children, so the cells can not be painted.
 	}
 
-	public int getComponetType(boolean disregardScrollPane)
+	public int getComponentType(boolean disregardScrollPane)
 	{
 		return TYPE_CONTAINER;
 	}

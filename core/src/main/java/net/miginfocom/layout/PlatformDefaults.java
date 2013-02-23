@@ -233,12 +233,12 @@ public final class PlatformDefaults
 			case GNOME:
 				return 96;
 			case MAC_OSX:
-				return Toolkit.getDefaultToolkit().getScreenResolution();
-//				try {
+				try {
+					return Toolkit.getDefaultToolkit().getScreenResolution();
 //					return System.getProperty("java.version").compareTo("1.6") < 0 ? 72 : 96; // Default DPI was 72 prior to JSE 1.6
-//				} catch (Throwable t) {
-//					return 72;
-//				}
+				} catch (Throwable t) {
+					return 72;
+				}
 			default:
 				throw new IllegalArgumentException("Unknown platform: " + plaf);
 		}

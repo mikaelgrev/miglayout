@@ -320,7 +320,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 					//No client property set on the individual JComponent,
 					//	so check for a LAF setting for the component type.
 					String classID;
-					switch (getComponetType(false)) {
+					switch (getComponentType(false)) {
 						case TYPE_BUTTON:
 							classID = "Button";
 							break;
@@ -450,7 +450,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 	}
 
-	public int getComponetType(boolean disregardScrollPane)
+	public int getComponentType(boolean disregardScrollPane)
 	{
 		if (compType == TYPE_UNSET)
 			compType = checkType(disregardScrollPane);

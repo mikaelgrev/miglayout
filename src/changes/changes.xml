@@ -4,7 +4,10 @@
 		<author email="mikael.grev@miginfocom.com">mikael</author>
 	</properties>
 	<body>
-        <release version="4.3" date="2013-02-18" description="Release 4.3">
+        <release version="5.0" date="2013-02-18" description="Release 5.0">
+            <action dev="mikaelgrev" type="enhancement">
+                Generally better resolution handling, especially on OS X.
+            </action>
             <action dev="mikaelgrev" type="enhancement">
                 Better exceptions when parsing.
             </action>

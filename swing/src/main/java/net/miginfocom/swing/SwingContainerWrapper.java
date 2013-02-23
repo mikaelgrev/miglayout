@@ -94,7 +94,7 @@ public final class SwingContainerWrapper extends SwingComponentWrapper implement
 		g.drawRect(x, y, width - 1, height - 1);
 	}
 
-	public int getComponetType(boolean disregardScrollPane)
+	public int getComponentType(boolean disregardScrollPane)
 	{
 		return TYPE_CONTAINER;
 	}

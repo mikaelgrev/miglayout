@@ -21,9 +21,10 @@
 		<dependency>
             <groupId>com.oracle</groupId>
             <artifactId>javafx</artifactId>
-            <version>${javafx.version}</version>
-            <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
-			<scope>provided</scope>
+            <version>2.2</version>
+            <!--<systemPath>${java.home}/lib/jfxrt.jar</systemPath>-->
+            <systemPath>/Library/Java/JavaVirtualMachines/jdk1.7.0_11.jdk/Contents/Home/jre/lib/jfxrt.jar</systemPath>
+			<scope>system</scope>
 		</dependency>
     </dependencies>
 
@@ -39,6 +40,4 @@
 			<url>http://www.tbee.org/</url>
 		</developer>
 	</developers>
-
-
 </project>

@@ -25,7 +25,7 @@ public class MigPaneTest7 extends Application {
 	public void start(Stage stage) {
 
         // root
-        MigPane lRoot = new MigPane(new LC(), new AC(), new AC());
+        MigPane lRoot = new MigPane(new LC().debug(300), new AC(), new AC());
 
         // add nodes
         for (int i = 0; i < 10; i++)

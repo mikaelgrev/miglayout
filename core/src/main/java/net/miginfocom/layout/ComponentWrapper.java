@@ -35,7 +35,7 @@ package net.miginfocom.layout;
 
 /** A class that wraps the important parts of a Component.
  * <p>
- * <b>NOTE!</b>.equals() and .hashcode() should be shunted to the wrapped component. E.g.
+ * <b>NOTE!</b>.equals() and .hashcode() should be forwarded to the wrapped component. E.g.
  * <pre>
  * 	public int hashCode()
 	{
@@ -289,11 +289,9 @@ public interface ComponentWrapper
 	 * <p>
 	 * This method can be invoked often so the result should be cached.
 	 * <p>
-	 * <b>NOTE!</b> This is misspelled. Keeping it that way though since this is only used by developers who
-	 * port MigLayout.
 	 * @param disregardScrollPane Is <code>true</code> any wrapping scroll pane should be disregarded and the type
 	 * of the scrolled component should be returned.
 	 * @return The type of component that this wrapper is wrapping. E.g. {@link #TYPE_LABEL}.
 	 */
-	public abstract int getComponetType(boolean disregardScrollPane);
+	public abstract int getComponentType(boolean disregardScrollPane);
 }
