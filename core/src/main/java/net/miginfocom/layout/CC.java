@@ -839,7 +839,7 @@ public final class CC implements Externalizable
 		return pushX(weightX).pushY(weightY);
 	}
 
-	/** Same functionality as {@link #setPushY(Float))} which means this cell will push the rest of the column.
+	/** Same functionality as {@link #setPushY(Float)} which means this cell will push the rest of the column.
 	 * This method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.

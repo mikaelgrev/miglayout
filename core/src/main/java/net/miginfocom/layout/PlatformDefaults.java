@@ -190,9 +190,40 @@ public final class PlatformDefaults
 
 			case MAC_OSX:
 				UIManager.put("Button." + VISUAL_PADDING_PROPERTY, new int[] {3, 6, 5, 6});
+				UIManager.put("Button.icon." + VISUAL_PADDING_PROPERTY, new int[] {3, 2, 3, 2});
+				UIManager.put("Button.square." + VISUAL_PADDING_PROPERTY, new int[] {4, 4, 4, 4});
+				UIManager.put("Button.square.icon." + VISUAL_PADDING_PROPERTY, new int[] {4, 4, 4, 4});
+				UIManager.put("Button.gradient." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
+				UIManager.put("Button.gradient.icon." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
+				UIManager.put("Button.bevel." + VISUAL_PADDING_PROPERTY, new int[] {2, 2, 3, 2});
+				UIManager.put("Button.bevel.icon." + VISUAL_PADDING_PROPERTY, new int[] {2, 2, 3, 2});
+				UIManager.put("Button.textured." + VISUAL_PADDING_PROPERTY, new int[] {3, 2, 3, 2});
+				UIManager.put("Button.textured.icon." + VISUAL_PADDING_PROPERTY, new int[] {3, 2, 3, 2});
+				UIManager.put("Button.roundRect." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
+				UIManager.put("Button.roundRect.icon." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
+				UIManager.put("Button.recessed." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
+				UIManager.put("Button.recessed.icon." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
+				UIManager.put("Button.help." + VISUAL_PADDING_PROPERTY, new int[] {4, 3, 3, 4});
+				UIManager.put("Button.help.icon." + VISUAL_PADDING_PROPERTY, new int[] {4, 3, 3, 4});
+
 				UIManager.put("ComboBox." + VISUAL_PADDING_PROPERTY, new int[] {2, 4, 4, 5});
+				UIManager.put("ComboBox.isPopDown." + VISUAL_PADDING_PROPERTY, new int[] {2, 5, 4, 5});
+				UIManager.put("ComboBox.isSquare." + VISUAL_PADDING_PROPERTY, new int[] {1, 6, 5, 7});
+
+				UIManager.put("ComboBox.editable." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 2});
+				UIManager.put("ComboBox.editable.isSquare." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 1});
+
 				UIManager.put("TextField." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 3});
 				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {4, 8, 11, 8});
+
+				UIManager.put("Spinner." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 1});
+
+				UIManager.put("RadioButton." + VISUAL_PADDING_PROPERTY, new int[] {4, 6, 3, 5});
+				UIManager.put("RadioButton.small." + VISUAL_PADDING_PROPERTY, new int[] {4, 6, 3, 5});
+				UIManager.put("RadioButton.mini." + VISUAL_PADDING_PROPERTY, new int[] {5, 7, 4, 5});
+				UIManager.put("CheckBox." + VISUAL_PADDING_PROPERTY, new int[] {5, 7, 4, 5});
+				UIManager.put("CheckBox.small." + VISUAL_PADDING_PROPERTY, new int[] {5, 7, 4, 5});
+				UIManager.put("CheckBox.mini." + VISUAL_PADDING_PROPERTY, new int[] {6, 7, 3, 5});
 
 				setRelatedGap(LPX7, LPY7);
 				setUnrelatedGap(LPX11, LPY11);
@@ -235,7 +266,6 @@ public final class PlatformDefaults
 			case MAC_OSX:
 				try {
 					return Toolkit.getDefaultToolkit().getScreenResolution();
-//					return System.getProperty("java.version").compareTo("1.6") < 0 ? 72 : 96; // Default DPI was 72 prior to JSE 1.6
 				} catch (Throwable t) {
 					return 72;
 				}
@@ -452,7 +482,7 @@ public final class PlatformDefaults
 	 * @param x The value for the horizontal dimension. If <code>null</code> the value is not changed.
 	 * @param y The value for the vertical dimension. Might be same object as for <code>x</code>. If <code>null</code> the value is not changed.
 	 */
-	public static final void setUnitValue(String[] unitStrings, UnitValue x, UnitValue y)
+	public static void setUnitValue(String[] unitStrings, UnitValue x, UnitValue y)
 	{
 		for (String unitString : unitStrings) {
 			String s = unitString.toLowerCase().trim();

@@ -34,6 +34,7 @@ package net.miginfocom.swing;
  */
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
@@ -73,7 +74,13 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	public final int getBaseline(int width, int height)
 	{
-		return c.getBaseline(width < 0 ? c.getWidth() : width, height < 0 ? c.getHeight() : height);
+		int baseLine = c.getBaseline(width < 0 ? c.getWidth() : width, height < 0 ? c.getHeight() : height);
+		if (baseLine != -1) {
+			int[] visPad = getVisualPadding();
+			if (visPad != null)
+				baseLine += (visPad[2] - visPad[0] + 1) / 2;
+		}
+		return baseLine;
 	}
 
 	public final Object getComponent()
@@ -304,8 +311,8 @@ public class SwingComponentWrapper implements ComponentWrapper
 		if (isVisualPaddingEnabled()) {
 			//First try "visualPadding" client property
 			if (c instanceof JComponent) {
-				JComponent jcomponent = (JComponent) c;
-				Object padValue = jcomponent.getClientProperty(VISUAL_PADDING_PROPERTY);
+				JComponent component = (JComponent) c;
+				Object padValue = component.getClientProperty(VISUAL_PADDING_PROPERTY);
 
 				if (padValue instanceof int[] ) {
 					//client property value could be an int[]
@@ -322,13 +329,72 @@ public class SwingComponentWrapper implements ComponentWrapper
 					String classID;
 					switch (getComponentType(false)) {
 						case TYPE_BUTTON:
-							classID = "Button";
+							Border border = component.getBorder();
+							if (border != null && border.getClass().getName().startsWith("com.apple.laf.AquaButtonBorder")) {
+								if (PlatformDefaults.getPlatform() == PlatformDefaults.MAC_OSX) {
+									Object buttonType = component.getClientProperty("JButton.buttonType");
+									if (buttonType == null) {
+										classID = component.getHeight() < 33 ? "Button" : "Button.bevel";
+									} else {
+										classID = "Button." + buttonType;
+									}
+									if (((AbstractButton) component).getIcon() != null)
+										classID += ".icon";
+								} else {
+									classID = "Button";
+								}
+							} else {
+								classID = "";
+							}
 							break;
+
 						case TYPE_CHECK_BOX:
-							classID = "CheckBox";
+							border = component.getBorder();
+							if (border != null && border.getClass().getName().startsWith("com.apple.laf.AquaButtonBorder")) {
+								Object size = component.getClientProperty("JComponent.sizeVariant");
+								if (size != null && size.toString().equals("regular") == false) {
+									size = "." + size;
+								} else {
+									size = "";
+								}
+
+								if (component instanceof JRadioButton) {
+									classID = "RadioButton" + size;
+								} else if (component instanceof JCheckBox) {
+									classID = "CheckBox" + size;
+								} else {
+									classID = "ToggleButton" + size;
+								}
+							} else {
+								classID = "";
+							}
 							break;
+
 						case TYPE_COMBO_BOX:
-							classID = "ComboBox";
+							if (PlatformDefaults.getPlatform() == PlatformDefaults.MAC_OSX) {
+								if (((JComboBox) component).isEditable()) {
+									Object isSquare = component.getClientProperty("JComboBox.isSquare");
+									if (isSquare != null && isSquare.toString().equals("true")) {
+										classID = "ComboBox.editable.isSquare";
+									} else {
+										classID = "ComboBox.editable";
+									}
+
+								} else {
+									Object isSquare = component.getClientProperty("JComboBox.isSquare");
+									Object isPopDown = component.getClientProperty("JComboBox.isPopDown");
+
+									if (isSquare != null && isSquare.toString().equals("true")) {
+										classID = "ComboBox.isSquare";
+									} else if (isPopDown != null && isPopDown.toString().equals("true")) {
+										classID = "ComboBox.isPopDown";
+									} else {
+										classID = "ComboBox";
+									}
+								}
+							} else {
+								classID = "ComboBox";
+							}
 							break;
 						case TYPE_CONTAINER:
 							classID = "Container";
@@ -495,7 +561,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 			return TYPE_TEXT_FIELD;
 		} else if (c instanceof JLabel || c instanceof Label) {
 			return TYPE_LABEL;
-		} else if (c instanceof JToggleButton || c instanceof Checkbox) {
+		} else if (c instanceof JCheckBox || c instanceof JRadioButton || c instanceof Checkbox) {
 			return TYPE_CHECK_BOX;
 		} else if (c instanceof AbstractButton || c instanceof Button) {
 			return TYPE_BUTTON;

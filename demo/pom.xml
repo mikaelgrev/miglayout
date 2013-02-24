@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>4.3-SNAPSHOT</version>
+		<version>5.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>miglayout-demo</artifactId>
 	<packaging>jar</packaging>
     <name>MiGLayout Demo</name>
     <description>MiGLayout - Demo's for Swing and SWT</description>
-	
+
 	<dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

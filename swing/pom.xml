@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>4.3-SNAPSHOT</version>
+		<version>5.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>miglayout-swing</artifactId>
 	<packaging>jar</packaging>
     <name>MiGLayout Swing</name>
     <description>MiGLayout - Java Layout Manager for Swing</description>
-	
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -19,5 +19,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-		
+
 </project>
