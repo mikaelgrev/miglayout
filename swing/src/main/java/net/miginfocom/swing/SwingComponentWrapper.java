@@ -33,13 +33,13 @@ package net.miginfocom.swing;
  *         Date: 2006-sep-08
  */
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.JTextComponent;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.PlatformDefaults;
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.IdentityHashMap;
@@ -439,7 +439,12 @@ public class SwingComponentWrapper implements ComponentWrapper
 							classID = "TextArea";
 							break;
 						case TYPE_TEXT_FIELD:
-							classID = "TextField";
+							border = component.getBorder();
+							if (border != null && border.getClass().getSimpleName().equals("AquaTextFieldBorder")) {
+								classID = "TextField";
+							} else {
+								classID = "";
+							}
 							break;
 						case TYPE_TREE:
 							classID = "Tree";

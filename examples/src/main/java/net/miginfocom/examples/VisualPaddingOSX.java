@@ -1,13 +1,13 @@
 package net.miginfocom.examples;
 
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-import net.miginfocom.swing.MigLayout;
-
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class VisualPaddingOSX extends JFrame
@@ -60,13 +60,18 @@ public class VisualPaddingOSX extends JFrame
 		add(createCombo("JComboBox.isSquare", true), cc);
 		add(createCombo(null, true), cc);
 
-		add(new JTextArea("A text"), cc + ", newline");
+		JTextField ta = new JTextField("No Border");
+		ta.setBorder(new EmptyBorder(0, 0, 0, 0));
+		add(ta, cc + ", newline");
+		add(new JTextArea("A text"), cc);
 		add(new JTextField("A text"), cc);
 		add(new JScrollPane(new JTextPane()), cc);
 		add(new JScrollPane(new JTextArea("A text", 1, 20)), cc);
 		JList list = new JList(new Object[] {"A text"});
 		list.setVisibleRowCount(1);
 		add(new JScrollPane(list), cc);
+
+		System.out.println(new JTextArea().getBorder().getClass().getName());
 
 		add(new JTextField("Compared to"), cc + ", newline");
 		add(new JSpinner(new SpinnerNumberModel(1, 1, 10000, 1)), cc);

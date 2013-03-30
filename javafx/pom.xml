@@ -24,7 +24,7 @@
             <version>2.2</version>
             <!--<systemPath>${java.home}/lib/jfxrt.jar</systemPath>-->
             <!--<systemPath>c:\Program Files (x86)\Java\jdk1.7.0_15\jre\lib\jfxrt.jar</systemPath>-->
-            <systemPath>/Library/Java/JavaVirtualMachines/jdk1.7.0_11.jdk/Contents/Home/jre/lib/jfxrt.jar</systemPath>
+            <systemPath>/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/jre/lib/jfxrt.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
     </dependencies>
