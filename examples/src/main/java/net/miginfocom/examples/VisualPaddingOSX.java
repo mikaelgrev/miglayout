@@ -1,13 +1,13 @@
 package net.miginfocom.examples;
 
-import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-import java.awt.*;
+import net.miginfocom.swing.MigLayout;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class VisualPaddingOSX extends JFrame
@@ -70,8 +70,6 @@ public class VisualPaddingOSX extends JFrame
 		JList list = new JList(new Object[] {"A text"});
 		list.setVisibleRowCount(1);
 		add(new JScrollPane(list), cc);
-
-		System.out.println(new JTextArea().getBorder().getClass().getName());
 
 		add(new JTextField("Compared to"), cc + ", newline");
 		add(new JSpinner(new SpinnerNumberModel(1, 1, 10000, 1)), cc);
