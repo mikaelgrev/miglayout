@@ -33,13 +33,13 @@ package net.miginfocom.swing;
  *         Date: 2006-sep-08
  */
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.PlatformDefaults;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.IdentityHashMap;
@@ -212,7 +212,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public final int getMaximumHeight(int sz)
 	{
 		if (!isMaxSet(c))
-			return Short.MAX_VALUE;
+			return Integer.MAX_VALUE;
 
 		return c.getMaximumSize().height;
 	}
@@ -220,7 +220,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public final int getMaximumWidth(int sz)
 	{
 		if (!isMaxSet(c))
-			return Short.MAX_VALUE;
+			return Integer.MAX_VALUE;
 
 		return c.getMaximumSize().width;
 	}

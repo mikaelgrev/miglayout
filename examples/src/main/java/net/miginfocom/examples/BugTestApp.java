@@ -4,6 +4,7 @@ import javax.swing.*;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.Color;
+import java.awt.LayoutManager;
 /*
  * License (BSD):
  * ==============
@@ -81,7 +82,7 @@ public class BugTestApp
 		return null;
 	}
 
-	public static void main(String[] args)
+	public static void main2(String[] args)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -102,4 +103,27 @@ public class BugTestApp
 			}
 		});
 	}
+	public static void main(String[] args) throws Exception
+	{
+//		createFrame(new GridLayout(1,1));
+		createFrame(new MigLayout());
+	}
+
+	private static void createFrame(LayoutManager outerPanelLayout)
+	{
+		JPanel innerPanel = new JPanel(new MigLayout());
+		for (int i = 0; i < 2000; i++)
+			innerPanel.add(new JLabel("label nr "+i), "wrap");
+
+		JPanel outerPanel = new JPanel(outerPanelLayout);
+		outerPanel.add(innerPanel);
+
+		JFrame f1 = new JFrame(outerPanelLayout.getClass().getSimpleName());
+		f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f1.getContentPane().add(new JScrollPane(outerPanel));
+		f1.pack();
+		f1.setLocation((int)(Math.random() * 800.0), 0);
+		f1.setVisible(true);
+	}
+
 }

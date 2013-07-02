@@ -2083,8 +2083,8 @@ public final class Grid
 
 	private static int[] getBaselineAboveBelow(ArrayList<CompWrap> compWraps, int sType, boolean centerBaseline)
 	{
-		int maxAbove = Short.MIN_VALUE;
-		int maxBelow = Short.MIN_VALUE;
+		int maxAbove = Integer.MIN_VALUE;
+		int maxBelow = Integer.MIN_VALUE;
 		for (int i = 0, iSz = compWraps.size(); i < iSz; i++) {
 			CompWrap cw = compWraps.get(i);
 

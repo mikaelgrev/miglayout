@@ -708,7 +708,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 
 	public Dimension maximumLayoutSize(Container parent)
 	{
-		return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+		return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
 	// Implementation method that does the job.

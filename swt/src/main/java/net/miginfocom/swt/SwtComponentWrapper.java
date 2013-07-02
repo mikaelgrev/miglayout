@@ -180,12 +180,12 @@ public class SwtComponentWrapper implements ComponentWrapper
 
 	public final int getMaximumHeight(int sz)
 	{
-		return Short.MAX_VALUE;
+		return Integer.MAX_VALUE;
 	}
 
 	public final int getMaximumWidth(int sz)
 	{
-		return Short.MAX_VALUE;
+		return Integer.MAX_VALUE;
 	}
 
 	private Point computeSize(boolean hor, int sz)

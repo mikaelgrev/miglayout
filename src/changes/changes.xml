@@ -6,6 +6,15 @@
 	<body>
         <release version="5.0" date="2013-02-18" description="Release 5.0">
             <action dev="mikaelgrev" type="enhancement">
+                A MigLayout Swing panel could never exceed size Short.MAX_VALUE (32768) in any dimension. Now it's the standard Integer.MAX_VALUE which should be sufficient.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                Now handles all size variants in Swing on OS X.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                Now compensates for the extra white space around components in Swing on OS X. Bad Apple.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
                 Generally better resolution handling, especially on OS X.
             </action>
             <action dev="mikaelgrev" type="enhancement">
