@@ -22,6 +22,10 @@ import javafx.stage.Stage;
 
 import org.tbee.javafx.scene.layout.fxml.MigPane;
 
+/**
+ * This test is ran out of memory because of a memory leak.
+ *
+ */
 public class MigPaneTest11 extends Application
 {
 

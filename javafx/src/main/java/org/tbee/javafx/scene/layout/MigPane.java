@@ -23,6 +23,7 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -159,6 +160,11 @@ public class MigPane extends javafx.scene.layout.Pane
 						invalidateMigLayoutGrid();
 					}
 				};
+				
+				// if invalid, create
+				if (!isMiglayoutGridValid()) {
+					createMigLayoutGrid();
+				}
 			}
 		});
 
@@ -250,7 +256,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 * This is where the actual layout happens
 	 */
 	protected void layoutChildren()	{
-		//System.out.println("layoutChildren");
+		// for debugging System.out.println("MigPane.layoutChildren");
 		super.layoutChildren();
 
 		// validate if the grid should be recreated
@@ -272,20 +278,29 @@ public class MigPane extends javafx.scene.layout.Pane
 	 *
 	 */
 	private void createMigLayoutGrid() {
-		//System.out.println("createMigLayoutGrid");
+		// for debugging System.out.println("createMigLayoutGrid");
         this.grid = new Grid( fx2ContainerWrapper, getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), fx2ComponentWrapperToCCMap, null );
+        // for debugging System.out.println("MigPane.createMigLayoutGrid height=" + Arrays.toString( grid.getHeight() ) );        
         this.valid = true;
+        // for debugging System.out.println("MigPane.createMigLayoutGrid valid=" + valid );        
 
-        // -----------------------------------------
-        // set MigLayout's own size
-        setMinWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.MIN));
-        setPrefWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.PREF));
-        setMaxWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.MAX));
-
-        setMinHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.MIN));
-        setPrefHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
-        setMaxHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.MAX));
-        // -----------------------------------------
+//        // -----------------------------------------
+//        // set MigLayout's own size
+//        setMinWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.MIN));
+//        System.out.println("MigPane.setMinWidth " + getMinWidth());
+//        setPrefWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.PREF));
+//        System.out.println("MigPane.setPrefWidth " + getPrefWidth());
+//        setMaxWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.MAX));
+//        System.out.println("MigPane.setMaxWidth " + getMaxWidth());
+//
+//        setMinHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.MIN)); // 14 + button's height is 21, that is exactly what we need
+//        System.out.println("MigPane.setMinHeight " + getMinHeight());
+//        setPrefHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
+//setPrefHeight(35);
+//        System.out.println("MigPane.setPrefHeight " + getPrefHeight());
+//        setMaxHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.MAX));
+//        System.out.println("MigPane.setMaxHeight " + getMaxHeight());
+//        // -----------------------------------------
 	}
 	volatile private Grid grid;
 
@@ -333,6 +348,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private void invalidateMigLayoutGrid() {
 		this.valid = false;
+        // for debugging System.out.println("MigPane.invalidateMigLayoutGrid valid=" + valid );        
 	}
 
     /*
@@ -377,7 +393,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 *
 	 */
 	public void clearDebug() {
-		//System.out.println("clearDebug");
+		// for debugging System.out.println("clearDebug");
 		MigPane.this.getChildren().removeAll(this.debugRectangles);
 		this.debugRectangles.clear();
 	}
@@ -412,7 +428,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		else {
 			throw new IllegalStateException("Unknown debug rectangle type");
 		}
-		//System.out.println(lRectangle.getX() + "," + lRectangle.getY() + "/" + lRectangle.getWidth() + "x" + lRectangle.getHeight());
+		// for debugging System.out.println(lRectangle.getX() + "," + lRectangle.getY() + "/" + lRectangle.getWidth() + "x" + lRectangle.getHeight());
 		//lRectangle.setStrokeWidth(0.5f);
 		lRectangle.setFill(null);
 		lRectangle.mouseTransparentProperty().set(true); // just to be sure
@@ -466,11 +482,13 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public net.miginfocom.layout.ComponentWrapper[] getComponents() {
+			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
 			return componentWrapperList.toArray(new FX2ComponentWrapper[]{}); // must be in the order of adding!
 		}
 
 		// as of JDK 1.6: @Override
 		public int getComponentCount() {
+			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponentCount " + MigPane.this.fx2ComponentWrapperToCCMap.size());
 			return MigPane.this.fx2ComponentWrapperToCCMap.size();
 		}
 
@@ -543,7 +561,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public void setBounds(int x, int y, int width, int height) {
-			// for debugging System.out.println(getComponent() + " setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
+			// for debugging System.out.println(getComponent() + " FX2ComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
 			this.node.resizeRelocate((double)x, (double)y, (double)width, (double)height);
 		}
 
@@ -605,6 +623,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getPreferredHeight(int width) {
 			int v = (int)Math.ceil(this.node.prefHeight(width));
+			// for debuggin System.out.println("MigPane.FX2ComponentWrapper.getPreferredHeight " + this.node.getClass().getSimpleName() + "=" + this.node.prefHeight(-1));
 			return v;
 		}
 
@@ -742,36 +761,43 @@ public class MigPane extends javafx.scene.layout.Pane
 
     @Override
     protected double computeMaxHeight(double width) {
+    	validateMigLayoutGrid();
         int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.MAX);
         return h;
     }
 
     @Override
     protected double computeMaxWidth(double height) {
+    	validateMigLayoutGrid();
         int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.MAX);
         return w;
     }
 
     @Override
     protected double computeMinHeight(double width) {
+    	validateMigLayoutGrid();
         int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.MIN);
         return h;
     }
 
     @Override
     protected double computeMinWidth(double height) {
+    	validateMigLayoutGrid();
         int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.MIN);
         return w;
     }
 
     @Override
     protected double computePrefHeight(double width) {
+    	validateMigLayoutGrid();
         int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.PREF);
+        // for debugging System.out.println("MigPane.computePrefHeight " + h + " / " + LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
         return h;
     }
 
     @Override
     protected double computePrefWidth(double height) {
+    	validateMigLayoutGrid();
         int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.PREF);
         return w;
     }
