@@ -601,10 +601,10 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getMaximumWidth(int height) {
 			int v = (int)Math.ceil(this.node.maxWidth(height));
-			if (this.node instanceof Button) { v = Integer.MAX_VALUE; } // for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); }
-			if (this.node instanceof ToggleButton) { v = Integer.MAX_VALUE; } // for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); }
-			if (this.node instanceof CheckBox) { v = Integer.MAX_VALUE; } // for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); } // is this needed?
-			if (this.node instanceof ChoiceBox) { v = Integer.MAX_VALUE; } // for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); }
+			if (node instanceof javafx.scene.layout.Region) {
+				v = Integer.MAX_VALUE;
+				// for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); }
+			}
 			return v;
 		}
 
@@ -630,6 +630,10 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getMaximumHeight(int width) {
 			int v = (int)Math.ceil(this.node.maxHeight(width));
+			if (node instanceof javafx.scene.layout.Region) {
+				v = Integer.MAX_VALUE;
+				// for debugging System.out.println(getComponent() + " forced getMaximumHeight " + v); }
+			}
 			return v;
 		}
 
