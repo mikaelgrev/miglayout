@@ -601,7 +601,9 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getMaximumWidth(int height) {
 			int v = (int)Math.ceil(this.node.maxWidth(height));
-			if (node instanceof javafx.scene.layout.Region) {
+			if ( node instanceof javafx.scene.layout.Region
+			  || node instanceof javafx.scene.control.Control // backwards compatibility with JavaFX2 (control does not extend Region there)
+			   ) {
 				v = Integer.MAX_VALUE;
 				// for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); }
 			}
@@ -630,7 +632,9 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getMaximumHeight(int width) {
 			int v = (int)Math.ceil(this.node.maxHeight(width));
-			if (node instanceof javafx.scene.layout.Region) {
+			if ( node instanceof javafx.scene.layout.Region
+			  || node instanceof javafx.scene.control.Control // backwards compatibility with JavaFX2 (control does not extend Region there)
+			   ) {
 				v = Integer.MAX_VALUE;
 				// for debugging System.out.println(getComponent() + " forced getMaximumHeight " + v); }
 			}
