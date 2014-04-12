@@ -1,15 +1,16 @@
 package org.tbee.javafx.scene.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
@@ -21,12 +22,6 @@ import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.Grid;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.LayoutUtil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Manages nodes with MigLayout added via add(node, CC)
@@ -365,25 +360,18 @@ public class MigPane extends javafx.scene.layout.Pane
      * @return
      */
     private Integer calculateHashcode(Node node) {
-    	StringBuffer lStringBuffer = new StringBuffer();
-    	lStringBuffer.append(node.minWidth(-1));
-    	lStringBuffer.append("x");
-    	lStringBuffer.append(node.minHeight(-1));
-    	lStringBuffer.append("/");
-    	lStringBuffer.append(node.prefWidth(-1));
-    	lStringBuffer.append("x");
-    	lStringBuffer.append(node.prefHeight(-1));
-    	lStringBuffer.append("/");
-    	lStringBuffer.append(node.maxWidth(-1));
-    	lStringBuffer.append("x");
-    	lStringBuffer.append(node.maxHeight(-1));
-    	lStringBuffer.append("/");
-    	lStringBuffer.append(node.getLayoutBounds().getWidth());
-    	lStringBuffer.append("x");
-    	lStringBuffer.append(node.getLayoutBounds().getHeight());
-    	lStringBuffer.append("/");
-    	lStringBuffer.append(node.isVisible());
-    	return lStringBuffer.toString().hashCode();
+    	final int prima = 31;
+    	int hash = 1;
+    	hash = prima * hash + (int)node.minWidth(-1);
+    	hash = prima * hash + (int)node.minHeight(-1);
+    	hash = prima * hash + (int)node.prefWidth(-1);
+    	hash = prima * hash + (int)node.prefHeight(-1);
+    	hash = prima * hash + (int)node.maxWidth(-1);
+    	hash = prima * hash + (int)node.maxHeight(-1);
+    	hash = prima * hash + (int)node.getLayoutBounds().getWidth();
+    	hash = prima * hash + (int)node.getLayoutBounds().getHeight();
+    	hash = prima * hash + (node.isVisible() ? 0 : 1);
+    	return hash;
     }
 
 	// ============================================================================================================
@@ -625,7 +613,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getPreferredHeight(int width) {
 			int v = (int)Math.ceil(this.node.prefHeight(width));
-			// for debuggin System.out.println("MigPane.FX2ComponentWrapper.getPreferredHeight " + this.node.getClass().getSimpleName() + "=" + this.node.prefHeight(-1));
+			// for debugging System.out.println("MigPane.FX2ComponentWrapper.getPreferredHeight " + this.node.getClass().getSimpleName() + ".prefHeight(" + width + ")=" + this.node.prefHeight(width));
 			return v;
 		}
 
