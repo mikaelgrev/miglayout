@@ -7,6 +7,7 @@ import java.util.WeakHashMap;
 
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -210,7 +211,7 @@ public class MigPane extends javafx.scene.layout.Pane
     protected double computePrefHeight(double width) {
     	validateMigLayoutGrid();
         int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.PREF);
-        // for debugging System.out.println("MigPane.computePrefHeight(" + width + ") " + h + " / " + LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
+        // for debugging System.out.println("MigPane.computePrefHeight(" + width + ")=" + h + " / " + LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
         return h;
     }
 
@@ -220,6 +221,13 @@ public class MigPane extends javafx.scene.layout.Pane
         int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.PREF);
         return w;
     }
+    
+	@Override
+	public Orientation getContentBias() {
+		// This is required to make things like Label wrapText work correctly.
+		return layoutConstraints.isTopToBottom() ? Orientation.HORIZONTAL : Orientation.VERTICAL;
+	}
+    
 
     
 	// ============================================================================================================
@@ -304,7 +312,6 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	protected void layoutChildren()	{
 		// for debugging System.out.println("MigPane.layoutChildren");
-		super.layoutChildren();
 
 		// validate if the grid should be recreated
 		validateMigLayoutGrid();
@@ -423,7 +430,7 @@ public class MigPane extends javafx.scene.layout.Pane
     	hash = prime * hash + (int)node.getLayoutBounds().getWidth();
     	hash = prime * hash + (int)node.getLayoutBounds().getHeight();
     	hash = prime * hash + (node.isVisible() ? 0 : 1);
-    	// for debugging System.out.println("calculateHashcode " + node.getClass().getSimpleName() + " " + hash);    	
+    	// for debugging System.out.println("calculateHashcode " + node + " -> hash=" + hash);    	
     	return hash;
     }
 
@@ -540,7 +547,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public boolean isLeftToRight() {
-			return true;
+			return true; // TODO: this should be determined somehow?
 		}
 
 		// as of JDK 1.6: @Override
@@ -550,13 +557,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public void paintDebugOutline(boolean useVisualPadding) {
-			// to be frank: this is done via trail and error
-			addDebugRectangle( 0
-					         , 0
-					         , getWidth()
-					         , getHeight()
-					         , DebugRectangleType.CONTAINER_OUTLINE
-					         );
+			addDebugRectangle( 0, 0, getWidth(), getHeight(), DebugRectangleType.CONTAINER_OUTLINE);
 		}
 	}
 
@@ -666,7 +667,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getPreferredHeight(int width) {
 			int v = (int)Math.ceil(this.node.prefHeight(width));
-			// for debugging System.out.println("MigPane.FX2ComponentWrapper.getPreferredHeight " + this.node.getClass().getSimpleName() + ".prefHeight(" + width + ")=" + this.node.prefHeight(width));
+			// for debugging System.out.println(getComponent() + " FX2ComponentWrapper.getPreferredHeight -> node.prefHeight(" + width + ")=" + this.node.prefHeight(width));
 			return v;
 		}
 
