@@ -222,7 +222,7 @@ public final class DimConstraint implements Externalizable
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @param size The new gap.
-	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean).
+	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean) 
 	 */
 	public void setGapAfter(BoundSize size)
 	{
@@ -253,9 +253,9 @@ public final class DimConstraint implements Externalizable
 	/** Sets the gap before this entity. The gap is an empty space and can have a min/preferred/maximum size so that it can shrink and
 	 * grow depending on available space. Gaps are against other entities' edges and not against other entities' gaps.
 	 * <p>
+	 * See also {@link net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean)}.
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @param size The new gap.
-	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean).
 	 */
 	public void setGapBefore(BoundSize size)
 	{
@@ -274,9 +274,9 @@ public final class DimConstraint implements Externalizable
 
 	/** Returns the min/preferred/max size for the entity in the dimension that this object describes.
 	 * <p>
+     * See also {@link net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean)}.
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return The current size. Never <code>null</code> since v3.5.
-	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean).
 	 */
 	public BoundSize getSize()
 	{
@@ -357,7 +357,7 @@ public final class DimConstraint implements Externalizable
 	 * this constraint represents (width for column and height for a row).
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
-	 * @return code>true</code> means that components should grow.
+	 * @return <code>true</code> means that components should grow.
 	 */
 	public boolean isFill()
 	{

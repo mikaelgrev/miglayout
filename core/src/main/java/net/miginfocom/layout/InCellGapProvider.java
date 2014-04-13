@@ -39,6 +39,7 @@ package net.miginfocom.layout;
  * E.g.:
  *
  * <pre>
+ * {@code
  * if (adjacentComp == null || adjacentSide == SwingConstants.LEFT || adjacentSide == SwingConstants.TOP)
  *	  return null;
  *
@@ -48,7 +49,8 @@ package net.miginfocom.layout;
  *    return isHor ? UNRELATED_Y : UNRELATED_Y;
  *
  * return (adjacentSide == SwingConstants.LEFT || adjacentSide == SwingConstants.RIGHT) ? RELATED_X : RELATED_Y;
- * </pre
+ * }
+ * </pre>
  */
 public interface InCellGapProvider
 {

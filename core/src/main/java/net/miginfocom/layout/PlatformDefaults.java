@@ -514,7 +514,7 @@ public final class PlatformDefaults
 	/** Sets the order for the typical buttons in a standard button bar. It is one letter per button type.
 	 * <p>
 	 * Letter in upper case will get the minimum button width that the {@link #getMinimumButtonWidth()} specifies
-	 * and letters in lower case will get the width the current look&feel specifies.
+	 * and letters in lower case will get the width the current look&amp;feel specifies.
 	 * <p>
 	 * Gaps will never be added to before the first component or after the last component. However, '+' (push) will be
 	 * applied before and after as well, but with a minimum size of 0 if first/last so there will not be a gap
@@ -530,8 +530,8 @@ public final class PlatformDefaults
 	 * <li><code>'E'</code> - A tag for the "help2" button that normally is supposed to be on the left.
 	 * <li><code>'Y'</code> - A tag for the "yes" button.
 	 * <li><code>'N'</code> - A tag for the "no" button.
-	 * <li><code>'X'</code> - A tag for the "next >" or "forward >" button.
-	 * <li><code>'B'</code> - A tag for the "< back>" or "< previous" button.
+	 * <li><code>'X'</code> - A tag for the "next &gt;" or "forward &gt;" button.
+	 * <li><code>'B'</code> - A tag for the "&lt; back&gt;" or "&lt; previous" button.
 	 * <li><code>'I'</code> - A tag for the "finish".
 	 * <li><code>'A'</code> - A tag for the "apply" button.
 	 * <li><code>'C'</code> - A tag for the "cancel" or "close" button.

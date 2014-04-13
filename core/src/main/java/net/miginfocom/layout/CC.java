@@ -755,7 +755,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setSpanY(int LayoutUtil.INF)} which means this cell will span the rest of the column.
+	/** Same functionality as calling {@link #setSpanY(int)} with <code>LayoutUtil.INF</code> which means this cell will span the rest of the column.
 	 * This method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -942,7 +942,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setExternal(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setExternal(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -954,7 +954,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFlowX(Boolean .TRUE)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setFlowX(Boolean)} with <code>Boolean.TRUE</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -966,7 +966,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFlowX(Boolean .FALSE)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setFlowX(Boolean)} with <code>Boolean.FALSE</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -993,7 +993,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setNewline(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setNewline(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1025,7 +1025,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setWrap(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setWrap(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1057,7 +1057,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setDockSide(int 0)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setDockSide(int)} with <code>0</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1069,7 +1069,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setDockSide(int 1)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setDockSide(int)} with <code>1</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1081,7 +1081,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setDockSide(int 2)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setDockSide(int)} with <code>2</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1093,7 +1093,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setDockSide(int 3)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setDockSide(int)} with <code>3</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.

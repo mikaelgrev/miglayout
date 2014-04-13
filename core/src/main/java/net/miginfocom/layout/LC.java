@@ -597,7 +597,7 @@ public final class LC implements Externalizable
 
 	/** Sets a wrap after the number of columns/rows that is defined in the {@link net.miginfocom.layout.AC}.
 	 * <p>
-	 * Same functionality as {@link #setWrapAfter(int 0)} only this method returns <code>this</code> for chaining multiple calls.
+	 * Same functionality as calling {@link #setWrapAfter(int)} with <code>0</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -620,7 +620,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setNoCache(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setNoCache(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -631,7 +631,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFlowX(boolean false)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setFlowX(boolean)} with <code>false</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -642,7 +642,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFlowX(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setFlowX(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -653,7 +653,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFillX(boolean true)} and {@link #setFillY(boolean true)} conmbined.T his method returns
+	/** Same functionality as calling {@link #setFillX(boolean)} with <code>true</code> and {@link #setFillY(boolean)} with <code>true</code> conmbined.T his method returns
 	 * <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -666,7 +666,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFillX(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setFillX(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -677,7 +677,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setFillY(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setFillY(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -712,7 +712,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setTopToBottom(boolean false)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setTopToBottom(boolean)} with <code>false</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -723,7 +723,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setTopToBottom(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setTopToBottom(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -735,7 +735,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setNoGrid(boolean true)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setNoGrid(boolean)} with <code>true</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
@@ -746,7 +746,7 @@ public final class LC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #setVisualPadding(boolean false)} only this method returns <code>this</code> for chaining multiple calls.
+	/** Same functionality as calling {@link #setVisualPadding(boolean)} with <code>false</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.

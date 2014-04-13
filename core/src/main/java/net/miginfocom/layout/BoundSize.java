@@ -69,7 +69,7 @@ public class BoundSize implements Serializable
 		this(minMaxPref, minMaxPref, minMaxPref, createString);
 	}
 
-	/** Constructor. <b>This method is here for serilization only and should normally not be used. Use
+	/** Constructor. <b>This method is here for serilization only and should normally not be used.</b> Use
 	 * {@link ConstraintParser#parseBoundSize(String, boolean, boolean)} instead.
 	 * @param min The minimum size. May be <code>null</code>.
 	 * @param preferred  The preferred size. May be <code>null</code>.
@@ -81,7 +81,7 @@ public class BoundSize implements Serializable
 		this(min, preferred, max, false, createString);
 	}
 
-	/** Constructor. <b>This method is here for serilization only and should normally not be used. Use
+	/** Constructor. <b>This method is here for serilization only and should normally not be used.</b> Use
 	 * {@link ConstraintParser#parseBoundSize(String, boolean, boolean)} instead.
 	 * @param min The minimum size. May be <code>null</code>.
 	 * @param preferred  The preferred size. May be <code>null</code>.
