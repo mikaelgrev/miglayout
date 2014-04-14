@@ -452,7 +452,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private void addDebugRectangle(double x, double y, double w, double h, DebugRectangleType type)
 	{
-		DebugRectangle lRectangle = new DebugRectangle( x, y, w, h );
+		DebugRectangle lRectangle = new DebugRectangle( snap(x), snap(y), snap(x + w) - snap(x), snap(y + h) - snap(y) );
 		if (type == DebugRectangleType.CELL) {
 			//System.out.print(getId() + ": " + "paintDebugCell ");
 			lRectangle.setStroke(getDebugCellColor());
@@ -493,6 +493,11 @@ public class MigPane extends javafx.scene.layout.Pane
 		{
 			super(x,y,w,h);
 		}
+		
+	}
+
+	private double snap(double v) {
+		return ((int) v) + .5;
 	}
 
 	/** debugCellColor */
