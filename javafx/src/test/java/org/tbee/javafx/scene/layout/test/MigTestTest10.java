@@ -26,7 +26,7 @@ public class MigTestTest10 extends Application {
         lOuterMigPane.setDebugOutlineColor(Color.BLUE);
         lOuterMigPane.setDebugContainerOutlineColor(Color.BLUE);
         lOuterMigPane.add(new Button("In outer MigPane"));
-        
+
         MigPane lNestedMigPane = new MigPane("debug");
         lNestedMigPane.setId("nested");
         lNestedMigPane.setDebugCellColor(null);
@@ -34,11 +34,10 @@ public class MigTestTest10 extends Application {
         lNestedMigPane.setDebugContainerOutlineColor(Color.RED);
         lNestedMigPane.add(new Button("In nested MigPane"));
         lOuterMigPane.add(lNestedMigPane);
-        
+
         Scene scene = new Scene(lOuterMigPane);
         stage.setScene(scene);
-        stage.setWidth(400);
-        stage.setHeight(200);
+	    stage.sizeToScene();
         stage.show();
     }
 }

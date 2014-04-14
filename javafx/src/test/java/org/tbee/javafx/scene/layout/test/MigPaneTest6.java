@@ -34,11 +34,12 @@ public class MigPaneTest6 extends Application {
         lRoot.add(new TextField(), "span, grow");
 
         // create scene
-        Scene scene = new Scene(lRoot, 600, 100);
+        Scene scene = new Scene(lRoot, -1, -1);
 
         // create stage
         stage.setTitle("Test");
         stage.setScene(scene);
+		stage.sizeToScene();
         stage.show();
     }
 

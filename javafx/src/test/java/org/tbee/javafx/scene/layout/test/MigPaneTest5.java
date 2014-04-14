@@ -28,15 +28,16 @@ public class MigPaneTest5 extends Application {
         // add managed nodes
         lRoot.add(new TextField(), "");
 
-        // add unmanaged nodes
+        // add external (not unmanaged..) nodes
         lRoot.add(new Rectangle(100, 50, 30, 30), new CC().external());
 
         // create scene
-        Scene scene = new Scene(lRoot, 200, 100);
+        Scene scene = new Scene(lRoot, -1, -1);
 
         // create stage
         stage.setTitle("Test");
         stage.setScene(scene);
+		stage.sizeToScene();
         stage.show();
     }
 

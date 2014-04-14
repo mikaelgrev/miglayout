@@ -7,12 +7,11 @@ import javafx.scene.control.LabelBuilder;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import org.tbee.javafx.scene.layout.MigPane;
 
 /**
  * The window should wrap the button perfectly (including the inset).
- * 
+ *
  * @author Tom Eugelink
  *
  */
@@ -23,7 +22,7 @@ public class MigPaneTest13 extends Application {
 	}
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(final Stage stage) throws Exception {
 
 		final LabelBuilder<?> lBuilder = LabelBuilder
 				.create()
@@ -42,16 +41,57 @@ public class MigPaneTest13 extends Application {
 		vBox.getChildren().add(titleLB.text("VBox").build());
 		final Label vBoxLabel = lBuilder.build();
 		vBox.getChildren().add(vBoxLabel);
+//		vBox.setPadding(new Insets(50, 50, 50, 50));
 		root.getChildren().add(vBox);
 
 		root.getChildren().add(new Separator());
 
 		// MigPane
-		final MigPane mPane = new MigPane("fill, ins 0 , gap 0");
+		final MigPane mPane = new MigPane("ins 0 , gap 0");
 		final Label migLabel = lBuilder.build();
 		// doesn't even work when min height == pref height
+//		migLabel.setWrapText(false);
+
 		mPane.add(titleLB.text("MigPane").build(), "wrap");
-		mPane.add(migLabel, "grow");
+		mPane.add(migLabel, "");
+//		mPane.add(new Button("Hello"), "");
+
+//		mPane.setPadding(new Insets(50, 50, 50, 50));
+
+//		final Button butt = new Button();
+//		mPane.add(butt, "hidemode 3");
+
+//		butt.needsLayoutProperty().addListener(new ChangeListener<Boolean>()
+//		{
+//			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+//			{
+//				System.out.println("needs more!!");
+//			}
+//		});
+
+//		Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent event) {
+////				butt.setFont(new Font(Math.round(Math.random() * 10)));
+////				System.out.println("bef: " + butt.isNeedsLayout());
+////				butt.setVisible(!butt.isVisible());
+////				stage.sizeToScene();
+////				butt.setId("" + Math.random());
+////				System.out.println("aft: " + butt.isNeedsLayout());
+//			}
+//		}));
+//		fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+//		fiveSecondsWonder.play();
+//
+//		Timeline fiveSecondsWonder2 = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent event) {
+////				System.out.println("need: " + butt.isNeedsLayout());
+//			}
+//		}));
+//		fiveSecondsWonder2.setCycleCount(Timeline.INDEFINITE);
+//		fiveSecondsWonder2.play();
+
+//		butt.setText("sdfsdf");
+
 		root.getChildren().add(mPane);
 
 		stage.setScene(scene);

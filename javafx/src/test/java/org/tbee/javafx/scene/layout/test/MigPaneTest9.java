@@ -50,11 +50,12 @@ public class MigPaneTest9 extends Application {
         lStackPane.setStyle("-fx-background-color: yellow; -fx-padding: 10; ");
 
         // create scene
-        Scene scene = new Scene(new Group(lStackPane), 800, 300);
+        Scene scene = new Scene(new Group(lStackPane), -1, -1);
 
         // create stage
         stage.setTitle("ButtonTest");
         stage.setScene(scene);
+	    stage.sizeToScene();
         stage.show();
     }
 }

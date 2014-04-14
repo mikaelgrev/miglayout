@@ -1,10 +1,6 @@
 package net.miginfocom.layout;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.ObjectStreamException;
+import java.io.*;
 import java.util.ArrayList;
 
 /*
@@ -48,7 +44,7 @@ import java.util.ArrayList;
  * For a more thorough explanation of what these constraints do, and how to build the constraints, see the White Paper or Cheat Sheet at www.migcomponents.com.
  * <p>
  * Note that there are two way to build this constraint. Through String (e.g. <code>"[100]3[200,fill]"</code> or through API (E.g.
- * <code>new AxisConstraint().size("100").gap("3").size("200").fill()</code>.
+ * <code>new AC().size("100").gap("3").size("200").fill()</code>.
  */
 public final class AC implements Externalizable
 {
@@ -80,7 +76,7 @@ public final class AC implements Externalizable
 	 * <p>
 	 * Yes, we are embarrassingly aware that the method is misspelled.
 	 * @param constr The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of. The list
-	 * will be copied for storage. <code>null</code> or and emty array will reset the constraints to one <code>DimConstraint</code>
+	 * will be copied for storage. <code>null</code> or and empty array will reset the constraints to one <code>DimConstraint</code>
 	 * with default values.
 	 */
 	public final void setConstaints(DimConstraint[] constr)

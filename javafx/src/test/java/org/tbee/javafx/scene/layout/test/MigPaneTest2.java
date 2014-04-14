@@ -38,11 +38,12 @@ public class MigPaneTest2 extends Application {
         }
 
         // create scene
-        Scene scene = new Scene(lRoot, 600, 300);
+        Scene scene = new Scene(lRoot, -1, -1);
 
         // create stage
         stage.setTitle("Test");
         stage.setScene(scene);
+		stage.sizeToScene();
         stage.show();
 	}
 

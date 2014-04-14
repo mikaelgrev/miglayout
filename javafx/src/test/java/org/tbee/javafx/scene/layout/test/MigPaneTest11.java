@@ -1,7 +1,5 @@
 package org.tbee.javafx.scene.layout.test;
 
-import java.util.Date;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -10,17 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBuilder;
-import javafx.scene.control.Label;
-import javafx.scene.control.LabelBuilder;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPaneBuilder;
 import javafx.scene.layout.HBoxBuilder;
 import javafx.scene.layout.VBoxBuilder;
 import javafx.stage.Stage;
-
 import org.tbee.javafx.scene.layout.fxml.MigPane;
+
+import java.util.Date;
 
 /**
  * This test is ran out of memory because of a memory leak.
@@ -121,9 +116,8 @@ public class MigPaneTest11 extends Application
 	public void start(Stage stage) throws Exception
 	{
 		Parent root = createRoot();
-		
+
 		scene = new Scene(root);
-		
 		stage.setScene(scene);
 		stage.setWidth(800);
 		stage.setHeight(600);

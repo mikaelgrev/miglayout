@@ -2,14 +2,7 @@ package net.miginfocom.layout;
 
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.WeakHashMap;
+import java.util.*;
 /*
  * License (BSD):
  * ==============
@@ -133,10 +126,11 @@ public final class Grid
 	 * @param lc The form flow constraints.
 	 * @param rowConstr The rows specifications. If more cell rows are required, the last element will be used for when there is no corresponding element in this array.
 	 * @param colConstr The columns specifications. If more cell rows are required, the last element will be used for when there is no corresponding element in this array.
-	 * @param ccMap The map containing the parsed constraints for each child component of <code>parent</code>. Will not be altered.
+	 * @param ccMap The map containing the parsed constraints for each child component of <code>parent</code>. Will not be altered. Can have null CC which will use a common
+	 * cached one.
 	 * @param callbackList A list of callbacks or <code>null</code> if none. Will not be altered.
 	 */
-	public Grid(ContainerWrapper container, LC lc, AC rowConstr, AC colConstr, Map<ComponentWrapper, CC> ccMap, ArrayList<LayoutCallback> callbackList)
+	public Grid(ContainerWrapper container, LC lc, AC rowConstr, AC colConstr, Map<? extends ComponentWrapper, CC> ccMap, ArrayList<LayoutCallback> callbackList)
 	{
 		this.lc = lc;
 		this.rowConstr = rowConstr;
@@ -365,42 +359,42 @@ public final class Grid
 			// Set/equalize the sizeGroups to same the values.
 			for (CompWrap cw : sizeGroupCWs) {
 				if (sizeGroupMapX != null)
-					cw.setSizes(sizeGroupMapX.get(cw.cc.getHorizontal().getSizeGroup()), true);  // Target method handles null sizes
+					cw.setForcedSizes(sizeGroupMapX.get(cw.cc.getHorizontal().getSizeGroup()), true);  // Target method handles null sizes
 				if (sizeGroupMapY != null)
-					cw.setSizes(sizeGroupMapY.get(cw.cc.getVertical().getSizeGroup()), false); // Target method handles null sizes
+					cw.setForcedSizes(sizeGroupMapY.get(cw.cc.getVertical().getSizeGroup()), false); // Target method handles null sizes
 			}
 		} // Component loop
 
 		// If there were size groups, calculate the largest values in the groups (for min/pref/max) and enforce them on the rest in the group.
-		if (sizeGroupsX > 0 || sizeGroupsY > 0) {
-			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<String, int[]>(sizeGroupsX) : null;
-			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<String, int[]>(sizeGroupsY) : null;
-			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<CompWrap>(Math.max(sizeGroupsX, sizeGroupsY));
-
-			for (Cell cell : grid.values()) {
-				for (int i = 0; i < cell.compWraps.size(); i++) {
-					CompWrap cw = cell.compWraps.get(i);
-					String sgx = cw.cc.getHorizontal().getSizeGroup();
-					String sgy = cw.cc.getVertical().getSizeGroup();
-
-					if (sgx != null || sgy != null) {
-						if (sgx != null && sizeGroupMapX != null)
-							addToSizeGroup(sizeGroupMapX, sgx, cw.horSizes);
-						if (sgy != null && sizeGroupMapY != null)
-							addToSizeGroup(sizeGroupMapY, sgy, cw.verSizes);
-						sizeGroupCWs.add(cw);
-					}
-				}
-			}
-
-			// Set/equalize the sizeGroups to same the values.
-			for (CompWrap cw : sizeGroupCWs) {
-				if (sizeGroupMapX != null)
-					cw.setSizes(sizeGroupMapX.get(cw.cc.getHorizontal().getSizeGroup()), true);  // Target method handles null sizes
-				if (sizeGroupMapY != null)
-					cw.setSizes(sizeGroupMapY.get(cw.cc.getVertical().getSizeGroup()), false); // Target method handles null sizes
-			}
-		}
+//		if (sizeGroupsX > 0 || sizeGroupsY > 0) {
+//			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<String, int[]>(sizeGroupsX) : null;
+//			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<String, int[]>(sizeGroupsY) : null;
+//			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<CompWrap>(Math.max(sizeGroupsX, sizeGroupsY));
+//
+//			for (Cell cell : grid.values()) {
+//				for (int i = 0; i < cell.compWraps.size(); i++) {
+//					CompWrap cw = cell.compWraps.get(i);
+//					String sgx = cw.cc.getHorizontal().getSizeGroup();
+//					String sgy = cw.cc.getVertical().getSizeGroup();
+//
+//					if (sgx != null || sgy != null) {
+//						if (sgx != null && sizeGroupMapX != null)
+//							addToSizeGroup(sizeGroupMapX, sgx, cw.horSizes);
+//						if (sgy != null && sizeGroupMapY != null)
+//							addToSizeGroup(sizeGroupMapY, sgy, cw.verSizes);
+//						sizeGroupCWs.add(cw);
+//					}
+//				}
+//			}
+//
+//			// Set/equalize the sizeGroups to same the values.
+//			for (CompWrap cw : sizeGroupCWs) {
+//				if (sizeGroupMapX != null)
+//					cw.setForcedSizes(sizeGroupMapX.get(cw.cc.getHorizontal().getSizeGroup()), true);  // Target method handles null sizes
+//				if (sizeGroupMapY != null)
+//					cw.setForcedSizes(sizeGroupMapY.get(cw.cc.getVertical().getSizeGroup()), false); // Target method handles null sizes
+//			}
+//		}
 
 		if (hasTagged)
 			sortCellsByPlatform(grid.values(), container);
@@ -442,7 +436,7 @@ public final class Grid
 			saveGrid(container, grid);
 	}
 
-	private static CC getCC(ComponentWrapper comp, Map<ComponentWrapper, CC> ccMap)
+	private static CC getCC(ComponentWrapper comp, Map<? extends ComponentWrapper, CC> ccMap)
 	{
 		CC cc = ccMap.get(comp);
 		return cc != null ? cc : DEF_CC;
@@ -460,6 +454,8 @@ public final class Grid
 
 	/** If the container (parent) that this grid is laying out has changed its bounds, call this method to
 	 * clear any cached values.
+	 * @deprecated Did not clear size caches in CompWrap. Grid needs to be recreated to account for
+	 * components where for instance preferred height depend on its width or the container width.
 	 */
 	public void invalidateContainerSize()
 	{
@@ -570,7 +566,7 @@ public final class Grid
 
 			ArrayList<int[]> painted = new ArrayList<int[]>();
 			for (int[] r : debugRects) {
-				if (painted.contains(r) == false) {
+				if (!painted.contains(r)) {
 					container.paintDebugCell(r[0], r[1], r[2], r[3]);
 					painted.add(r);
 				}
@@ -588,6 +584,28 @@ public final class Grid
 	{
 		return container;
 	}
+
+//	public final int[] getWidth()
+//	{
+//		return getWidth(null);
+//	}
+
+//	public final int[] getWidth(Integer refHeight)
+//	{
+//		checkSizeCalcs(null, refHeight);
+//		return width.clone();
+//	}
+
+//	public final int[] getHeight()
+//	{
+//		return getHeight(null);
+//	}
+
+//	public final int[] getHeight(Integer refWidth)
+//	{
+//		checkSizeCalcs(refWidth, null);
+//		return height.clone();
+//	}
 
 	public final int[] getWidth()
 	{
@@ -1120,7 +1138,7 @@ public final class Grid
 		int refSize = isHor ? container.getWidth() : container.getHeight();
 
 		BoundSize cSz = isHor ? lc.getWidth() : lc.getHeight();
-		if (cSz.isUnset() == false)
+		if (!cSz.isUnset())
 			refSize = cSz.constrain(refSize, getParentSize(container, isHor), container);
 
 		DimConstraint[] primDCs = (isHor? colConstr : rowConstr).getConstaints();
@@ -1205,7 +1223,7 @@ public final class Grid
 
 	private static int getParentSize(ComponentWrapper cw, boolean isHor)
 	{
-		ComponentWrapper p = cw.getParent();
+		ContainerWrapper p = cw.getParent();
 		return p != null ? (isHor ? cw.getWidth() : cw.getHeight()) : 0;
 	}
 
@@ -1705,6 +1723,8 @@ public final class Grid
 
 	/** Wraps a {@link java.awt.Component} together with its constraint. Caches a lot of information about the component so
 	 * for instance not the preferred size has to be calculated more than once.
+	 *
+	 * Note! Does not ask the min/pref/max sizes again after the constructor. This means that
 	 */
 	private final static class CompWrap
 	{
@@ -1852,7 +1872,7 @@ public final class Grid
 			return prefSizeChanged;
 		}
 
-		private void setSizes(int[] sizes, boolean isHor)
+		private void setForcedSizes(int[] sizes, boolean isHor)
 		{
 			if (sizes == null)
 				return;

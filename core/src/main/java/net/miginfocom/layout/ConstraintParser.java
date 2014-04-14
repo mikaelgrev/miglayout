@@ -54,7 +54,7 @@ public final class ConstraintParser
 	public static LC parseLayoutConstraint(String s)
 	{
 		LC lc = new LC();
-		if (s.length() == 0)
+		if (s.isEmpty())
 			return lc;
 
 		String[] parts = toTrimmedTokens(s, ',');

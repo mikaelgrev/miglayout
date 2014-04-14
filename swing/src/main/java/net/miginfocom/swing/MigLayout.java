@@ -33,42 +33,15 @@ package net.miginfocom.swing;
  *         Date: 2006-sep-08
  */
 
-import javax.swing.*;
-import net.miginfocom.layout.AC;
-import net.miginfocom.layout.BoundSize;
-import net.miginfocom.layout.CC;
-import net.miginfocom.layout.ComponentWrapper;
-import net.miginfocom.layout.ConstraintParser;
-import net.miginfocom.layout.ContainerWrapper;
-import net.miginfocom.layout.Grid;
-import net.miginfocom.layout.LC;
-import net.miginfocom.layout.LayoutCallback;
-import net.miginfocom.layout.LayoutUtil;
-import net.miginfocom.layout.PlatformDefaults;
-import net.miginfocom.layout.UnitValue;
+import net.miginfocom.layout.*;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.LayoutManager2;
-import java.awt.Point;
-import java.awt.Window;
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.ObjectStreamException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /** A very flexible layout manager.
  * <p>
@@ -88,7 +61,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 
 	// ******** Transient part ********
 
-	private transient ContainerWrapper cacheParentW = null;
+//	private transient ContainerWrapper cacheParentW = null;
 
 	private transient final Map<ComponentWrapper, CC> ccMap = new HashMap<ComponentWrapper, CC>(8);
 	private transient javax.swing.Timer debugTimer = null;
@@ -460,8 +433,8 @@ public final class MigLayout implements LayoutManager2, Externalizable
 			lastModCount = mc;
 		}
 
-		if (parent.isValid() == false) {
-			if (lastWasInvalid == false) {
+		if (!parent.isValid()) {
+			if (!lastWasInvalid) {
 				lastWasInvalid = true;
 
 				int hash = 0;
@@ -484,8 +457,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 
 				Dimension ps = parent.getSize();
 				if (lastInvalidSize == null || !lastInvalidSize.equals(ps)) {
-					if (grid != null)
-						grid.invalidateContainerSize();
+					grid = null;
 					lastInvalidSize = ps;
 				}
 			}

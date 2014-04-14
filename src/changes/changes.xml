@@ -4,7 +4,34 @@
 		<author email="mikael.grev@miginfocom.com">mikael</author>
 	</properties>
 	<body>
-        <release version="5.0" date="2013-07-02" description="Release 5.0">
+        <release version="5.0" date="2014-04-14" description="Release 5.0">
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: Added two test panels and made the old ones startup with sizeToScene bounds to catch initial prefSize problems.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: MigPane now works with right-to-left layout (untested) and it picks the default from JavaFX.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: MigPane now revalidates correctly when PlatformDefaults is changed or constraints on MigPane is changed (LayoutConstraints, Column/RowConstraints).
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: MigPane now asks its children for layout orientation and behaves appropriately. For instance this makes wrapped labels get the correct height.
+            </action>
+            <action dev="tbee" type="enhancement">
+                JavaFX: debug graphics are now crisp (width 1).
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: MigPane now disregards unmanaged nodes (external was needed to be set explicitly before).
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: MigPane now adheres to insets (padding) from the MigPane itself.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: Made some optimizations and small adjustments to MigPane. Now it only revalidates the Grid if a child needs layout.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
+                JavaFX: Added baseline layout.
+            </action>
             <action dev="mikaelgrev" type="enhancement">
                 A MigLayout Swing panel could never exceed size Short.MAX_VALUE (32768) in any dimension. Now it's the standard Integer.MAX_VALUE which should be sufficient.
             </action>

@@ -1,18 +1,7 @@
 package net.miginfocom.layout;
 
-import java.beans.Beans;
-import java.beans.ExceptionListener;
-import java.beans.Introspector;
-import java.beans.PersistenceDelegate;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.OutputStream;
+import java.beans.*;
+import java.io.*;
 import java.util.IdentityHashMap;
 import java.util.TreeSet;
 import java.util.WeakHashMap;
@@ -94,7 +83,7 @@ public final class LayoutUtil
 	 */
 	public static String getVersion()
 	{
-		return "4.2";
+		return "5.0";
 	}
 
 	/** If global debug should be on or off. If &gt; 0 then debug is turned on for all MigLayout

@@ -3,12 +3,7 @@ package org.tbee.javafx.scene.layout.test;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
@@ -54,11 +49,12 @@ public class MigPaneTest3 extends Application {
         }
 
         // create scene
-        Scene scene = new Scene(lRoot, 600, 200);
+        Scene scene = new Scene(lRoot, -1, -1);
 
         // create stage
         stage.setTitle("Test");
         stage.setScene(scene);
+		stage.sizeToScene();
         stage.show();
 	}
 }

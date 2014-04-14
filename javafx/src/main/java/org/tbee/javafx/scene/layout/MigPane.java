@@ -1,29 +1,24 @@
 package org.tbee.javafx.scene.layout;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
-import net.miginfocom.layout.AC;
-import net.miginfocom.layout.CC;
-import net.miginfocom.layout.ComponentWrapper;
-import net.miginfocom.layout.ConstraintParser;
-import net.miginfocom.layout.ContainerWrapper;
-import net.miginfocom.layout.Grid;
-import net.miginfocom.layout.LC;
-import net.miginfocom.layout.LayoutUtil;
+import net.miginfocom.layout.*;
+
+import java.util.*;
+
 
 /**
  * Manages nodes with MigLayout added via add(node, CC)
@@ -31,8 +26,18 @@ import net.miginfocom.layout.LayoutUtil;
  * @author Tom Eugelink
  *
  */
-public class MigPane extends javafx.scene.layout.Pane
+public class MigPane extends javafx.scene.layout.Pane implements ChangeListener<Boolean>
 {
+	// Listens for child component layout is needed changes.
+	public void changed(ObservableValue observable, Boolean oldIsInvalid, Boolean newIsInvalid)
+	{
+		if (newIsInvalid) {
+			// TODO Possible optimization to only invalidate if new FX2ComponentWrapper(node).getLayoutCahsCode() has changed and that one asks min/pref/max sizes and some more.
+//			System.out.println("invalidate: layout invalidated in child");
+			invalidateGrid();
+		}
+	}
+
 	// ============================================================================================================
 	// CONSTRUCTOR
 
@@ -79,7 +84,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public MigPane(String layoutConstraints) {
 		super();
-		setLayoutConstraints( ConstraintParser.parseLayoutConstraint( ConstraintParser.prepare( layoutConstraints ) ) );
+		setLayoutConstraints(ConstraintParser.parseLayoutConstraint(ConstraintParser.prepare(layoutConstraints)));
 		construct();
 	}
 
@@ -88,8 +93,8 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public MigPane(String layoutConstraints, String colConstraints) {
 		super();
-		setLayoutConstraints( ConstraintParser.parseLayoutConstraint( ConstraintParser.prepare( layoutConstraints ) ) );
-		setColumnConstraints( ConstraintParser.parseColumnConstraints( ConstraintParser.prepare( colConstraints ) ) );
+		setLayoutConstraints(ConstraintParser.parseLayoutConstraint(ConstraintParser.prepare(layoutConstraints)));
+		setColumnConstraints(ConstraintParser.parseColumnConstraints(ConstraintParser.prepare(colConstraints)));
 		construct();
 	}
 
@@ -98,9 +103,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public MigPane(String layoutConstraints, String colConstraints, String rowConstraints) {
 		super();
-		setLayoutConstraints( ConstraintParser.parseLayoutConstraint( ConstraintParser.prepare( layoutConstraints ) ) );
-		setColumnConstraints( ConstraintParser.parseColumnConstraints( ConstraintParser.prepare( colConstraints ) ) );
-		setRowConstraints( ConstraintParser.parseRowConstraints( ConstraintParser.prepare( rowConstraints ) ) );
+		setLayoutConstraints(ConstraintParser.parseLayoutConstraint(ConstraintParser.prepare(layoutConstraints)));
+		setColumnConstraints(ConstraintParser.parseColumnConstraints(ConstraintParser.prepare(colConstraints)));
+		setRowConstraints(ConstraintParser.parseRowConstraints(ConstraintParser.prepare(rowConstraints)));
 		construct();
 	}
 
@@ -113,188 +118,194 @@ public class MigPane extends javafx.scene.layout.Pane
 		if (getRowConstraints() == null) setRowConstraints(new AC());
 		if (getColumnConstraints() == null) setColumnConstraints(new AC());
 
-		// the container wrapper
-		this.fx2ContainerWrapper = new FX2ContainerWrapper(this);
-
 		// just in case when someone sneekly removes a child the JavaFX's way; prevent memory leaking
 		getChildren().addListener(new ListChangeListener<Node>()
 		{
 			// as of JDK 1.6: @Override
 			public void onChanged(Change<? extends Node> c)
 			{
-				while (c.next())
-				{
-					for (Node node : c.getRemoved())
-					{
-						// debug rectangles are not handled by miglayout
-						if (node instanceof DebugRectangle) continue;
+				while (c.next()) {
+					for (Node node : c.getRemoved()) {
+						// debug rectangles are not handled by miglayout, neither are not managed ones
+						if (!node.isManaged())
+							continue;
 
-						// clean up
-						FX2ComponentWrapper lFX2ComponentWrapper = MigPane.this.nodeToComponentWrapperMap.remove(node);
-						componentWrapperList.remove(lFX2ComponentWrapper);
-						fx2ComponentWrapperToCCMap.remove(lFX2ComponentWrapper);
+						if (node instanceof Parent)
+							((Parent) node).needsLayoutProperty().removeListener(MigPane.this);
 
-						// grid is invalid
-						invalidateMigLayoutGrid();
+						// clean up. Iterate is fast enough and we don't have to have one more map.
+						for (Map.Entry<FX2ComponentWrapper, CC> e : wrapperToCCMap.entrySet()) {
+							if (e.getKey().getComponent() == node) {
+								wrapperToCCMap.remove(e.getKey());
+								break;
+							}
+						}
+
+						// _grid is invalid
+//						System.out.println("invalidate: Node removed");
+						invalidateGrid();
+						biasDirty = true;
 					}
 
-					for (Node node : c.getAddedSubList())
-					{
-						// debug rectangles are not handled by miglayout
-						if (node instanceof DebugRectangle) continue;
+					for (Node node : c.getAddedSubList()) {
+						// debug rectangles are not handled by miglayout, neither are not managed ones
+						if (!node.isManaged())
+							continue;
+
+						if (node instanceof Parent)
+							((Parent) node).needsLayoutProperty().addListener(MigPane.this);
 
 						// get cc or use default
 						CC cc = cNodeToCC.remove(node);
-						if (cc == null) cc = new CC();
 
 						// create wrapper information
 						FX2ComponentWrapper lFX2ComponentWrapper = new FX2ComponentWrapper(node);
-						MigPane.this.componentWrapperList.add(lFX2ComponentWrapper);
-						MigPane.this.nodeToComponentWrapperMap.put(node, lFX2ComponentWrapper);
-						MigPane.this.fx2ComponentWrapperToCCMap.put(lFX2ComponentWrapper, cc );
+						MigPane.this.wrapperToCCMap.put(lFX2ComponentWrapper, cc);
 
-						// grid is invalid
-						invalidateMigLayoutGrid();
+						// _grid is invalid
+//						System.out.println("invalidate: Node added");
+						invalidateGrid();
+						biasDirty = true;
 					}
-				};
-				
-				// if invalid, create
-				if (!isMiglayoutGridValid()) {
-					createMigLayoutGrid();
 				}
 			}
 		});
-
-		// create the initial grid so it won't be null
-		createMigLayoutGrid();
 	}
-	private FX2ContainerWrapper fx2ContainerWrapper;
-	final static protected Map<Node, CC> cNodeToCC = new WeakHashMap<Node, CC>();
+
+	final static protected Map<Node, CC> cNodeToCC = new WeakHashMap<>();
 
 
 	// ============================================================================================================
 	// PANE
 	//
-	// No need to recalculate MigLayout's size when resizing.
-    // This is copied from MigLayout swing's code:
-    //      maximumLayoutSize(); minimumLayoutSize(); preferredLayoutSize();
 
-    @Override
-    protected double computeMaxHeight(double width) {
-    	validateMigLayoutGrid();
-        int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.MAX);
-        return h;
-    }
+	@Override
+	protected double computeMaxHeight(double width) {
+		return computeHeight(width, LayoutUtil.MAX);
+	}
 
-    @Override
-    protected double computeMaxWidth(double height) {
-    	validateMigLayoutGrid();
-        int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.MAX);
-        return w;
-    }
+	@Override
+	protected double computeMaxWidth(double height) {
+		return computeWidth(height, LayoutUtil.MAX);
+	}
 
-    @Override
-    protected double computeMinHeight(double width) {
-    	validateMigLayoutGrid();
-        int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.MIN);
-        return h;
-    }
+	@Override
+	protected double computeMinHeight(double width) {
+		return computeHeight(width, LayoutUtil.MIN);
+	}
 
-    @Override
-    protected double computeMinWidth(double height) {
-    	validateMigLayoutGrid();
-        int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.MIN);
-        return w;
-    }
+	@Override
+	protected double computeMinWidth(double height) {
+		return computeWidth(height, LayoutUtil.MIN);
+	}
 
-    @Override
-    protected double computePrefHeight(double width) {
-    	validateMigLayoutGrid();
-        int h = LayoutUtil.getSizeSafe(grid != null ? grid.getHeight() : null, LayoutUtil.PREF);
-        // for debugging System.out.println("MigPane.computePrefHeight(" + width + ")=" + h + " / " + LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
-        return h;
-    }
+	@Override
+	protected double computePrefHeight(double width) {
+		return computeHeight(width, LayoutUtil.PREF);
+	}
 
-    @Override
-    protected double computePrefWidth(double height) {
-    	validateMigLayoutGrid();
-        int w = LayoutUtil.getSizeSafe(grid != null ? grid.getWidth() : null, LayoutUtil.PREF);
-        return w;
-    }
-    
+	@Override
+	protected double computePrefWidth(double height) {
+		return computeWidth(height, LayoutUtil.PREF);
+	}
+
+	protected double computeWidth(double refHeight, int type) {
+		int ins = getHorIns();
+		return ins + LayoutUtil.getSizeSafe(getValidGrid(gridWidth, refHeight - ins).getWidth(), type);
+	}
+
+	protected double computeHeight(double refWidth, int type) {
+		int ins = getVerIns();
+		return ins + LayoutUtil.getSizeSafe(getValidGrid(refWidth - ins, gridHeight).getHeight(), type);
+	}
+
+	private int getHorIns()
+	{
+		Insets insets = getInsets();
+		return (int) Math.ceil(snapSpace(insets.getLeft()) + snapSpace(insets.getRight()));
+	}
+
+	private int getVerIns()
+	{
+		Insets insets = getInsets();
+		return (int) Math.ceil(snapSpace(insets.getTop()) + snapSpace(insets.getBottom()));
+	}
+
+	private Orientation bias = null;
+	private boolean biasDirty = true;
+
 	@Override
 	public Orientation getContentBias() {
-		// This is required to make things like Label wrapText work correctly.
-		return layoutConstraints.isTopToBottom() ? Orientation.HORIZONTAL : Orientation.VERTICAL;
+		if (biasDirty) {
+			bias = null;
+			for (Node child : getManagedChildren()) {
+				Orientation ori = child.getContentBias();
+				if (ori == Orientation.HORIZONTAL) {
+					bias = Orientation.HORIZONTAL;
+					break;
+				}
+				if (ori != null)
+					bias = ori;
+			}
+			biasDirty = false;
+		}
+		return bias;
 	}
-    
 
-    
 	// ============================================================================================================
 	// CONSTRAINTS
 
 	/** LayoutConstraints: */
 	public LC getLayoutConstraints() { return this.layoutConstraints; }
-	public void setLayoutConstraints(LC value)
+	public void setLayoutConstraints(LC lc)
 	{
-		this.layoutConstraints = value;
+		this.layoutConstraints = lc;
+		invalidateGrid();
 
-		// if debug is set, do it
-		if (value != null && value.getDebugMillis() > 0) {
-			debug = true;
-		}
+		// Set debug. Clear it if LC is null.
+		debug = lc != null && lc.getDebugMillis() > 0;
 	}
 	public MigPane withLayoutConstraints(LC value) { setLayoutConstraints(value); return this; }
-	volatile private LC layoutConstraints = null;
+	private LC layoutConstraints = null;
 	final static public String LAYOUTCONSTRAINTS_PROPERTY_ID = "layoutConstraints";
 	//
-	volatile private boolean debug = false;
+	private boolean debug = false;
 
 	/** ColumnConstraints: */
 	public AC getColumnConstraints() { return this.columnConstraints; }
-	public void setColumnConstraints(AC value) { this.columnConstraints = value; }
+	public void setColumnConstraints(AC value) { this.columnConstraints = value; invalidateGrid();}
 	public MigPane withColumnConstraints(AC value) { setColumnConstraints(value); return this; }
-	volatile private AC columnConstraints = null;
+	private AC columnConstraints = null;
 	final static public String COLUMNCONSTRAINTS_PROPERTY_ID = "columnConstraints";
 
 	/** RowConstraints: */
 	public AC getRowConstraints() { return this.rowConstraints; }
-	public void setRowConstraints(AC value) { this.rowConstraints = value; }
+	public void setRowConstraints(AC value) { this.rowConstraints = value; invalidateGrid();}
 	public MigPane withRowConstraints(AC value) { setRowConstraints(value); return this; }
-	volatile private AC rowConstraints = null;
+	private AC rowConstraints = null;
 	final static public String ROWCONSTRAINTS_PROPERTY_ID = "rowConstraints";
 
 	// ============================================================================================================
 	// SCENE
 
-	/**
-	 * @param node
-	 * @param cc
-	 */
 	public void add(Node node, CC cc) {
-		cNodeToCC.put(node, cc);
+		if (node.isManaged())
+			cNodeToCC.put(node, cc);
 		getChildren().add(node);
 	}
 
-	/**
-	 *
-	 * @param node
-	 */
 	public void add(Node node) {
-		add(node, new CC());
+		getChildren().add(node);
 	}
 
-	/**
-	 *
-	 * @param node
-	 * @param cc
-	 */
 	public void add(Node node, String cc) {
-		// parse as CC
-		CC lCC = ConstraintParser.parseComponentConstraint( ConstraintParser.prepare( cc ) );
-
-		// do regular add
-		add(node, lCC);
+		if (node.isManaged()) {
+			CC lCC = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(cc));
+			// do regular add
+			add(node, lCC);
+		} else {
+			getChildren().add(node);
+		}
 	}
 
 
@@ -302,137 +313,64 @@ public class MigPane extends javafx.scene.layout.Pane
 	// LAYOUT
 
 	// store of constraints
-	final private List<FX2ComponentWrapper> componentWrapperList = new ArrayList<FX2ComponentWrapper>();
-	final private Map<Node, FX2ComponentWrapper> nodeToComponentWrapperMap = new WeakHashMap<Node, FX2ComponentWrapper>();
-	final private Map<ComponentWrapper, CC> fx2ComponentWrapperToCCMap = new WeakHashMap<ComponentWrapper, CC>();
-	final private Map<Node, Integer> nodeToHashcodeMap = new WeakHashMap<Node, Integer>();
+	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<>();
 
 	/**
 	 * This is where the actual layout happens
 	 */
 	protected void layoutChildren()	{
 		// for debugging System.out.println("MigPane.layoutChildren");
-
-		// validate if the grid should be recreated
-		validateMigLayoutGrid();
+		Insets insets = getInsets();
+		double horIns = getHorIns();
+		double verIns = getVerIns();
+		Grid lGrid = getValidGrid(getWidth() - horIns, getHeight() - verIns);
 
 		// here the actual layout happens
 		// this will use FX2ComponentWrapper.setBounds to actually place the components
-		int[] lBounds = new int[]{ 0, 0, (int)Math.ceil(getWidth()), (int)Math.ceil(getHeight())};
-		this.grid.layout( lBounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug, true );
 
-        // paint debug
-        if (debug) {
-	        clearDebug();
-	        this.grid.paintDebug();
-        }
-	}
+		int[] lBounds = new int[]{ (int) Math.round(insets.getLeft()), (int) Math.round(insets.getTop()), (int) Math.ceil(getWidth() - horIns), (int) Math.ceil(getHeight() - verIns)};
+		lGrid.layout(lBounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug, false);
 
-	/*
-	 *
-	 */
-	private void createMigLayoutGrid() {
-		// for debugging System.out.println("createMigLayoutGrid");
-        this.grid = new Grid( fx2ContainerWrapper, getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), fx2ComponentWrapperToCCMap, null );
-        // for debugging System.out.println("MigPane.createMigLayoutGrid height=" + Arrays.toString( grid.getHeight() ) );        
-        this.valid = true;
-        // for debugging System.out.println("MigPane.createMigLayoutGrid valid=" + valid );        
-
-//        // -----------------------------------------
-//        // set MigLayout's own size
-//        setMinWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.MIN));
-//        System.out.println("MigPane.setMinWidth " + getMinWidth());
-//        setPrefWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.PREF));
-//        System.out.println("MigPane.setPrefWidth " + getPrefWidth());
-//        setMaxWidth(LayoutUtil.getSizeSafe(grid.getWidth(), LayoutUtil.MAX));
-//        System.out.println("MigPane.setMaxWidth " + getMaxWidth());
-//
-//        setMinHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.MIN)); // 14 + button's height is 21, that is exactly what we need
-//        System.out.println("MigPane.setMinHeight " + getMinHeight());
-//        setPrefHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.PREF));
-//setPrefHeight(35);
-//        System.out.println("MigPane.setPrefHeight " + getPrefHeight());
-//        setMaxHeight(LayoutUtil.getSizeSafe(grid.getHeight(), LayoutUtil.MAX));
-//        System.out.println("MigPane.setMaxHeight " + getMaxHeight());
-//        // -----------------------------------------
-	}
-	volatile private Grid grid;
-
-	/*
-	 * the grid is valid if all hashcodes are unchanged
-	 */
-	private void validateMigLayoutGrid() {
-
-		// only needed if the grid is valid
-		if (isMiglayoutGridValid()) {
-
-			// scan all childeren
-			for (Node lChild : getChildren()) {
-
-				// if this child is managed by MigLayout
-				if (nodeToComponentWrapperMap.containsKey(lChild)) {
-
-					// get its previous hashcode
-					Integer lPreviousHashcode = nodeToHashcodeMap.get(lChild);
-
-					// calculate its current hashcode
-					Integer lCurrentHashcode = calculateHashcode(lChild);
-
-					// if it is not the same
-					if (lPreviousHashcode == null || !lPreviousHashcode.equals(lCurrentHashcode)) {
-
-						// invalidate the grid
-						invalidateMigLayoutGrid();
-
-						// remember the new hashcode
-						nodeToHashcodeMap.put(lChild, Integer.valueOf(lCurrentHashcode));
-					}
-				}
-			}
-		}
-
-		// if invalid, create
-		if (!isMiglayoutGridValid()) {
-			createMigLayoutGrid();
+		// paint debug
+		if (debug) {
+			clearDebug();
+			lGrid.paintDebug();
 		}
 	}
 
-	/*
-	 * mark the grid as invalid
-	 */
-	private void invalidateMigLayoutGrid() {
-		this.valid = false;
-        // for debugging System.out.println("MigPane.invalidateMigLayoutGrid valid=" + valid );        
+	private void invalidateGrid()
+	{
+		_grid = null;
 	}
 
-    /*
-     * @returns true if the grid is valid.
-     */
-    private boolean isMiglayoutGridValid() {
-        return this.valid;
-    }
-    volatile boolean valid = false;
+	private Grid _grid;
+	private int gridModCount = 0;
+	private double gridWidth = -1, gridHeight = -1;
 
-    /**
-     * use all kinds of properties to calculate a hash for the layout
-     * @param node
-     * @return
-     */
-    private Integer calculateHashcode(Node node) {
-    	final int prime = 31;
-    	int hash = 1;
-    	hash = prime * hash + (int)node.minWidth(-1);
-    	hash = prime * hash + (int)node.minHeight(-1);
-    	hash = prime * hash + (int)node.prefWidth(-1);
-    	hash = prime * hash + (int)node.prefHeight(-1);
-    	hash = prime * hash + (int)node.maxWidth(-1);
-    	hash = prime * hash + (int)node.maxHeight(-1);
-    	hash = prime * hash + (int)node.getLayoutBounds().getWidth();
-    	hash = prime * hash + (int)node.getLayoutBounds().getHeight();
-    	hash = prime * hash + (node.isVisible() ? 0 : 1);
-    	// for debugging System.out.println("calculateHashcode " + node + " -> hash=" + hash);    	
-    	return hash;
-    }
+	/*
+	 * the _grid is valid if all hashcodes are unchanged
+	 */
+	private Grid getValidGrid(double refWidth, double refHeight) {
+
+		if (PlatformDefaults.getModCount() != gridModCount) {
+			gridModCount = PlatformDefaults.getModCount();
+			invalidateGrid();
+		}
+
+		Orientation bias = getContentBias();
+		if (bias != null && (refWidth != gridWidth || refHeight != gridHeight)) {
+//			System.out.println("invalidate: new width & height.  w: " + refWidth + ", gridW: " + gridWidth + " h: " + refHeight + ", gridH: " + gridHeight);
+			invalidateGrid();
+		}
+
+		if (_grid == null) {
+			gridWidth = refWidth;
+			gridHeight = refHeight;
+			_grid = new Grid(new FX2ContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, null);
+		}
+
+		return _grid;
+	}
 
 	// ============================================================================================================
 	// DEBUG
@@ -445,14 +383,15 @@ public class MigPane extends javafx.scene.layout.Pane
 		MigPane.this.getChildren().removeAll(this.debugRectangles);
 		this.debugRectangles.clear();
 	}
-	final private List<Node> debugRectangles = new ArrayList<Node>();
+	final private List<Node> debugRectangles = new ArrayList<>();
 
 	/*
 	 *
 	 */
 	private void addDebugRectangle(double x, double y, double w, double h, DebugRectangleType type)
 	{
-		DebugRectangle lRectangle = new DebugRectangle( snap(x), snap(y), snap(x + w) - snap(x), snap(y + h) - snap(y) );
+		DebugRectangle lRectangle = new DebugRectangle( snap(x), snap(y), snap(x + w - 1) - snap(x), snap(y + h - 1) - snap(y) );
+
 		if (type == DebugRectangleType.CELL) {
 			//System.out.print(getId() + ": " + "paintDebugCell ");
 			lRectangle.setStroke(getDebugCellColor());
@@ -485,15 +424,15 @@ public class MigPane extends javafx.scene.layout.Pane
 		MigPane.this.getChildren().add(lRectangle);
 		this.debugRectangles.add(lRectangle);
 	}
-	enum DebugRectangleType { CELL, OUTLINE, CONTAINER_OUTLINE, EXTERNAL }
+	private enum DebugRectangleType { CELL, OUTLINE, CONTAINER_OUTLINE, EXTERNAL }
 
 	class DebugRectangle extends Rectangle
 	{
 		public DebugRectangle(double x, double y, double w, double h)
 		{
 			super(x,y,w,h);
+			setManaged(false);
 		}
-		
 	}
 
 	private double snap(double v) {
@@ -527,32 +466,38 @@ public class MigPane extends javafx.scene.layout.Pane
 	 * This class provides the data for MigLayout for the container
 	 */
 	class FX2ContainerWrapper extends FX2ComponentWrapper
-	implements net.miginfocom.layout.ContainerWrapper {
+		implements net.miginfocom.layout.ContainerWrapper {
 
 		public FX2ContainerWrapper(Node node) {
 			super(node);
 		}
 
 		// as of JDK 1.6: @Override
-		public net.miginfocom.layout.ComponentWrapper[] getComponents() {
+		public ComponentWrapper[] getComponents() {
 			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
-			return componentWrapperList.toArray(new FX2ComponentWrapper[]{}); // must be in the order of adding!
+			return wrapperToCCMap.keySet().toArray(new FX2ComponentWrapper[wrapperToCCMap.size()]); // must be in the order of adding!
 		}
 
 		// as of JDK 1.6: @Override
 		public int getComponentCount() {
-			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponentCount " + MigPane.this.fx2ComponentWrapperToCCMap.size());
-			return MigPane.this.fx2ComponentWrapperToCCMap.size();
+			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponentCount " + MigPane.this.wrapperToCCMap.size());
+			return MigPane.this.wrapperToCCMap.size();
 		}
 
 		// as of JDK 1.6: @Override
-		public java.lang.Object getLayout() {
+		public Object getLayout() {
 			return MigPane.this;
 		}
 
 		// as of JDK 1.6: @Override
 		public boolean isLeftToRight() {
-			return true; // TODO: this should be determined somehow?
+			NodeOrientation ori = getNodeOrientation();
+			if (ori == NodeOrientation.INHERIT) {
+				ContainerWrapper parent = getParent();
+				if (parent != null)
+					return parent.isLeftToRight();
+			}
+			return ori != NodeOrientation.RIGHT_TO_LEFT;
 		}
 
 		// as of JDK 1.6: @Override
@@ -589,21 +534,22 @@ public class MigPane extends javafx.scene.layout.Pane
 		// get the parent
 		// as of JDK 1.6: @Override
 		public ContainerWrapper getParent() {
-			return fx2ContainerWrapper;
+			Parent parent = node.getParent();
+			return parent != null ? new FX2ContainerWrapper(node.getParent()) : null;
 		}
 
 		// what type are we wrapping
 		// as of JDK 1.6: @Override
 		public int getComponentType(boolean arg0) {
-	        if (node instanceof TextField || node instanceof TextArea) {
-	            return TYPE_TEXT_FIELD;
-	        }
-	        else if (node instanceof Group) {
-	            return TYPE_CONTAINER;
-	        }
-	        else {
-	            return TYPE_UNKNOWN;
-	        }
+			if (node instanceof TextField || node instanceof TextArea) {
+				return TYPE_TEXT_FIELD;
+			}
+			else if (node instanceof Group) {
+				return TYPE_CONTAINER;
+			}
+			else {
+				return TYPE_UNKNOWN;
+			}
 		}
 
 		// as of JDK 1.6: @Override
@@ -614,13 +560,13 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public int getX() {
-			int v = (int)Math.ceil(node.getLayoutBounds().getMinX());
+			int v = (int) node.getLayoutBounds().getMinX();
 			return v;
 		}
 
 		// as of JDK 1.6: @Override
 		public int getY() {
-			int v = (int)Math.ceil(node.getLayoutBounds().getMinY());
+			int v = (int) node.getLayoutBounds().getMinY();
 			return v;
 		}
 
@@ -649,8 +595,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		public int getMaximumWidth(int height) {
 			int v = (int)Math.ceil(this.node.maxWidth(height));
 			if ( node instanceof javafx.scene.layout.Region
-			  || node instanceof javafx.scene.control.Control // backwards compatibility with JavaFX2 (control does not extend Region there)
-			   ) {
+			     || node instanceof javafx.scene.control.Control // backwards compatibility with JavaFX2 (control does not extend Region there)
+				) {
 				v = Integer.MAX_VALUE;
 				// for debugging System.out.println(getComponent() + " forced getMaximumWidth " + v); }
 			}
@@ -680,8 +626,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		public int getMaximumHeight(int width) {
 			int v = (int)Math.ceil(this.node.maxHeight(width));
 			if ( node instanceof javafx.scene.layout.Region
-			  || node instanceof javafx.scene.control.Control // backwards compatibility with JavaFX2 (control does not extend Region there)
-			   ) {
+			     || node instanceof javafx.scene.control.Control // backwards compatibility with JavaFX2 (control does not extend Region there)
+				) {
 				v = Integer.MAX_VALUE;
 				// for debugging System.out.println(getComponent() + " forced getMaximumHeight " + v); }
 			}
@@ -690,23 +636,23 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public int getBaseline(int width, int height) {
-			return -1; // TODO
+			return (int) Math.round(node.getBaselineOffset());
 		}
 
 		// as of JDK 1.6: @Override
 		public int getScreenLocationX() {
-			// this code is never called?
-			Bounds lBoundsInScenenode = node.localToScene(node.getBoundsInLocal());
-			int v = (int)Math.ceil(node.getScene().getX() + node.getScene().getX() + lBoundsInScenenode.getMinX());
+			// this code is called when absolute layout is used
+			Bounds lBoundsInSceneNode = node.localToScene(node.getBoundsInLocal());
+			int v = (int) (node.getScene().getX() + node.getScene().getX() + lBoundsInSceneNode.getMinX());
 			// for debugging System.out.println(getComponent() + " getScreenLocationX =" + v);
 			return v;
 		}
 
 		// as of JDK 1.6: @Override
 		public int getScreenLocationY() {
-			// this code is never called?
-			Bounds lBoundsInScenenode = node.localToScene(node.getBoundsInLocal());
-			int v = (int)Math.ceil(node.getScene().getY() + node.getScene().getY() + lBoundsInScenenode.getMinY());
+			// this code is called when absolute layout is used
+			Bounds lBoundsInSceneNode = node.localToScene(node.getBoundsInLocal());
+			int v = (int) (node.getScene().getY() + node.getScene().getY() + lBoundsInSceneNode.getMinY());
 			// for debugging System.out.println(getComponent() + " getScreenLocationX =" + v);
 			return v;
 		}
@@ -714,7 +660,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getScreenHeight() {
 			// this code is never called?
-			int v = (int)Math.ceil(Screen.getPrimary().getBounds().getHeight());
+			int v = (int) Math.ceil(Screen.getPrimary().getBounds().getHeight());
 			// for debugging System.out.println(getComponent() + " getScreenHeight=" + v);
 			return v;
 		}
@@ -722,7 +668,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public int getScreenWidth() {
 			// this code is never called?
-			int v = (int)Math.ceil(Screen.getPrimary().getBounds().getWidth());
+			int v = (int) Math.ceil(Screen.getPrimary().getBounds().getWidth());
 			// for debugging System.out.println(getComponent() + " getScreenWidth=" + v);
 			return v;
 		}
@@ -749,18 +695,19 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public int getLayoutHashCode() {
-			int lHashCode = 0;
-			lHashCode += ((int)this.node.getLayoutBounds().getWidth()) + (((int)this.node.getLayoutBounds().getHeight()) * 32); // << 0, << 5
-		    if (this.node.isVisible()) {
-		    	lHashCode += 1324511;
-		    }
-		    if (this.node.isManaged()) {
-		    	lHashCode += 1324513;
-		    }
-		    if (this.node.getId().length() > 0) {
-		        lHashCode += this.node.getId().hashCode();
-		    }
-			return lHashCode; // 0;
+			// Not used in MigPane.
+			return 0;
+//			int lHashCode = 0;
+//			lHashCode += ((int)this.node.getLayoutBounds().getWidth()) + (((int)this.node.getLayoutBounds().getHeight()) * 32); // << 0, << 5
+//			if (this.node.isVisible()) {
+//				lHashCode += 1324511;
+//			}
+//
+//			String id = node.getId();
+//			if (id != null) {
+//				lHashCode += this.node.getId().hashCode();
+//			}
+//			return lHashCode; // 0;
 		}
 
 		// as of JDK 1.6: @Override
@@ -770,7 +717,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public boolean hasBaseline() {
-			return false;
+			return node.getBaselineOffset() != BASELINE_OFFSET_SAME_AS_HEIGHT;
 		}
 
 		// as of JDK 1.6: @Override
@@ -780,32 +727,25 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public void paintDebugOutline(boolean useVisualPadding) {
-			ComponentWrapper lComponentWrapper = nodeToComponentWrapperMap.get(node);
-			CC lCC = fx2ComponentWrapperToCCMap.get(lComponentWrapper);
-			if (lCC != null && lCC.isExternal())
-			{
-				addDebugRectangle(this.node.getLayoutX() + this.node.getLayoutBounds().getMinX(), (double)this.node.getLayoutY() + this.node.getLayoutBounds().getMinY(), getWidth(), getHeight(), DebugRectangleType.EXTERNAL); // always draws node size, even if less is used
-			}
-			else
-			{
-				addDebugRectangle(this.node.getLayoutX() + this.node.getLayoutBounds().getMinX(), (double)this.node.getLayoutY() + this.node.getLayoutBounds().getMinY(), getWidth(), getHeight(), DebugRectangleType.OUTLINE); // always draws node size, even if less is used
-			}
+			CC lCC = wrapperToCCMap.get(this);
+			DebugRectangleType type = lCC != null && lCC.isExternal() ?  DebugRectangleType.EXTERNAL : DebugRectangleType.OUTLINE;
+			addDebugRectangle(this.node.getLayoutX() + this.node.getLayoutBounds().getMinX(), (double)this.node.getLayoutY() + this.node.getLayoutBounds().getMinY(), getWidth(), getHeight(), type); // always draws node size, even if less is used
 		}
 
-	    public int hashCode() {
-	        return node.hashCode();
-	    }
+		public int hashCode() {
+			return node.hashCode();
+		}
 
-	    /**
-	     * This needs to be overridden so that different wrappers that hold the same component compare
-	     * as equal.  Otherwise, Grid won't be able to layout the components correctly.
-	     */
-	    public boolean equals(Object o) {
-	        if (!(o instanceof FX2ComponentWrapper)) {
-	            return false;
-	        }
-	        return getComponent().equals( ((FX2ComponentWrapper)o).getComponent() );
-	    }
+		/**
+		 * This needs to be overridden so that different wrappers that hold the same component compare
+		 * as equal.  Otherwise, Grid won't be able to layout the components correctly.
+		 */
+		public boolean equals(Object o) {
+			if (!(o instanceof FX2ComponentWrapper)) {
+				return false;
+			}
+			return getComponent().equals( ((FX2ComponentWrapper)o).getComponent() );
+		}
 
 	}
 }
