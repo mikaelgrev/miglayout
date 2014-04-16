@@ -1,40 +1,16 @@
 package net.miginfocom.demo;
 
+import net.miginfocom.layout.*;
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import net.miginfocom.layout.AC;
-import net.miginfocom.layout.CC;
-import net.miginfocom.layout.ConstraintParser;
-import net.miginfocom.layout.IDEUtil;
-import net.miginfocom.layout.LC;
-import net.miginfocom.layout.LayoutUtil;
-import net.miginfocom.layout.PlatformDefaults;
-import net.miginfocom.swing.MigLayout;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.LayoutManager;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -224,8 +200,10 @@ public class SwingDemo extends JFrame
 
 		final String laff = laf;
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
 				try {
 					UIManager.setLookAndFeel(laff);
 				} catch (Exception ex) {
@@ -1369,8 +1347,16 @@ public class SwingDemo extends JFrame
 		// External tab
 		JPanel externalPanel = createTabPanel(new MigLayout());
 
-		JButton extButt = createButton("Bounds Externally Set!");
+//		JButton extButt = createButton("Bounds Externally Set!");
+		JButton extButt = new JButton("Bounds Externally Set!") {
+			public void reshape(int x, int y, int width, int height)
+			{
+				new Throwable().printStackTrace();
+				super.reshape(x, y, width, height);
+			}
+		};
 		extButt.setBounds(250, 130, 200, 40);
+
 		externalPanel.add(extButt, "id ext, external");
 		externalPanel.add(createButton(), "pos ext.x2 ext.y2");
 		externalPanel.add(createButton(), "pos null null ext.x ext.y");

@@ -42,5 +42,4 @@ public class MigPaneTest6 extends Application {
 		stage.sizeToScene();
         stage.show();
     }
-
 }

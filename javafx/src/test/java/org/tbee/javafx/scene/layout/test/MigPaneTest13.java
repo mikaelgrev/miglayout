@@ -1,12 +1,17 @@
 package org.tbee.javafx.scene.layout.test;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.LabelBuilder;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.tbee.javafx.scene.layout.MigPane;
 
 /**
@@ -40,21 +45,34 @@ public class MigPaneTest13 extends Application {
 		LabelBuilder<?> titleLB = LabelBuilder.create().style("-fx-font-weight: bold;");
 		vBox.getChildren().add(titleLB.text("VBox").build());
 		final Label vBoxLabel = lBuilder.build();
-		vBox.getChildren().add(vBoxLabel);
+//		vBox.getChildren().add(vBoxLabel);
 //		vBox.setPadding(new Insets(50, 50, 50, 50));
-		root.getChildren().add(vBox);
+//		root.getChildren().add(vBox);
 
-		root.getChildren().add(new Separator());
+//		root.getChildren().add(new Separator());
 
 		// MigPane
 		final MigPane mPane = new MigPane("ins 0 , gap 0");
-		final Label migLabel = lBuilder.build();
-		// doesn't even work when min height == pref height
-//		migLabel.setWrapText(false);
+		final Label migLabel = new Label("Test long label to see if the wrap works ok in a Migpane. I am going to have to keep writing because this may not be long enough yet!!") {
+			protected void setHeight(double h)
+			{
+				System.out.println("Set h: " + h);
+				super.setHeight(h);
+			}
 
-		mPane.add(titleLB.text("MigPane").build(), "wrap");
+			protected void setWidth(double w)
+			{
+				System.out.println("Set w: " + w);
+				super.setWidth(w);
+			}
+		};
+		migLabel.setWrapText(true);
+
+		final Rectangle rect = new Rectangle(100, 100);
+//		mPane.add(titleLB.text("MigPane").build(), "wrap");
+//		mPane.add(rect, "");
 		mPane.add(migLabel, "");
-//		mPane.add(new Button("Hello"), "");
+
 
 //		mPane.setPadding(new Insets(50, 50, 50, 50));
 
@@ -69,18 +87,19 @@ public class MigPaneTest13 extends Application {
 //			}
 //		});
 
-//		Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
-//			public void handle(ActionEvent event) {
-////				butt.setFont(new Font(Math.round(Math.random() * 10)));
-////				System.out.println("bef: " + butt.isNeedsLayout());
-////				butt.setVisible(!butt.isVisible());
-////				stage.sizeToScene();
-////				butt.setId("" + Math.random());
-////				System.out.println("aft: " + butt.isNeedsLayout());
-//			}
-//		}));
-//		fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-//		fiveSecondsWonder.play();
+		Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				rect.setWidth(Math.random() * 100);
+//				butt.setFont(new Font(Math.round(Math.random() * 10)));
+//				System.out.println("bef: " + butt.isNeedsLayout());
+//				butt.setVisible(!butt.isVisible());
+//				stage.sizeToScene();
+//				butt.setId("" + Math.random());
+//				System.out.println("aft: " + butt.isNeedsLayout());
+			}
+		}));
+		fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+		fiveSecondsWonder.play();
 //
 //		Timeline fiveSecondsWonder2 = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
 //			public void handle(ActionEvent event) {
@@ -95,6 +114,7 @@ public class MigPaneTest13 extends Application {
 		root.getChildren().add(mPane);
 
 		stage.setScene(scene);
+		stage.sizeToScene();
 		stage.show();
 
 		// The label correctly calculetes its pref and max height based on the
@@ -103,11 +123,11 @@ public class MigPaneTest13 extends Application {
 		// as prefWidth and cuts the rest of the
 		// line with ellipsis, setting it to true returns a prefHeight so that
 		// every line is visible
-		double sceneWidth = scene.getWidth();
-		System.out.println("label heights for a scene width of " + sceneWidth
-				+ ":\nmin: " + vBoxLabel.minHeight(sceneWidth) + ", pref: "
-				+ vBoxLabel.prefHeight(sceneWidth) + ", max:"
-				+ vBoxLabel.maxHeight(sceneWidth));
-		stage.sizeToScene();
+//		double sceneWidth = scene.getWidth();
+//
+//		System.out.println("\nlabel heights for a scene width of " + sceneWidth
+//				+ ":\nmin: " + vBoxLabel.minHeight(sceneWidth) + ", pref: "
+//				+ vBoxLabel.prefHeight(sceneWidth) + ", max:"
+//				+ vBoxLabel.maxHeight(sceneWidth));
 	}
 }

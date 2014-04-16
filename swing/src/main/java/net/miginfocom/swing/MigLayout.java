@@ -61,7 +61,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 
 	// ******** Transient part ********
 
-//	private transient ContainerWrapper cacheParentW = null;
+	private transient ContainerWrapper cacheParentW = null;
 
 	private transient final Map<ComponentWrapper, CC> ccMap = new HashMap<ComponentWrapper, CC>(8);
 	private transient javax.swing.Timer debugTimer = null;
@@ -533,10 +533,10 @@ public final class MigLayout implements LayoutManager2, Externalizable
 					parent.getHeight() - i.top - i.bottom
 			};
 
-			if (grid.layout(b, lc.getAlignX(), lc.getAlignY(), getDebug(), true)) {
+			if (grid.layout(b, lc.getAlignX(), lc.getAlignY(), getDebug())) {
 				grid = null;
 				checkCache(parent);
-				grid.layout(b, lc.getAlignX(), lc.getAlignY(), getDebug(), false);
+				grid.layout(b, lc.getAlignX(), lc.getAlignY(), getDebug());
 			}
 
 			long newSize = grid.getHeight()[1] + (((long) grid.getWidth()[1]) << 32);

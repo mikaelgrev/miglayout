@@ -78,13 +78,13 @@ public final class Grid
 
 	/** An x, y array implemented as a sparse array to accommodate for any grid size without wasting memory (or rather 15 bit (0-MAX_GRID * 0-MAX_GRID).
 	 */
-	private final LinkedHashMap<Integer, Cell> grid = new LinkedHashMap<Integer, Cell>();   // [(y << 16) + x] -> Cell. null key for absolute positioned compwraps
+	private final LinkedHashMap<Integer, Cell> grid = new LinkedHashMap<>();   // [(y << 16) + x] -> Cell. null key for absolute positioned compwraps
 
 	private HashMap<Integer, BoundSize> wrapGapMap = null;   // Row or Column index depending in the dimension that "wraps". Normally row indexes but may be column indexes if "flowy". 0 means before first row/col.
 
 	/** The size of the grid. Row count and column count.
 	 */
-	private final TreeSet<Integer> rowIndexes = new TreeSet<Integer>(), colIndexes = new TreeSet<Integer>();
+	private final TreeSet<Integer> rowIndexes = new TreeSet<>(), colIndexes = new TreeSet<>();
 
 	/** The row and column specifications.
 	 */
@@ -132,6 +132,7 @@ public final class Grid
 	 */
 	public Grid(ContainerWrapper container, LC lc, AC rowConstr, AC colConstr, Map<? extends ComponentWrapper, CC> ccMap, ArrayList<LayoutCallback> callbackList)
 	{
+		System.out.println("new grid!");
 		this.lc = lc;
 		this.rowConstr = rowConstr;
 		this.colConstr = colConstr;
@@ -147,7 +148,7 @@ public final class Grid
 		boolean hasPushX = false, hasPushY = false;
 		boolean hitEndOfRow = false;
 		final int[] cellXY = new int[2];
-		final ArrayList<int[]> spannedRects = new ArrayList<int[]>(2);
+		final ArrayList<int[]> spannedRects = new ArrayList<>(2);
 
 		final DimConstraint[] specs = (lc.isFlowX() ? rowConstr : colConstr).getConstaints();
 
@@ -336,9 +337,9 @@ public final class Grid
 
 		// If there were size groups, calculate the largest values in the groups (for min/pref/max) and enforce them on the rest in the group.
 		if (sizeGroupsX > 0 || sizeGroupsY > 0) {
-			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<String, int[]>(sizeGroupsX) : null;
-			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<String, int[]>(sizeGroupsY) : null;
-			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<CompWrap>(Math.max(sizeGroupsX, sizeGroupsY));
+			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<>(sizeGroupsX) : null;
+			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<>(sizeGroupsY) : null;
+			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<>(Math.max(sizeGroupsX, sizeGroupsY));
 
 			for (Cell cell : grid.values()) {
 				for (int i = 0; i < cell.compWraps.size(); i++) {
@@ -348,9 +349,9 @@ public final class Grid
 
 					if (sgx != null || sgy != null) {
 						if (sgx != null && sizeGroupMapX != null)
-							addToSizeGroup(sizeGroupMapX, sgx, cw.horSizes);
+							addToSizeGroup(sizeGroupMapX, sgx, cw.getSizes(true));
 						if (sgy != null && sizeGroupMapY != null)
-							addToSizeGroup(sizeGroupMapY, sgy, cw.verSizes);
+							addToSizeGroup(sizeGroupMapY, sgy, cw.getSizes(false));
 						sizeGroupCWs.add(cw);
 					}
 				}
@@ -364,37 +365,6 @@ public final class Grid
 					cw.setForcedSizes(sizeGroupMapY.get(cw.cc.getVertical().getSizeGroup()), false); // Target method handles null sizes
 			}
 		} // Component loop
-
-		// If there were size groups, calculate the largest values in the groups (for min/pref/max) and enforce them on the rest in the group.
-//		if (sizeGroupsX > 0 || sizeGroupsY > 0) {
-//			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<String, int[]>(sizeGroupsX) : null;
-//			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<String, int[]>(sizeGroupsY) : null;
-//			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<CompWrap>(Math.max(sizeGroupsX, sizeGroupsY));
-//
-//			for (Cell cell : grid.values()) {
-//				for (int i = 0; i < cell.compWraps.size(); i++) {
-//					CompWrap cw = cell.compWraps.get(i);
-//					String sgx = cw.cc.getHorizontal().getSizeGroup();
-//					String sgy = cw.cc.getVertical().getSizeGroup();
-//
-//					if (sgx != null || sgy != null) {
-//						if (sgx != null && sizeGroupMapX != null)
-//							addToSizeGroup(sizeGroupMapX, sgx, cw.horSizes);
-//						if (sgy != null && sizeGroupMapY != null)
-//							addToSizeGroup(sizeGroupMapY, sgy, cw.verSizes);
-//						sizeGroupCWs.add(cw);
-//					}
-//				}
-//			}
-//
-//			// Set/equalize the sizeGroups to same the values.
-//			for (CompWrap cw : sizeGroupCWs) {
-//				if (sizeGroupMapX != null)
-//					cw.setForcedSizes(sizeGroupMapX.get(cw.cc.getHorizontal().getSizeGroup()), true);  // Target method handles null sizes
-//				if (sizeGroupMapY != null)
-//					cw.setForcedSizes(sizeGroupMapY.get(cw.cc.getVertical().getSizeGroup()), false); // Target method handles null sizes
-//			}
-//		}
 
 		if (hasTagged)
 			sortCellsByPlatform(grid.values(), container);
@@ -447,36 +417,43 @@ public final class Grid
 		String[] linkIDs = cc.getLinkTargets();
 		for (String linkID : linkIDs) {
 			if (linkTargetIDs == null)
-				linkTargetIDs = new HashMap<String, Boolean>();
+				linkTargetIDs = new HashMap<>();
 			linkTargetIDs.put(linkID, null);
 		}
 	}
 
 	/** If the container (parent) that this grid is laying out has changed its bounds, call this method to
 	 * clear any cached values.
-	 * @deprecated Did not clear size caches in CompWrap. Grid needs to be recreated to account for
-	 * components where for instance preferred height depend on its width or the container width.
 	 */
 	public void invalidateContainerSize()
 	{
 		colFlowSpecs = null;
 	}
 
+	/**
+	 * @deprecated since 5.0 Last boolean is not needed and is gotten from the new {@link net.miginfocom.layout.ComponentWrapper#getContentBias()} instead;
+	 */
+	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean notUsed)
+	{
+		return layout(bounds, alignX, alignY, debug);
+	}
+
 	/** Does the actual layout. Uses many values calculated in the constructor.
 	 * @param bounds The bounds to layout against. Normally that of the parent. [x, y, width, height].
-	 * @param alignX The alignment for the x-axis.
-	 * @param alignY The alignment for the y-axis.
+	 * @param alignX The alignment for the x-axis. Can be null.
+	 * @param alignY The alignment for the y-axis. Can be null.
 	 * @param debug If debug information should be saved in {@link #debugRects}.
-	 * @param checkPrefChange If a check should be done to see if the setting of any new bounds changes the preferred size
-	 * of a component.
-	 * @return If the layout has probably changed the preferred size and there is need for a new layout (normally only SWT).
+	 * @return If the layout has changed the preferred size and there is need for a new layout. This can happen if one or more components
+	 * in the grid has a content bias according to {@link net.miginfocom.layout.ComponentWrapper#getContentBias()}.
+	 * @since 5.0
 	 */
-	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean checkPrefChange)
+	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug)
 	{
 		if (debug)
-			debugRects = new ArrayList<int[]>();
+			debugRects = new ArrayList<>();
 
-		checkSizeCalcs();
+		if (colFlowSpecs == null)
+			checkSizeCalcs(bounds[2], bounds[3]);
 
 		resetLinkValues(true, true);
 
@@ -487,7 +464,7 @@ public final class Grid
 		int compCount = container.getComponentCount();
 
 		// Transfer the calculated bound from the ComponentWrappers to the actual Components.
-		boolean useVisualPadding = lc.isVisualPadding();
+		boolean addVisualPadding = lc.isVisualPadding();
 		boolean layoutAgain = false;
 		if (compCount > 0) {
 			for (int j = 0; j < (linkTargetIDs != null ? 2 : 1); j++) {   // First do the calculations (maybe more than once) then set the bounds when done
@@ -497,33 +474,34 @@ public final class Grid
 					doAgain = false;
 					for (Cell cell : grid.values()) {
 						ArrayList<CompWrap> compWraps = cell.compWraps;
-						for (int i = 0, iSz = compWraps.size(); i < iSz; i++) {
-							CompWrap cw = compWraps.get(i);
-
+						for (CompWrap cw : compWraps) {
 							if (j == 0) {
 								doAgain |= doAbsoluteCorrections(cw, bounds);
-								if (doAgain == false) { // If we are going to do this again, do not bother this time around
+								if (!doAgain) { // If we are going to do this again, do not bother this time around
 									if (cw.cc.getHorizontal().getEndGroup() != null)
 										endGrpXMap = addToEndGroup(endGrpXMap, cw.cc.getHorizontal().getEndGroup(), cw.x + cw.w);
+
 									if (cw.cc.getVertical().getEndGroup() != null)
 										endGrpYMap = addToEndGroup(endGrpYMap, cw.cc.getVertical().getEndGroup(), cw.y + cw.h);
 								}
 
 								// @since 3.7.2 Needed or absolute "pos" pointing to "visual" or "container" didn't work if
 								// their bounds changed during the layout cycle. At least not in SWT.
-								if (linkTargetIDs != null && (linkTargetIDs.containsKey("visual") || linkTargetIDs.containsKey("container")))
+								if (linkTargetIDs != null && (linkTargetIDs.containsKey("visual") || linkTargetIDs.containsKey("container"))) {
 									layoutAgain = true;
+								}
 							}
 
 							if (linkTargetIDs == null || j == 1) {
 								if (cw.cc.getHorizontal().getEndGroup() != null)
 									cw.w = endGrpXMap.get(cw.cc.getHorizontal().getEndGroup()) - cw.x;
+
 								if (cw.cc.getVertical().getEndGroup() != null)
 									cw.h = endGrpYMap.get(cw.cc.getVertical().getEndGroup()) - cw.y;
 
 								cw.x += bounds[0];
 								cw.y += bounds[1];
-								layoutAgain |= cw.transferBounds(checkPrefChange && !layoutAgain, useVisualPadding);
+								layoutAgain |= cw.transferBounds(addVisualPadding);
 
 								if (callbackList != null) {
 									for (LayoutCallback callback : callbackList)
@@ -564,7 +542,7 @@ public final class Grid
 		if (debugRects != null) {
 			container.paintDebugOutline(lc.isVisualPadding());
 
-			ArrayList<int[]> painted = new ArrayList<int[]>();
+			ArrayList<int[]> painted = new ArrayList<>();
 			for (int[] r : debugRects) {
 				if (!painted.contains(r)) {
 					container.paintDebugCell(r[0], r[1], r[2], r[3]);
@@ -585,62 +563,95 @@ public final class Grid
 		return container;
 	}
 
-//	public final int[] getWidth()
-//	{
-//		return getWidth(null);
-//	}
-
-//	public final int[] getWidth(Integer refHeight)
-//	{
-//		checkSizeCalcs(null, refHeight);
-//		return width.clone();
-//	}
-
-//	public final int[] getHeight()
-//	{
-//		return getHeight(null);
-//	}
-
-//	public final int[] getHeight(Integer refWidth)
-//	{
-//		checkSizeCalcs(refWidth, null);
-//		return height.clone();
-//	}
-
 	public final int[] getWidth()
 	{
-		checkSizeCalcs();
+		return getWidth(lastRefHeight);
+	}
+
+	public final int[] getWidth(int refHeight)
+	{
+		checkSizeCalcs(lastRefWidth, refHeight);
 		return width.clone();
 	}
 
 	public final int[] getHeight()
 	{
-		checkSizeCalcs();
+		return getHeight(lastRefWidth);
+	}
+
+	public final int[] getHeight(int refWidth)
+	{
+		checkSizeCalcs(refWidth, lastRefHeight);
 		return height.clone();
 	}
 
-	private void checkSizeCalcs()
+//	public final int[] getWidth()
+//	{
+//		checkSizeCalcs();
+//		return width.clone();
+//	}
+//
+//	public final int[] getHeight()
+//	{
+//		checkSizeCalcs();
+//		return height.clone();
+//	}
+
+	private int lastRefWidth = 0, lastRefHeight = 0;
+
+	private void checkSizeCalcs(int refWidth, int refHeight)
 	{
-		if (colFlowSpecs == null) {
+		if (colFlowSpecs == null || refWidth != lastRefWidth || refHeight != lastRefHeight) {
 
-			colFlowSpecs = calcRowsOrColsSizes(true);
-			rowFlowSpecs = calcRowsOrColsSizes(false);
+			lastRefWidth = refWidth;
+			lastRefHeight = refHeight;
 
-			width = getMinPrefMaxSumSize(true);
-			height = getMinPrefMaxSumSize(false);
+			System.out.println("Check size for w: " + refWidth + ", h: " + refHeight);
 
-			if (linkTargetIDs == null) {
-				resetLinkValues(false, true);
-			} else {
-				// This call makes some components flicker on SWT. They get their bounds changed twice since
-				// the change might affect the absolute size adjustment below. There's no way around this that
-				// I know of.
-				layout(new int[4], null, null, false, false);
-				resetLinkValues(false, false);
+			if (colFlowSpecs != null && (refWidth > 0 || refHeight > 0)) {
+				int[] refBounds = new int[]{0, 0, (refWidth > 0 ? refWidth : width[LayoutUtil.PREF]), (refHeight > 0 ? refHeight : height[LayoutUtil.PREF])};
+				if (layout(refBounds, null, null, false)) {
+//					System.out.println("AGAIN!!!!!!!!");
+//					continue;
+				}
 			}
 
-			adjustSizeForAbsolute(true);
-			adjustSizeForAbsolute(false);
+			for (int i = 0; i < 2; i++) {
+				colFlowSpecs = calcRowsOrColsSizes(true, refWidth);
+				rowFlowSpecs = calcRowsOrColsSizes(false, refHeight);
+
+				width = getMinPrefMaxSumSize(true);
+				height = getMinPrefMaxSumSize(false);
+
+				System.out.println("Got pref width: " + width[LayoutUtil.PREF] + ", height: " + height[LayoutUtil.PREF]);
+
+				if (linkTargetIDs == null) {
+					resetLinkValues(false, true);
+				} else {
+					// This call makes some components flicker on SWT. They get their bounds changed twice since
+					// the change might affect the absolute size adjustment below. There's no way around this that
+					// I know of.
+					layout(new int[4], null, null, false, false);
+					resetLinkValues(false, false);
+				}
+
+				adjustSizeForAbsolute(true);
+				adjustSizeForAbsolute(false);
+
+				if (refWidth <= 0 && refHeight <= 0)
+					break; // We have no reference size, don't bother trying to re-layout to get biased components to the right size.
+
+				if (i == 0) {
+//					System.out.println("Trial layout" + width[LayoutUtil.PREF] + ", " + height[LayoutUtil.PREF]);
+//
+//					int[] refBounds = new int[] {0, 0, (refWidth > 0 ? refWidth : width[LayoutUtil.PREF]), (refHeight > 0 ? refHeight : height[LayoutUtil.PREF])};
+//					if (layout(refBounds, null, null, false)) {
+//						System.out.println("AGAIN!!!!!!!!");
+//						continue;
+//					}
+				}
+				break;
+			}
 		}
 	}
 
@@ -718,7 +729,7 @@ public final class Grid
 
 		if (gid != null && (external || (linkTargetIDs != null && linkTargetIDs.containsKey(gid)))) {
 			if (linkTargetIDs == null)
-				linkTargetIDs = new HashMap<String, Boolean>(4);
+				linkTargetIDs = new HashMap<>(4);
 
 			linkTargetIDs.put(gid, Boolean.TRUE);
 			changed |= LinkHandler.setBounds(lay, gid, x, y, w, h, !external, true);
@@ -749,7 +760,7 @@ public final class Grid
 
 		if (gapSize != null) {
 			if (wrapGapMap == null)
-				wrapGapMap = new HashMap<Integer, BoundSize>(8);
+				wrapGapMap = new HashMap<>(8);
 
 			wrapGapMap.put(cellXY[flowx ? 1 : 0], gapSize);
 		}
@@ -786,7 +797,7 @@ public final class Grid
 			CompWrap prevCW = null;
 			boolean nextUnrel = false;
 			boolean nextPush = false;
-			ArrayList<CompWrap> sortedList = new ArrayList<CompWrap>(cell.compWraps.size());
+			ArrayList<CompWrap> sortedList = new ArrayList<>(cell.compWraps.size());
 
 			for (int i = 0, iSz = orderLo.length(); i < iSz; i++) {
 				char c = orderLo.charAt(i);
@@ -800,13 +811,8 @@ public final class Grid
 						for (int j = 0, jSz = cell.compWraps.size(); j < jSz; j++) {
 							CompWrap cw = cell.compWraps.get(j);
 							if (tag.equals(cw.cc.getTag())) {
-								if (Character.isUpperCase(order.charAt(i))) {
-									int min = PlatformDefaults.getMinimumButtonWidth().getPixels(0, parent, cw.comp);
-									if (min > cw.horSizes[LayoutUtil.MIN])
-										cw.horSizes[LayoutUtil.MIN] = min;
-
-									correctMinMax(cw.horSizes);
-								}
+								if (Character.isUpperCase(order.charAt(i)))
+									cw.adjustMinHorSizeUp(PlatformDefaults.getMinimumButtonWidth().getPixels(0, parent, cw.comp));
 
 								sortedList.add(cw);
 
@@ -956,6 +962,8 @@ public final class Grid
 		return changed;
 	}
 
+	/** Adjust grid's width or height for the absolute components' positions.
+	 */
 	private void adjustSizeForAbsolute(boolean isHor)
 	{
 		int[] curSizes = isHor ? width : height;
@@ -1118,7 +1126,7 @@ public final class Grid
 	{
 		if (endGroup != null) {
 			if (endGroups == null)
-				endGroups = new HashMap<String, Integer>(2);
+				endGroups = new HashMap<>(2);
 
 			Integer oldEnd = endGroups.get(endGroup);
 			if (oldEnd == null || end > oldEnd)
@@ -1129,23 +1137,26 @@ public final class Grid
 
 	/** Calculates Min, Preferred and Max size for the columns OR rows.
 	 * @param isHor If it is the horizontal dimension to calculate.
+	 * @param containerSize The reference container size in the dimension. If <= 0 it will be replaced by the actual container's size.
 	 * @return The sizes in a {@link net.miginfocom.layout.Grid.FlowSizeSpec}.
 	 */
-	private FlowSizeSpec calcRowsOrColsSizes(boolean isHor)
+	private FlowSizeSpec calcRowsOrColsSizes(boolean isHor, int containerSize)
 	{
 		ArrayList<LinkedDimGroup>[] groupsLists = isHor ? colGroupLists : rowGroupLists;
 		Float[] defPush = isHor ? pushXs : pushYs;
-		int refSize = isHor ? container.getWidth() : container.getHeight();
+
+		if (containerSize <= 0)
+			containerSize = isHor ? container.getWidth() : container.getHeight();
 
 		BoundSize cSz = isHor ? lc.getWidth() : lc.getHeight();
 		if (!cSz.isUnset())
-			refSize = cSz.constrain(refSize, getParentSize(container, isHor), container);
+			containerSize = cSz.constrain(containerSize, getParentSize(container, isHor), container);
 
 		DimConstraint[] primDCs = (isHor? colConstr : rowConstr).getConstaints();
 		TreeSet<Integer> primIndexes = isHor ? colIndexes : rowIndexes;
 
 		int[][] rowColBoundSizes = new int[primIndexes.size()][];
-		HashMap<String, int[]> sizeGroupMap = new HashMap<String, int[]>(2);
+		HashMap<String, int[]> sizeGroupMap = new HashMap<>(2);
 		DimConstraint[] allDCs = new DimConstraint[primIndexes.size()];
 
 		Iterator<Integer> primIt = primIndexes.iterator();
@@ -1184,7 +1195,7 @@ public final class Grid
 					} else if (unit == UnitValue.MAX_SIZE) {
 						rowColSize = groupSizes[LayoutUtil.MAX];
 					} else {
-						rowColSize = uv.getPixels(refSize, container, null);
+						rowColSize = uv.getPixels(containerSize, container, null);
 					}
 				} else if (cellIx >= -MAX_GRID && cellIx <= MAX_GRID && rowColSize == 0) {
 					rowColSize = LayoutUtil.isDesignTime(container) ? LayoutUtil.getDesignTimeEmptySize() : 0;    // Empty rows with no size set gets XX pixels if design time
@@ -1211,7 +1222,7 @@ public final class Grid
 		ResizeConstraint[] resConstrs = getRowResizeConstraints(allDCs);
 
 		boolean[] fillInPushGaps = new boolean[allDCs.length + 1];
-		int[][] gapSizes = getRowGaps(allDCs, refSize, isHor, fillInPushGaps);
+		int[][] gapSizes = getRowGaps(allDCs, containerSize, isHor, fillInPushGaps);
 
 		FlowSizeSpec fss = mergeSizesGapsAndResConstrs(resConstrs, fillInPushGaps, rowColBoundSizes, gapSizes);
 
@@ -1465,7 +1476,7 @@ public final class Grid
 				dc = DOCK_DIM_CONSTRAINT;
 			}
 
-			ArrayList<LinkedDimGroup> groupList = new ArrayList<LinkedDimGroup>(2);
+			ArrayList<LinkedDimGroup> groupList = new ArrayList<>(2);
 			groupLists[gIx++] = groupList;
 
 			for (Integer ix : secIndexes) {
@@ -1615,7 +1626,7 @@ public final class Grid
 	{
 		private final int spanx, spany;
 		private final boolean flowx;
-		private final ArrayList<CompWrap> compWraps = new ArrayList<CompWrap>(1);
+		private final ArrayList<CompWrap> compWraps = new ArrayList<>(1);
 
 		private boolean hasTagged = false;  // If one or more components have styles and need to be checked by the component sorter
 
@@ -1652,7 +1663,7 @@ public final class Grid
 		private final int linkType;
 		private final boolean isHor, fromEnd;
 
-		private ArrayList<CompWrap> _compWraps = new ArrayList<CompWrap>(4);
+		private final ArrayList<CompWrap> _compWraps = new ArrayList<>(4);
 
 		private int[] sizes = null;
 		private int lStart = 0, lSize = 0;  // Currently mostly for debug painting
@@ -1675,7 +1686,8 @@ public final class Grid
 		private void setCompWraps(ArrayList<CompWrap> cws)
 		{
 			if (_compWraps != cws) {
-				_compWraps = cws;
+				_compWraps.clear();
+				_compWraps.addAll(cws);
 				sizes = null;
 			}
 		}
@@ -1684,8 +1696,9 @@ public final class Grid
 		{
 			lStart = start;
 			lSize = size;
+			sizes = null;
 
-			if (_compWraps.size() == 0)
+			if (_compWraps.isEmpty())
 				return;
 
 			ContainerWrapper parent = _compWraps.get(0).comp.getParent();
@@ -1703,7 +1716,7 @@ public final class Grid
 		 */
 		private int[] getMinPrefMax()
 		{
-			if (sizes == null && _compWraps.size() > 0) {
+			if (sizes == null && !_compWraps.isEmpty()) {
 				sizes = new int[3];
 				for (int sType = LayoutUtil.MIN; sType <= LayoutUtil.PREF; sType++) {
 					if (linkType == TYPE_PARALLEL) {
@@ -1731,6 +1744,10 @@ public final class Grid
 		private final ComponentWrapper comp;
 		private final CC cc;
 		private final UnitValue[] pos;
+		private final int eHideMode;
+		private final BoundSize[] callbackSz;
+		private final boolean useVisualPadding;
+
 		private int[][] gaps; // [top,left(actually before),bottom,right(actually after)][min,pref,max]
 
 		private final int[] horSizes = new int[3];
@@ -1740,30 +1757,22 @@ public final class Grid
 
 		private int forcedPushGaps = 0;   // 1 == before, 2 = after. Bitwise.
 
+		/**
+		 * @param c
+		 * @param cc
+		 * @param eHideMode Effective hide mode. <= 0 means visible.
+		 * @param useVisualPadding
+		 * @param pos
+		 * @param callbackSz
+		 */
 		private CompWrap(ComponentWrapper c, CC cc, int eHideMode, boolean useVisualPadding, UnitValue[] pos, BoundSize[] callbackSz)
 		{
 			this.comp = c;
 			this.cc = cc;
 			this.pos = pos;
-
-			if (eHideMode <= 0) {
-				BoundSize hBS = (callbackSz != null && callbackSz[0] != null) ? callbackSz[0] : cc.getHorizontal().getSize();
-				BoundSize vBS = (callbackSz != null && callbackSz[1] != null) ? callbackSz[1] : cc.getVertical().getSize();
-
-				int wHint = -1, hHint = -1; // Added for v3.7
-				if (comp.getWidth() > 0 && comp.getHeight() > 0) {
-					hHint = comp.getHeight();
-					wHint = comp.getWidth();
-				}
-
-				for (int i = LayoutUtil.MIN; i <= LayoutUtil.MAX; i++) {
-					horSizes[i] = getSize(hBS, i, true, useVisualPadding, hHint);
-					verSizes[i] = getSize(vBS, i, false, useVisualPadding, wHint > 0 ? wHint : horSizes[i]);
-				}
-
-				correctMinMax(horSizes);
-				correctMinMax(verSizes);
-			}
+			this.eHideMode = eHideMode;
+			this.callbackSz = callbackSz;
+			this.useVisualPadding = useVisualPadding;
 
 			if (eHideMode > 1) {
 				gaps = new int[4][];
@@ -1772,10 +1781,54 @@ public final class Grid
 			}
 		}
 
+		private int[] getSizes(boolean isHor)
+		{
+			validateSize();
+			return isHor ? horSizes : verSizes;
+		}
+
+		private void validateSize()
+		{
+			if (eHideMode <= 0) {
+				int contentBias = comp.getContentBias();
+
+				int sizeHint = contentBias == -1 ? -1 : (contentBias == 0 ? comp.getWidth() : comp.getHeight());
+
+				BoundSize hBS = (callbackSz != null && callbackSz[0] != null) ? callbackSz[0] : cc.getHorizontal().getSize();
+				BoundSize vBS = (callbackSz != null && callbackSz[1] != null) ? callbackSz[1] : cc.getVertical().getSize();
+
+				for (int i = LayoutUtil.MIN; i <= LayoutUtil.MAX; i++) {
+					switch (contentBias) {
+						case -1: // None
+						default:
+							horSizes[i] = getSize(hBS, i, true, useVisualPadding, -1);
+							verSizes[i] = getSize(vBS, i, false, useVisualPadding, -1);
+							break;
+						case 0: // Hor
+							horSizes[i] = getSize(hBS, i, true, useVisualPadding, -1);
+							verSizes[i] = getSize(vBS, i, false, useVisualPadding, sizeHint > 0 ? sizeHint : horSizes[i]);
+
+//							System.out.println("SIZE HINT: " + (sizeHint) + " gave: " + verSizes[LayoutUtil.PREF]);
+							break;
+						case 1: // Ver
+							verSizes[i] = getSize(vBS, i, false, useVisualPadding, -1);
+							horSizes[i] = getSize(hBS, i, true, useVisualPadding, sizeHint > 0 ? sizeHint : verSizes[i]);
+							break;
+					}
+				}
+
+				correctMinMax(horSizes);
+				correctMinMax(verSizes);
+			} else {
+				Arrays.fill(horSizes, 0); // Needed if component goes from visible -> invisible without recreating the grid.
+				Arrays.fill(verSizes, 0);
+			}
+		}
+
 		private int getSize(BoundSize uvs, int sizeType, boolean isHor, boolean useVP, int sizeHint)
 		{
 			int size;
-			if (( uvs == null ) || ( uvs.getSize(sizeType) == null )) {
+			if (uvs == null || uvs.getSize(sizeType) == null) {
 				switch(sizeType) {
 					case LayoutUtil.MIN:
 						size = isHor ? comp.getMinimumWidth(sizeHint) : comp.getMinimumHeight(sizeHint);
@@ -1842,16 +1895,17 @@ public final class Grid
 		/**
 		 * @return If the preferred size have changed because of the new bounds.
 		 */
-		private boolean transferBounds(boolean checkPrefChange, boolean addVisualPadding)
+		private boolean transferBounds(boolean addVisualPadding)
 		{
 			int compX = x;
 			int compY = y;
 			int compW = w;
 			int compH = h;
+
 			if (addVisualPadding) {
 				//Add the visual padding back to the component when changing its size
 				int[] visualPadding = comp.getVisualPadding();
-				if (visualPadding != null && visualPadding.length > 0) {
+				if (visualPadding != null) {
 					//assume visualPadding is of length 4: top, left, bottom, right
 					compX -= visualPadding[1];
 					compY -= visualPadding[0];
@@ -1859,17 +1913,21 @@ public final class Grid
 					compH += (visualPadding[0] + visualPadding[2]);
 				}
 			}
+
 			comp.setBounds(compX, compY, compW, compH);
 
-			boolean prefSizeChanged = false;
-			if (checkPrefChange && (w != horSizes[LayoutUtil.PREF])) {
-				BoundSize vSz = cc.getVertical().getSize();
-				if (vSz.getPreferred() == null) {
-					if (comp.getPreferredHeight(-1) != verSizes[LayoutUtil.PREF])
-						prefSizeChanged = true;
-				}
+			// Return if the preferred size has changed due to the new bounds, but only for components with a bias.
+			switch (comp.getContentBias()) {
+				default:
+				case -1: // no bias
+					return false;
+
+				case 0: // horizontal size affects preferred height
+					return cc.getVertical().getSize().getPreferred() != null && comp.getPreferredHeight(w) != getSizes(false)[LayoutUtil.PREF];
+
+				case 1: // vertical size affects preferred width (uncommon)
+					return cc.getHorizontal().getSize().getPreferred() != null && comp.getPreferredWidth(h) != getSizes(true)[LayoutUtil.PREF];
 			}
-			return prefSizeChanged;
 		}
 
 		private void setForcedSizes(int[] sizes, boolean isHor)
@@ -1877,7 +1935,7 @@ public final class Grid
 			if (sizes == null)
 				return;
 
-			int[] s = isHor ? horSizes : verSizes;
+			int[] s = getSizes(isHor);
             s[LayoutUtil.MIN] = sizes[LayoutUtil.MIN];
             s[LayoutUtil.PREF] = sizes[LayoutUtil.PREF];
             s[LayoutUtil.MAX] = sizes[LayoutUtil.MAX];
@@ -1923,7 +1981,7 @@ public final class Grid
 
 		private int getSize(int sizeType, boolean isHor)
 		{
-			return filter(sizeType, isHor ? horSizes[sizeType] : verSizes[sizeType]);
+			return filter(sizeType, getSizes(isHor)[sizeType]);
 		}
 
 		private int getGapBefore(int sizeType, boolean isHor)
@@ -1963,6 +2021,14 @@ public final class Grid
 		private int getBaseline(int sizeType)
 		{
 			return comp.getBaseline(getSize(sizeType, true), getSize(sizeType, false));
+		}
+
+		public void adjustMinHorSizeUp(int minSize)
+		{
+			int[] sz = getSizes(true);
+			if (sz[LayoutUtil.MIN] < minSize)
+				sz[LayoutUtil.MIN] = minSize;
+			correctMinMax(sz);
 		}
 	}
 
@@ -2049,7 +2115,7 @@ public final class Grid
 			};
 
 			int[][] sz = new int[][] {
-				cw.getGaps(isHor, true), (isHor ? cw.horSizes : cw.verSizes), cw.getGaps(isHor, false)
+				cw.getGaps(isHor, true), cw.getSizes(isHor), cw.getGaps(isHor, false)
 			};
 
 			Float[] pushW = dc.isFill() ? GROW_100 : null;
@@ -2105,12 +2171,10 @@ public final class Grid
 	{
 		int maxAbove = Integer.MIN_VALUE;
 		int maxBelow = Integer.MIN_VALUE;
-		for (int i = 0, iSz = compWraps.size(); i < iSz; i++) {
-			CompWrap cw = compWraps.get(i);
-
+		for (CompWrap cw : compWraps) {
 			int height = cw.getSize(sType, false);
 			if (height >= LayoutUtil.INF)
-				return new int[] {LayoutUtil.INF / 2, LayoutUtil.INF / 2};
+				return new int[]{LayoutUtil.INF / 2, LayoutUtil.INF / 2};
 
 			int baseline = cw.getBaseline(sType);
 			int above = baseline + cw.getGapBefore(sType, false);
@@ -2127,14 +2191,13 @@ public final class Grid
 	{
 		int size = sType == LayoutUtil.MAX ? LayoutUtil.INF : 0;
 
-		for (int i = 0, iSz = compWraps.size(); i < iSz; i++) {
-			CompWrap cw = compWraps.get(i);
+		for (CompWrap cw : compWraps) {
 			int cwSize = cw.getSizeInclGaps(sType, isHor);
 			if (cwSize >= LayoutUtil.INF)
 				return LayoutUtil.INF;
 
 			if (sType == LayoutUtil.MAX ? cwSize < size : cwSize > size)
-		        size = cwSize;
+				size = cwSize;
 		}
 		return constrainSize(size);
 	}
@@ -2160,15 +2223,14 @@ public final class Grid
 	private static int getTotalGroupsSizeParallel(ArrayList<LinkedDimGroup> groups, int sType, boolean countSpanning)
 	{
 		int size = sType == LayoutUtil.MAX ? LayoutUtil.INF : 0;
-		for (int i = 0, iSz = groups.size(); i < iSz; i++) {
-			LinkedDimGroup group = groups.get(i);
+		for (LinkedDimGroup group : groups) {
 			if (countSpanning || group.span == 1) {
 				int grpSize = group.getMinPrefMax()[sType];
 				if (grpSize >= LayoutUtil.INF)
 					return LayoutUtil.INF;
 
 				if (sType == LayoutUtil.MAX ? grpSize < size : grpSize > size)
-			        size = grpSize;
+					size = grpSize;
 			}
 		}
 		return constrainSize(size);
@@ -2182,10 +2244,8 @@ public final class Grid
 	private static int[][] getComponentSizes(ArrayList<CompWrap> compWraps, boolean isHor)
 	{
 		int[][] compSizes = new int[compWraps.size()][];
-		for (int i = 0; i < compSizes.length; i++) {
-			CompWrap cw = compWraps.get(i);
-			compSizes[i] = isHor ? cw.horSizes : cw.verSizes;
-		}
+		for (int i = 0; i < compSizes.length; i++)
+			compSizes[i] = compWraps.get(i).getSizes(isHor);
 		return compSizes;
 	}
 
@@ -2359,7 +2419,7 @@ public final class Grid
 		if (PARENT_ROWCOL_SIZES_MAP == null)    // Lazy since only if designing in IDEs
 			PARENT_ROWCOL_SIZES_MAP = new WeakHashMap[] {new WeakHashMap<Object,int[][]>(4), new WeakHashMap<Object,int[][]>(4)};
 
-		PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].put(parComp, new int[][] {ixArr, sizes});
+		PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].put(parComp, new int[][]{ixArr, sizes});
 	}
 
 	static synchronized int[][] getSizesAndIndexes(Object parComp, boolean isRows)
@@ -2374,9 +2434,9 @@ public final class Grid
 	private static synchronized void saveGrid(ComponentWrapper parComp, LinkedHashMap<Integer, Cell> grid)
 	{
 		if (PARENT_GRIDPOS_MAP == null)    // Lazy since only if designing in IDEs
-			PARENT_GRIDPOS_MAP = new WeakHashMap<Object, ArrayList<WeakCell>>();
+			PARENT_GRIDPOS_MAP = new WeakHashMap<>();
 
-		ArrayList<WeakCell> weakCells = new ArrayList<WeakCell>(grid.size());
+		ArrayList<WeakCell> weakCells = new ArrayList<>(grid.size());
 
 		for (Map.Entry<Integer, Cell> e : grid.entrySet()) {
 			Cell cell = e.getValue();
@@ -2399,7 +2459,7 @@ public final class Grid
 		if (weakCells == null)
 			return null;
 
-		HashMap<Object, int[]> retMap = new HashMap<Object, int[]>();
+		HashMap<Object, int[]> retMap = new HashMap<>();
 
 		for (WeakCell wc : weakCells) {
 			Object component = wc.componentRef.get();
@@ -2417,7 +2477,7 @@ public final class Grid
 
 		private WeakCell(Object component, int x, int y, int spanX, int spanY)
 		{
-			this.componentRef = new WeakReference<Object>(component);
+			this.componentRef = new WeakReference<>(component);
 			this.x = x;
 			this.y = y;
 			this.spanX = spanX;

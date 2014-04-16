@@ -58,6 +58,9 @@ public final class LayoutUtil
 	public static final int PREF = 1;
 	public static final int MAX = 2;
 
+	public static final int HORIZONTAL = 0;
+	public static final int VERTICAL = 1;
+
 	private static volatile WeakHashMap<Object, String> CR_MAP = null;
 	private static volatile WeakHashMap<Object, Boolean> DT_MAP = null;      // The Containers that have design time. Value not used.
 	private static int eSz = 0;

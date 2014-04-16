@@ -294,4 +294,12 @@ public interface ComponentWrapper
 	 * @return The type of component that this wrapper is wrapping. E.g. {@link #TYPE_LABEL}.
 	 */
 	public abstract int getComponentType(boolean disregardScrollPane);
+
+	/** Returns in what way the min/pref/max sizes relates to it's height or width for the current settings of the component (like wrapText).
+	 * If the min/pref/max height depends on it's width return {@link net.miginfocom.layout.LayoutUtil#HORIZONTAL}
+	 * If the min/pref/max width depends on it's height (not common) return {@link net.miginfocom.layout.LayoutUtil#VERTICAL}
+	 * If there is no connection between the preferred min/pref/max and the size of the component return -1.
+	 * @since 5.0
+	 */
+	public abstract int getContentBias();
 }

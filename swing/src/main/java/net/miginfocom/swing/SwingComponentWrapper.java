@@ -33,13 +33,14 @@ package net.miginfocom.swing;
  *         Date: 2006-sep-08
  */
 
+import net.miginfocom.layout.ComponentWrapper;
+import net.miginfocom.layout.ContainerWrapper;
+import net.miginfocom.layout.LayoutUtil;
+import net.miginfocom.layout.PlatformDefaults;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
-import net.miginfocom.layout.ComponentWrapper;
-import net.miginfocom.layout.ContainerWrapper;
-import net.miginfocom.layout.PlatformDefaults;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.IdentityHashMap;
@@ -610,6 +611,11 @@ public class SwingComponentWrapper implements ComponentWrapper
 		if (o instanceof ComponentWrapper == false)
 			return false;
 
-		return getComponent().equals(((ComponentWrapper) o).getComponent());
+		return c.equals(((ComponentWrapper) o).getComponent());
+	}
+
+	public int getContentBias()
+	{
+		return c instanceof JTextComponent ? LayoutUtil.HORIZONTAL : -1;
 	}
 }

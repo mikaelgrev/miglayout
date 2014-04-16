@@ -3,6 +3,7 @@ package org.tbee.javafx.scene.layout.test;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import net.miginfocom.layout.AC;
@@ -30,7 +31,8 @@ public class MigPaneBaselineTest extends Application {
 		Label bitLabel = new Label("We should");
 		bitLabel.setFont(new Font(40));
 		lRoot.add(bitLabel, "split 2");
-		lRoot.add(new Label("have the same baseline"));
+		lRoot.add(new TextField("have the same baseline"));
+//		lRoot.add(new Rectangle(30,30, Color.YELLOW), new CC());
 
 		// create scene
 		Scene scene = new Scene(lRoot, -1, -1);
