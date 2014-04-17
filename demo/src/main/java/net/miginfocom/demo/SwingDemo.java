@@ -1347,15 +1347,8 @@ public class SwingDemo extends JFrame
 		// External tab
 		JPanel externalPanel = createTabPanel(new MigLayout());
 
-//		JButton extButt = createButton("Bounds Externally Set!");
-		JButton extButt = new JButton("Bounds Externally Set!") {
-			public void setBounds(int x, int y, int width, int height)
-			{
-				new Throwable().printStackTrace();
-				super.setBounds(x, y, width, height);
-			}
-		};
-		extButt.reshape(250, 130, 200, 40);
+		JButton extButt = createButton("Bounds Externally Set!");
+		extButt.setBounds(250, 130, 200, 40);
 
 		externalPanel.add(extButt, "id ext, external");
 		externalPanel.add(createButton(), "pos ext.x2 ext.y2");

@@ -1,25 +1,14 @@
 package net.miginfocom.demo;
 
-import javax.swing.*;
 import net.miginfocom.layout.BoundSize;
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.LayoutCallback;
 import net.miginfocom.layout.UnitValue;
 import net.miginfocom.swing.MigLayout;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.IdentityHashMap;
 
 /*
@@ -119,7 +108,7 @@ public class CallbackDemo extends JFrame implements ActionListener, MouseMotionL
 		for (int j = 0; j < 10; j++)
 			panel.add(createButton(j), "aligny 0.8al");
 
-		JLabel label = new JLabel("Can't you just feel the urge to press one of those Swing JButtons?");
+		JLabel label = new JLabel("Press one of those Swing JButtons!");
 		label.setFont(new Font("verdana", Font.PLAIN, 24));
 		label.setForeground(new Color(150, 150, 150));
 		panel.add(label, "pos 0.5al 0.2al");

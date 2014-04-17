@@ -1,17 +1,13 @@
 package org.tbee.javafx.scene.layout.test;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.LabelBuilder;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.tbee.javafx.scene.layout.MigPane;
 
 /**
@@ -45,71 +41,31 @@ public class MigPaneTest13 extends Application {
 		LabelBuilder<?> titleLB = LabelBuilder.create().style("-fx-font-weight: bold;");
 		vBox.getChildren().add(titleLB.text("VBox").build());
 		final Label vBoxLabel = lBuilder.build();
-//		vBox.getChildren().add(vBoxLabel);
-//		vBox.setPadding(new Insets(50, 50, 50, 50));
-//		root.getChildren().add(vBox);
+		vBox.getChildren().add(vBoxLabel);
+		vBox.setPadding(new Insets(10, 10, 10, 10));
+		root.getChildren().add(vBox);
 
-//		root.getChildren().add(new Separator());
+		root.getChildren().add(new Separator());
 
 		// MigPane
-		final MigPane mPane = new MigPane("ins 0 , gap 0");
-		final Label migLabel = new Label("Test long label to see if the wrap works ok in a Migpane. I am going to have to keep writing because this may not be long enough yet!!") {
-			protected void setHeight(double h)
-			{
-				System.out.println("Set h: " + h);
-				super.setHeight(h);
-			}
-
-			protected void setWidth(double w)
-			{
-				System.out.println("Set w: " + w);
-				super.setWidth(w);
-			}
-		};
+		final MigPane mPane = new MigPane("ins 0");
+		mPane.setPadding(new Insets(10, 10, 10, 10));
+		final Label migLabel = new Label("Test long label to see if the wrap works ok in a Migpane. I am going to have to keep writing because this may not be long enough yet!!");
 		migLabel.setWrapText(true);
 
-		final Rectangle rect = new Rectangle(100, 100);
-//		mPane.add(titleLB.text("MigPane").build(), "wrap");
-//		mPane.add(rect, "");
+		mPane.add(titleLB.text("MigPane").build(), "wrap 0");
 		mPane.add(migLabel, "");
 
-
-//		mPane.setPadding(new Insets(50, 50, 50, 50));
-
-//		final Button butt = new Button();
-//		mPane.add(butt, "hidemode 3");
-
-//		butt.needsLayoutProperty().addListener(new ChangeListener<Boolean>()
-//		{
-//			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
-//			{
-//				System.out.println("needs more!!");
-//			}
-//		});
-
-		Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				rect.setWidth(Math.random() * 100);
-//				butt.setFont(new Font(Math.round(Math.random() * 10)));
-//				System.out.println("bef: " + butt.isNeedsLayout());
-//				butt.setVisible(!butt.isVisible());
-//				stage.sizeToScene();
-//				butt.setId("" + Math.random());
-//				System.out.println("aft: " + butt.isNeedsLayout());
-			}
-		}));
-		fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-		fiveSecondsWonder.play();
-//
-//		Timeline fiveSecondsWonder2 = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
+//		AtomicReference<Float> size = new AtomicReference<>(10f);
+//		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
 //			public void handle(ActionEvent event) {
-////				System.out.println("need: " + butt.isNeedsLayout());
+//				migLabel.setFont(new Font(size.get()));
+//				stage.sizeToScene();
+//				size.set(size.get() + 0.5f);
 //			}
 //		}));
-//		fiveSecondsWonder2.setCycleCount(Timeline.INDEFINITE);
-//		fiveSecondsWonder2.play();
-
-//		butt.setText("sdfsdf");
+//		timeline.setCycleCount(Timeline.INDEFINITE);
+//		timeline.play();
 
 		root.getChildren().add(mPane);
 

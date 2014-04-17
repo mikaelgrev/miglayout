@@ -190,7 +190,6 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	protected double computeHeight(double refWidth, int type) {
-//		System.out.println("::: refw: " + refWidth);
 		int ins = getVerIns();
 		int refSize = (int) Math.round(refWidth != -1 ? refWidth : getWidth());
 		return ins + LayoutUtil.getSizeSafe(getGrid().getHeight(refSize), type);
@@ -240,7 +239,6 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// Set debug. Clear it if LC is null.
 		debug = lc != null && lc.getDebugMillis() > 0;
-
 	}
 	public MigPane withLayoutConstraints(LC value) { setLayoutConstraints(value); return this; }
 	private LC layoutConstraints = null;
@@ -306,7 +304,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		Insets ins = getInsets();
 		int[] lBounds = new int[]{(int) Math.round(ins.getLeft()), (int) Math.round(ins.getTop()), (int) Math.ceil(getWidth() - getHorIns()), (int) Math.ceil(getHeight() - getVerIns())};
-		lGrid.layout(lBounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug, false);
+		lGrid.layout(lBounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug);
 
 		// paint debug
 		if (debug) {
@@ -322,10 +320,8 @@ public class MigPane extends javafx.scene.layout.Pane
 			return;
 
 		biasDirty = true;
-		bias = null;
 		if (_grid != null)
 			_grid.invalidateContainerSize();
-//		_grid = null;
 
 		super.requestLayout();
 	}
@@ -338,11 +334,8 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private Grid getGrid() {
 
-		if (_grid == null) {
+		if (_grid == null)
 			_grid = new Grid(new FX2ContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, null);
-//			gridWidth = getWidth();
-//			gridHeight = getHeight();
-		}
 
 		return _grid;
 	}
