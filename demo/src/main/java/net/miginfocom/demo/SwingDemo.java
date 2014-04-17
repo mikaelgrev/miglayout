@@ -830,7 +830,7 @@ public class SwingDemo extends JFrame
 		           "The layout engine is very flexible and advanced, something that is needed to make it simple to use yet handle almost all layout use-cases.\n\n" +
 		           "MigLayout can handle all layouts that the commonly used Swing Layout Managers can handle and this with a lot of extra features. " +
 		           "It also incorporates most, if not all, of the open source alternatives FormLayout's and TableLayout's functionality." +
-		           "\n\n\nThanks to Karsten Lentzsch of JGoodies.com for allowing the reuse of the main demo application layout and for his inspiring talks that led to this layout Manager." +
+		           "\n\n\nThanks to Karsten Lentzsch of JGoodies.com for allowing the reuse of the main demo application layout and for his inspiring talks that led to this layout manager." +
 		           "\n\n\nMikael Grev\n" +
 		           "MiG InfoCom AB\n" +
 		           "miglayout@miginfocom.com";
@@ -1349,13 +1349,13 @@ public class SwingDemo extends JFrame
 
 //		JButton extButt = createButton("Bounds Externally Set!");
 		JButton extButt = new JButton("Bounds Externally Set!") {
-			public void reshape(int x, int y, int width, int height)
+			public void setBounds(int x, int y, int width, int height)
 			{
 				new Throwable().printStackTrace();
-				super.reshape(x, y, width, height);
+				super.setBounds(x, y, width, height);
 			}
 		};
-		extButt.setBounds(250, 130, 200, 40);
+		extButt.reshape(250, 130, 200, 40);
 
 		externalPanel.add(extButt, "id ext, external");
 		externalPanel.add(createButton(), "pos ext.x2 ext.y2");

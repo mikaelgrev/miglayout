@@ -125,6 +125,7 @@ public class MigPane extends javafx.scene.layout.Pane
 								break;
 							}
 						}
+						invalidateGrid();
 					}
 
 					for (Node node : c.getAddedSubList()) {
@@ -137,6 +138,8 @@ public class MigPane extends javafx.scene.layout.Pane
 
 						// create wrapper information
 						MigPane.this.wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
+
+						invalidateGrid();
 					}
 				}
 			}
