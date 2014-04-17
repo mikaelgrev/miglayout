@@ -143,7 +143,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		});
 	}
 
-	final static protected Map<Node, CC> cNodeToCC = new WeakHashMap<>();
+	final static protected Map<Node, CC> cNodeToCC = new WeakHashMap<Node, CC>();
 
 
 	// ============================================================================================================
@@ -287,7 +287,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	// LAYOUT
 
 	// store of constraints
-	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<>();
+	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<FX2ComponentWrapper, CC>();
 
 	/**
 	 * This is where the actual layout happens
@@ -360,7 +360,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		MigPane.this.getChildren().removeAll(this.debugRectangles);
 		this.debugRectangles.clear();
 	}
-	final private List<Node> debugRectangles = new ArrayList<>();
+	final private List<Node> debugRectangles = new ArrayList<Node>();
 
 	private void addDebugRectangle(double x, double y, double w, double h, DebugRectangleType type)
 	{

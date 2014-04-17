@@ -78,13 +78,13 @@ public final class Grid
 
 	/** An x, y array implemented as a sparse array to accommodate for any grid size without wasting memory (or rather 15 bit (0-MAX_GRID * 0-MAX_GRID).
 	 */
-	private final LinkedHashMap<Integer, Cell> grid = new LinkedHashMap<>();   // [(y << 16) + x] -> Cell. null key for absolute positioned compwraps
+	private final LinkedHashMap<Integer, Cell> grid = new LinkedHashMap<Integer, Cell>();   // [(y << 16) + x] -> Cell. null key for absolute positioned compwraps
 
 	private HashMap<Integer, BoundSize> wrapGapMap = null;   // Row or Column index depending in the dimension that "wraps". Normally row indexes but may be column indexes if "flowy". 0 means before first row/col.
 
 	/** The size of the grid. Row count and column count.
 	 */
-	private final TreeSet<Integer> rowIndexes = new TreeSet<>(), colIndexes = new TreeSet<>();
+	private final TreeSet<Integer> rowIndexes = new TreeSet<Integer>(), colIndexes = new TreeSet<Integer>();
 
 	/** The row and column specifications.
 	 */
@@ -148,7 +148,7 @@ public final class Grid
 		boolean hasPushX = false, hasPushY = false;
 		boolean hitEndOfRow = false;
 		final int[] cellXY = new int[2];
-		final ArrayList<int[]> spannedRects = new ArrayList<>(2);
+		final ArrayList<int[]> spannedRects = new ArrayList<int[]>(2);
 
 		final DimConstraint[] specs = (lc.isFlowX() ? rowConstr : colConstr).getConstaints();
 
@@ -337,9 +337,9 @@ public final class Grid
 
 		// If there were size groups, calculate the largest values in the groups (for min/pref/max) and enforce them on the rest in the group.
 		if (sizeGroupsX > 0 || sizeGroupsY > 0) {
-			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<>(sizeGroupsX) : null;
-			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<>(sizeGroupsY) : null;
-			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<>(Math.max(sizeGroupsX, sizeGroupsY));
+			HashMap<String, int[]> sizeGroupMapX = sizeGroupsX > 0 ? new HashMap<String, int[]>(sizeGroupsX) : null;
+			HashMap<String, int[]> sizeGroupMapY = sizeGroupsY > 0 ? new HashMap<String, int[]>(sizeGroupsY) : null;
+			ArrayList<CompWrap> sizeGroupCWs = new ArrayList<CompWrap>(Math.max(sizeGroupsX, sizeGroupsY));
 
 			for (Cell cell : grid.values()) {
 				for (int i = 0; i < cell.compWraps.size(); i++) {
@@ -417,7 +417,7 @@ public final class Grid
 		String[] linkIDs = cc.getLinkTargets();
 		for (String linkID : linkIDs) {
 			if (linkTargetIDs == null)
-				linkTargetIDs = new HashMap<>();
+				linkTargetIDs = new HashMap<String, Boolean>();
 			linkTargetIDs.put(linkID, null);
 		}
 	}
@@ -450,7 +450,7 @@ public final class Grid
 	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug)
 	{
 		if (debug)
-			debugRects = new ArrayList<>();
+			debugRects = new ArrayList<int[]>();
 
 		if (colFlowSpecs == null)
 			checkSizeCalcs(bounds[2], bounds[3]);
@@ -542,7 +542,7 @@ public final class Grid
 		if (debugRects != null) {
 			container.paintDebugOutline(lc.isVisualPadding());
 
-			ArrayList<int[]> painted = new ArrayList<>();
+			ArrayList<int[]> painted = new ArrayList<int[]>();
 			for (int[] r : debugRects) {
 				if (!painted.contains(r)) {
 					container.paintDebugCell(r[0], r[1], r[2], r[3]);
@@ -729,7 +729,7 @@ public final class Grid
 
 		if (gid != null && (external || (linkTargetIDs != null && linkTargetIDs.containsKey(gid)))) {
 			if (linkTargetIDs == null)
-				linkTargetIDs = new HashMap<>(4);
+				linkTargetIDs = new HashMap<String, Boolean>(4);
 
 			linkTargetIDs.put(gid, Boolean.TRUE);
 			changed |= LinkHandler.setBounds(lay, gid, x, y, w, h, !external, true);
@@ -760,7 +760,7 @@ public final class Grid
 
 		if (gapSize != null) {
 			if (wrapGapMap == null)
-				wrapGapMap = new HashMap<>(8);
+				wrapGapMap = new HashMap<Integer, BoundSize>(8);
 
 			wrapGapMap.put(cellXY[flowx ? 1 : 0], gapSize);
 		}
@@ -797,7 +797,7 @@ public final class Grid
 			CompWrap prevCW = null;
 			boolean nextUnrel = false;
 			boolean nextPush = false;
-			ArrayList<CompWrap> sortedList = new ArrayList<>(cell.compWraps.size());
+			ArrayList<CompWrap> sortedList = new ArrayList<CompWrap>(cell.compWraps.size());
 
 			for (int i = 0, iSz = orderLo.length(); i < iSz; i++) {
 				char c = orderLo.charAt(i);
@@ -1126,7 +1126,7 @@ public final class Grid
 	{
 		if (endGroup != null) {
 			if (endGroups == null)
-				endGroups = new HashMap<>(2);
+				endGroups = new HashMap<String, Integer>(4);
 
 			Integer oldEnd = endGroups.get(endGroup);
 			if (oldEnd == null || end > oldEnd)
@@ -1156,7 +1156,7 @@ public final class Grid
 		TreeSet<Integer> primIndexes = isHor ? colIndexes : rowIndexes;
 
 		int[][] rowColBoundSizes = new int[primIndexes.size()][];
-		HashMap<String, int[]> sizeGroupMap = new HashMap<>(2);
+		HashMap<String, int[]> sizeGroupMap = new HashMap<String, int[]>(4);
 		DimConstraint[] allDCs = new DimConstraint[primIndexes.size()];
 
 		Iterator<Integer> primIt = primIndexes.iterator();
@@ -1476,7 +1476,7 @@ public final class Grid
 				dc = DOCK_DIM_CONSTRAINT;
 			}
 
-			ArrayList<LinkedDimGroup> groupList = new ArrayList<>(2);
+			ArrayList<LinkedDimGroup> groupList = new ArrayList<LinkedDimGroup>(4);
 			groupLists[gIx++] = groupList;
 
 			for (Integer ix : secIndexes) {
@@ -1626,7 +1626,7 @@ public final class Grid
 	{
 		private final int spanx, spany;
 		private final boolean flowx;
-		private final ArrayList<CompWrap> compWraps = new ArrayList<>(1);
+		private final ArrayList<CompWrap> compWraps = new ArrayList<CompWrap>(2);
 
 		private boolean hasTagged = false;  // If one or more components have styles and need to be checked by the component sorter
 
@@ -1663,7 +1663,7 @@ public final class Grid
 		private final int linkType;
 		private final boolean isHor, fromEnd;
 
-		private final ArrayList<CompWrap> _compWraps = new ArrayList<>(4);
+		private final ArrayList<CompWrap> _compWraps = new ArrayList<CompWrap>(4);
 
 		private int[] sizes = null;
 		private int lStart = 0, lSize = 0;  // Currently mostly for debug painting
@@ -2434,9 +2434,9 @@ public final class Grid
 	private static synchronized void saveGrid(ComponentWrapper parComp, LinkedHashMap<Integer, Cell> grid)
 	{
 		if (PARENT_GRIDPOS_MAP == null)    // Lazy since only if designing in IDEs
-			PARENT_GRIDPOS_MAP = new WeakHashMap<>();
+			PARENT_GRIDPOS_MAP = new WeakHashMap<Object, ArrayList<WeakCell>>(4);
 
-		ArrayList<WeakCell> weakCells = new ArrayList<>(grid.size());
+		ArrayList<WeakCell> weakCells = new ArrayList<WeakCell>(grid.size());
 
 		for (Map.Entry<Integer, Cell> e : grid.entrySet()) {
 			Cell cell = e.getValue();
@@ -2459,7 +2459,7 @@ public final class Grid
 		if (weakCells == null)
 			return null;
 
-		HashMap<Object, int[]> retMap = new HashMap<>();
+		HashMap<Object, int[]> retMap = new HashMap<Object, int[]>();
 
 		for (WeakCell wc : weakCells) {
 			Object component = wc.componentRef.get();
@@ -2477,7 +2477,7 @@ public final class Grid
 
 		private WeakCell(Object component, int x, int y, int spanX, int spanY)
 		{
-			this.componentRef = new WeakReference<>(component);
+			this.componentRef = new WeakReference<Object>(component);
 			this.x = x;
 			this.y = y;
 			this.spanX = spanX;
