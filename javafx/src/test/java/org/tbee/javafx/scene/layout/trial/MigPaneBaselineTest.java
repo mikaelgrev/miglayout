@@ -27,6 +27,7 @@ public class MigPaneBaselineTest extends Application {
 		// root
 		MigPane lRoot = new MigPane(new LC().debug(1000), new AC(), new AC());
 
+
 		// add managed nodes
 		Label bitLabel = new Label("We should");
 		bitLabel.setFont(new Font(40));

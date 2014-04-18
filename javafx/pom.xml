@@ -38,9 +38,8 @@
         </dependency>
     </dependencies>
 
-		<build>
+	<build>
 		<plugins>
-
 			<!-- assumes java 1.8 as the minimal JDK -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

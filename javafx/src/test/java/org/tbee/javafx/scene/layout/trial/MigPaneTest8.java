@@ -26,8 +26,8 @@ public class MigPaneTest8 extends Application {
 	throws IOException
 	{
     	// load FXML
-		String lName = this.getClass().getSimpleName() + ".xml";
-		URL lURL = this.getClass().getResource(lName);
+		String lName = getClass().getSimpleName() + ".xml";
+		URL lURL = getClass().getResource("/" + lName);
 		System.out.println("loading FXML " + lName + " -> " + lURL);
     	MigPane lRoot = (MigPane)FXMLLoader.load(lURL);
 
@@ -39,5 +39,4 @@ public class MigPaneTest8 extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
 }
