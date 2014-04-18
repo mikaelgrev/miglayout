@@ -1,5 +1,7 @@
 package org.tbee.javafx.scene.layout.test;
 
+import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import javafx.scene.Parent;
@@ -9,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import jfxtras.test.AssertNode;
-import jfxtras.test.AssertNode.A;
+import jfxtras.test.TestUtil;
 import jfxtras.util.PlatformUtil;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
@@ -22,8 +24,8 @@ import org.tbee.javafx.scene.layout.MigPane;
 /**
  * TestFX is able to layout a single node per class.
  * Because we would be creating MigPane only once, this would result in one class with one test method per to-be-tested layout, and thus is a LOT of classes.
- * By placing MigPane in a presized Pane, it is possible to test multiple layouts in separate methods within a single class.
- * The drawback is that MigPane is never tests stand alone, so for each test it must be decided if we can put it as a test in here, or if it needs a class on its own.
+ * By placing MigPane in a presized Pane, it is possible to test different layouts each in a separate method, all in a single class.
+ * The drawback is that MigPane is never tested stand alone, as the root node, so for each test it must be decided if we can put it in here, or if it needs a test class on its own.
  * 
  * @author Tom Eugelink
  *
@@ -48,10 +50,10 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 	private Label label = null;
 
 	@Test
-	public void twoChildBasicLayout() throws InterruptedException, ExecutionException {
+	public void twoChildBasicLayout() {
 		setLabel("twoChildBasicLayout");
 		
-		MigPane migPane = PlatformUtil.runAndWait( () -> {
+		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
 			MigPane constructMigPane = new MigPane(new LC().debug(1000), new AC(), new AC());
 	        pane.getChildren().add(constructMigPane);
 
@@ -60,20 +62,19 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 	        constructMigPane.add(new Rectangle(30,30, Color.YELLOW), new CC());
 	        return constructMigPane;
 		});
-		PlatformUtil.waitForPaintPulse();
 
 		assertWH(migPane, 200, 44);
-		//AssertNode.generateSource("migPane", migPane.getChildren(), java.util.Arrays.asList(new String[]{"org.tbee.javafx.scene.layout.MigPane$DebugRectangle"}), false, A.XYWH, A.CLASS);
+		//AssertNode.generateSource("migPane", migPane.getChildren(), EXCLUDED_CLASSES, false, A.XYWH, A.CLASS);
 		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
 		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);	
 	}
 
 
 	@Test
-	public void wrappingLabel() throws InterruptedException, ExecutionException {
+	public void wrappingLabel() {
 		setLabel("wrappingLabel");
 		
-		MigPane migPane = PlatformUtil.runAndWait( () -> {
+		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
 			MigPane constructMigPane = new MigPane(new LC().width("400px").debug(1000), new AC(), new AC());
 	        pane.getChildren().add(constructMigPane);
 
@@ -83,15 +84,16 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 	        constructMigPane.add(label, new CC().grow());
 	        return constructMigPane;
 		});
-		PlatformUtil.waitForPaintPulse();
 
 		assertWH(migPane, 400, 48);
-		//AssertNode.generateSource("migPane", migPane.getChildren(), java.util.Arrays.asList(new String[]{"org.tbee.javafx.scene.layout.MigPane$DebugRectangle"}), false, A.XYWH, A.CLASS);
+		//AssertNode.generateSource("migPane", migPane.getChildren(), EXCLUDED_CLASSES, false, A.XYWH, A.CLASS);
 		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 386.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
 	}
 	
 	// =============================================================================================================================================================================================================================
 	// SUPPORT
+	
+	List<String> EXCLUDED_CLASSES = java.util.Arrays.asList(new String[]{"jfxtras.labs.scene.layout.CircularPane$Bead"});
 	
 	private void assertWH(MigPane migPane, double w, double h) {
 		Assert.assertEquals(w, migPane.getWidth(), 0.01);
