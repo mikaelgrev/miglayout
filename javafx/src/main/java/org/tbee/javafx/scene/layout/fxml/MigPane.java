@@ -15,27 +15,27 @@ public class MigPane extends org.tbee.javafx.scene.layout.MigPane
 {
     // The FXML simply is matching tag- and attributes names to classes and properties (getter/setter) in the imported Java files
     // Many thanks to Michael Paus for the grunt work!
-	
+
 	/** layout called in FXML on MigPane itself */
-	public void setLayout(String value) 
+	public void setLayout(String value)
 	{
 		this.fxmLayoutConstraints = value;
-		setLayoutConstraints( ConstraintParser.parseLayoutConstraint( ConstraintParser.prepare( value ) ) );		
+		setLayoutConstraints( ConstraintParser.parseLayoutConstraint( ConstraintParser.prepare( value ) ) );
 	}
 	public String getLayout() { return fxmLayoutConstraints; }
 	private String fxmLayoutConstraints;
 
 	/** cols called in FXML on MigPane itself */
-	public void setCols(String value) 
+	public void setCols(String value)
 	{
 		this.fxmlColumConstraints = value;
 		setColumnConstraints( ConstraintParser.parseColumnConstraints( ConstraintParser.prepare( value ) ) );
 	}
 	public String getCols() { return fxmlColumConstraints; }
 	private String fxmlColumConstraints;
-	
+
 	/** rows called in FXML on MigPane itself */
-	public void setRows(String value) 
+	public void setRows(String value)
 	{
 		this.fxmlRowConstraints = value;
 		setRowConstraints( ConstraintParser.parseRowConstraints( ConstraintParser.prepare( value ) ) );
@@ -44,12 +44,12 @@ public class MigPane extends org.tbee.javafx.scene.layout.MigPane
 	private String fxmlRowConstraints;
 
     /** called from the subnodes in FXML via MigPane.cc="..." */
-	public static void setCc(Node node, CC cc) 
+	public static void setCc(Node node, CC cc)
 	{
-		// temporarily put it in a map
-		cNodeToCC.put(node, cc);
+		node.getProperties().put(FXML_CC_KEY, cc);
 	}
-	public static void setCc(Node node, String cc) 
+
+	public static void setCc(Node node, String cc)
 	{
 		CC lCC = ConstraintParser.parseComponentConstraint( ConstraintParser.prepare( cc ) );
 		setCc(node, lCC);

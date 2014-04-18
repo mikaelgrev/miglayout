@@ -4,10 +4,10 @@
 <?import org.tbee.javafx.scene.layout.fxml.*?>
 
 <MigPane fx:controller="org.tbee.javafx.scene.layout.trial.MigPaneTest8Controller" fx:id="migPanel" layout="insets 30" cols="[][grow]" rows="" xmlns:fx="http://javafx.com/fxml" >
-	<Label text="First Name:" />
+	<Label text="First Name:"  MigPane.cc="wmin pref"/>
 	<TextField fx:id="firstNameField" text="" MigPane.cc="growx, wrap" />
 
-	<Label text="Last Name:" />
+	<Label text="Last Name:" MigPane.cc="wmin pref"/>
 	<TextField fx:id="lastNameField" text="" MigPane.cc="growx, wrap" />
 
 	<Button text="Enter" onAction="#handleButtonAction" MigPane.cc="skip, gap :push, gaptop 15, wrap" />

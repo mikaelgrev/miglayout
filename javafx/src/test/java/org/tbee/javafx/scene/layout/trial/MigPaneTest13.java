@@ -53,7 +53,7 @@ public class MigPaneTest13 extends Application {
 		final Label migLabel = new Label("Test long label to see if the wrap works ok in a Migpane. I am going to have to keep writing because this may not be long enough yet!!");
 		migLabel.setWrapText(true);
 
-		mPane.add(titleLB.text("MigPane").build(), "wrap 0");
+//		mPane.add(titleLB.text("MigPane").build(), "wrap 0");
 		mPane.add(migLabel, "");
 
 //		AtomicReference<Float> size = new AtomicReference<>(10f);

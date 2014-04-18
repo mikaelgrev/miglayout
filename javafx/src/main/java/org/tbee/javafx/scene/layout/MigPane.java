@@ -15,7 +15,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import net.miginfocom.layout.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,6 +29,8 @@ import java.util.*;
  */
 public class MigPane extends javafx.scene.layout.Pane
 {
+	protected final static String FXML_CC_KEY = "MigPane.cc";
+
 	// ============================================================================================================
 	// CONSTRUCTOR
 
@@ -134,7 +139,7 @@ public class MigPane extends javafx.scene.layout.Pane
 							continue;
 
 						// get cc or use default
-						CC cc = cNodeToCC.remove(node);
+						CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
 
 						// create wrapper information
 						MigPane.this.wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
@@ -145,9 +150,6 @@ public class MigPane extends javafx.scene.layout.Pane
 			}
 		});
 	}
-
-	final static protected Map<Node, CC> cNodeToCC = new WeakHashMap<Node, CC>();
-
 
 	// ============================================================================================================
 	// PANE
@@ -185,13 +187,13 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	protected double computeWidth(double refHeight, int type) {
 		int ins = getHorIns();
-		int refSize = (int) Math.round(refHeight != -1 ? refHeight : getHeight());
+		int refSize = (int) Math.round(refHeight != -1 ? refHeight : getHeight()) - ins;
 		return ins + LayoutUtil.getSizeSafe(getGrid().getWidth(refSize), type);
 	}
 
 	protected double computeHeight(double refWidth, int type) {
 		int ins = getVerIns();
-		int refSize = (int) Math.round(refWidth != -1 ? refWidth : getWidth());
+		int refSize = (int) Math.round(refWidth != -1 ? refWidth : getWidth()) - ins;
 		return ins + LayoutUtil.getSizeSafe(getGrid().getHeight(refSize), type);
 	}
 
@@ -265,7 +267,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	public void add(Node node, CC cc) {
 		if (node.isManaged())
-			cNodeToCC.put(node, cc);
+			wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
 		getChildren().add(node);
 	}
 
@@ -276,11 +278,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	public void add(Node node, String cc) {
 		if (node.isManaged()) {
 			CC lCC = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(cc));
-			// do regular add
-			add(node, lCC);
-		} else {
-			getChildren().add(node);
+			wrapperToCCMap.put(new FX2ComponentWrapper(node), lCC);
 		}
+		getChildren().add(node);
 	}
 
 

@@ -430,7 +430,11 @@ public final class Grid
 	public void invalidateContainerSize()
 	{
 		colFlowSpecs = null;
+		invalidateComponentSizes();
+	}
 
+	private void invalidateComponentSizes()
+	{
 		for (Cell cell : grid.values()) {
 			for (CompWrap compWrap : cell.compWraps)
 				compWrap.invalidateSizes();
@@ -442,7 +446,7 @@ public final class Grid
 	 */
 	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean notUsed)
 	{
-		return layoutImpl(bounds, alignX, alignY, debug, true);
+		return layoutImpl(bounds, alignX, alignY, debug, false);
 	}
 
 	/** Does the actual layout. Uses many values calculated in the constructor.
@@ -456,7 +460,7 @@ public final class Grid
 	 */
 	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug)
 	{
-		return layoutImpl(bounds, alignX, alignY, debug, true);
+		return layoutImpl(bounds, alignX, alignY, debug, false);
 	}
 
 	/** Does the actual layout. Uses many values calculated in the constructor.
@@ -464,11 +468,13 @@ public final class Grid
 	 * @param alignX The alignment for the x-axis. Can be null.
 	 * @param alignY The alignment for the y-axis. Can be null.
 	 * @param debug If debug information should be saved in {@link #debugRects}.
+	 * @param trialRun If true the bounds calculated will not be transferred to the components. Only the internal size
+	 * of the components will be calculated.
 	 * @return If the layout has changed the preferred size and there is need for a new layout. This can happen if one or more components
 	 * in the grid has a content bias according to {@link net.miginfocom.layout.ComponentWrapper#getContentBias()}.
 	 * @since 5.0
 	 */
-	private boolean layoutImpl(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean setBounds)
+	private boolean layoutImpl(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean trialRun)
 	{
 		if (debug)
 			debugRects = new ArrayList<int[]>();
@@ -523,7 +529,8 @@ public final class Grid
 								cw.x += bounds[0];
 								cw.y += bounds[1];
 
-								layoutAgain |= cw.transferBounds(setBounds, addVisualPadding);
+								if (!trialRun)
+									cw.transferBounds(addVisualPadding);
 
 								if (callbackList != null) {
 									for (LayoutCallback callback : callbackList)
@@ -546,8 +553,7 @@ public final class Grid
 		if (debug) {
 			for (Cell cell : grid.values()) {
 				ArrayList<CompWrap> compWraps = cell.compWraps;
-				for (int i = 0, iSz = compWraps.size(); i < iSz; i++) {
-					CompWrap cw = compWraps.get(i);
+				for (CompWrap cw : compWraps) {
 					LinkedDimGroup hGrp = getGroupContaining(colGroupLists, cw);
 					LinkedDimGroup vGrp = getGroupContaining(rowGroupLists, cw);
 
@@ -607,55 +613,46 @@ public final class Grid
 		return height.clone();
 	}
 
-//	public final int[] getWidth()
-//	{
-//		checkSizeCalcs();
-//		return width.clone();
-//	}
-//
-//	public final int[] getHeight()
-//	{
-//		checkSizeCalcs();
-//		return height.clone();
-//	}
-
 	private int lastRefWidth = 0, lastRefHeight = 0;
 
 	private void checkSizeCalcs(int refWidth, int refHeight)
 	{
-		if (colFlowSpecs == null || refWidth != lastRefWidth || refHeight != lastRefHeight) {
+		if (colFlowSpecs == null)
+			calcGridSizes(refWidth, refHeight);
 
-			lastRefWidth = refWidth;
-			lastRefHeight = refHeight;
-
-//			System.out.println("Check size for w: " + refWidth + ", h: " + refHeight);
-
-			if (colFlowSpecs != null && (refWidth > 0 || refHeight > 0)) {
-				int[] refBounds = new int[]{0, 0, (refWidth > 0 ? refWidth : width[LayoutUtil.PREF]), (refHeight > 0 ? refHeight : height[LayoutUtil.PREF])};
-				layoutImpl(refBounds, null, null, false, false);
-			}
-
-			colFlowSpecs = calcRowsOrColsSizes(true, refWidth);
-			rowFlowSpecs = calcRowsOrColsSizes(false, refHeight);
-
-			width = getMinPrefMaxSumSize(true);
-			height = getMinPrefMaxSumSize(false);
-
-//			System.out.println("Got pref width: " + width[LayoutUtil.PREF] + ", height: " + height[LayoutUtil.PREF]);
-
-			if (linkTargetIDs == null) {
-				resetLinkValues(false, true);
-			} else {
-				// This call makes some components flicker on SWT. They get their bounds changed twice since
-				// the change might affect the absolute size adjustment below. There's no way around this that
-				// I know of.
-				layout(new int[4], null, null, false);
-				resetLinkValues(false, false);
-			}
-
-			adjustSizeForAbsolute(true);
-			adjustSizeForAbsolute(false);
+		if ((refWidth > 0 && refWidth != lastRefWidth) || (refHeight > 0 && refHeight != lastRefHeight)) {
+//			System.out.println("prelayout for w: " + refWidth + ", h: " + refHeight);
+			int[] refBounds = new int[] {0, 0, (refWidth > 0 ? refWidth : width[LayoutUtil.PREF]), (refHeight > 0 ? refHeight : height[LayoutUtil.PREF])};
+			layoutImpl(refBounds, null, null, false, true);
+			calcGridSizes(refWidth, refHeight);
 		}
+
+		lastRefWidth = refWidth;
+		lastRefHeight = refHeight;
+	}
+
+	private void calcGridSizes(int refWidth, int refHeight)
+	{
+//		System.out.println("REcalc grid size for w: " + refWidth + ", h: " + refHeight);
+
+		colFlowSpecs = calcRowsOrColsSizes(true, refWidth);
+		rowFlowSpecs = calcRowsOrColsSizes(false, refHeight);
+
+		width = getMinPrefMaxSumSize(true);
+		height = getMinPrefMaxSumSize(false);
+
+		if (linkTargetIDs == null) {
+			resetLinkValues(false, true);
+		} else {
+			// This call makes some components flicker on SWT. They get their bounds changed twice since
+			// the change might affect the absolute size adjustment below. There's no way around this that
+			// I know of.
+			layout(new int[4], null, null, false);
+			resetLinkValues(false, false);
+		}
+
+		adjustSizeForAbsolute(true);
+		adjustSizeForAbsolute(false);
 	}
 
 	private UnitValue[] getPos(ComponentWrapper cw, CC cc)
@@ -1668,7 +1665,6 @@ public final class Grid
 
 		private final ArrayList<CompWrap> _compWraps = new ArrayList<CompWrap>(4);
 
-		private int[] sizes = null;
 		private int lStart = 0, lSize = 0;  // Currently mostly for debug painting
 
 		private LinkedDimGroup(String linkCtx, int span, int linkType, boolean isHor, boolean fromEnd)
@@ -1683,7 +1679,6 @@ public final class Grid
 		private void addCompWrap(CompWrap cw)
 		{
 			_compWraps.add(cw);
-			sizes = null;
 		}
 
 		private void setCompWraps(ArrayList<CompWrap> cws)
@@ -1691,7 +1686,6 @@ public final class Grid
 			if (_compWraps != cws) {
 				_compWraps.clear();
 				_compWraps.addAll(cws);
-				sizes = null;
 			}
 		}
 
@@ -1699,7 +1693,6 @@ public final class Grid
 		{
 			lStart = start;
 			lSize = size;
-			sizes = null;
 
 			if (_compWraps.isEmpty())
 				return;
@@ -1719,8 +1712,8 @@ public final class Grid
 		 */
 		private int[] getMinPrefMax()
 		{
-			if (sizes == null && !_compWraps.isEmpty()) {
-				sizes = new int[3];
+			int[] sizes = new int[3];
+			if (!_compWraps.isEmpty()) {
 				for (int sType = LayoutUtil.MIN; sType <= LayoutUtil.PREF; sType++) {
 					if (linkType == TYPE_PARALLEL) {
 						sizes[sType] = getTotalSizeParallel(_compWraps, sType, isHor);
@@ -1880,15 +1873,20 @@ public final class Grid
 		private void setDimBounds(int start, int size, boolean isHor)
 		{
 			if (isHor) {
-				x = start;
-				w = size;
+				if (start != x || w != size) {
+					x = start;
+					w = size;
+					if (comp.getContentBias() == LayoutUtil.HORIZONTAL)
+						invalidateSizes(); // Only for components that have a bias the sizes will have changed.
+				}
 			} else {
-				y = start;
-				h = size;
+				if (start != y || h != size) {
+					y = start;
+					h = size;
+					if (comp.getContentBias() == LayoutUtil.VERTICAL)
+						invalidateSizes(); // Only for components that have a bias the sizes will have changed.
+				}
 			}
-
-			if (comp.getContentBias() != -1)
-				invalidateSizes(); // Only for components that have a bias the sizes will have changed.
 		}
 
 		void invalidateSizes()
@@ -1906,49 +1904,49 @@ public final class Grid
 			return s != null && s.getGapPush();
 		}
 
-		/**
-		 * @param setOnComponent If true the bounds will be transferred. If false no bounds
-		 * will be transferred but the return value will still be checked.
-		 * @return If the preferred size have changed because of the new bounds.
+		/** Transfers the bounds to the component
 		 */
-		private boolean transferBounds(boolean setOnComponent, boolean addVisualPadding)
+		private void transferBounds(boolean addVisualPadding)
 		{
 			if (cc.isExternal())
-				return false;
+				return;
 
-			if (setOnComponent) {
-				int compX = x;
-				int compY = y;
-				int compW = w;
-				int compH = h;
+			int compX = x;
+			int compY = y;
+			int compW = w;
+			int compH = h;
 
-				if (addVisualPadding) {
-					//Add the visual padding back to the component when changing its size
-					int[] visualPadding = comp.getVisualPadding();
-					if (visualPadding != null) {
-						//assume visualPadding is of length 4: top, left, bottom, right
-						compX -= visualPadding[1];
-						compY -= visualPadding[0];
-						compW += (visualPadding[1] + visualPadding[3]);
-						compH += (visualPadding[0] + visualPadding[2]);
-					}
+			if (addVisualPadding) {
+				//Add the visual padding back to the component when changing its size
+				int[] visualPadding = comp.getVisualPadding();
+				if (visualPadding != null) {
+					//assume visualPadding is of length 4: top, left, bottom, right
+					compX -= visualPadding[1];
+					compY -= visualPadding[0];
+					compW += (visualPadding[1] + visualPadding[3]);
+					compH += (visualPadding[0] + visualPadding[2]);
 				}
-
-				comp.setBounds(compX, compY, compW, compH);
 			}
 
-			// Return if the preferred size has changed due to the new bounds, but only for components with a bias.
-			switch (comp.getContentBias()) {
-				default:
-				case -1: // no bias
-					return false;
+			comp.setBounds(compX, compY, compW, compH);
 
-				case 0: // horizontal size affects preferred height
-					return cc.getVertical().getSize().getPreferred() != null && comp.getPreferredHeight(w) != getSizes(false)[LayoutUtil.PREF];
-
-				case 1: // vertical size affects preferred width (uncommon)
-					return cc.getHorizontal().getSize().getPreferred() != null && comp.getPreferredWidth(h) != getSizes(true)[LayoutUtil.PREF];
-			}
+//			// Return if the preferred size has changed due to the new bounds, but only for components with a bias.
+//			switch (comp.getContentBias()) {
+//				default:
+//				case -1: // no bias
+//					return false;
+//
+//				case 0: // horizontal size affects preferred height
+//					System.out.println("compPH for w " + w + " is " + comp.getPreferredHeight(w));
+//					System.out.println("cw same is " + getSizes(false)[LayoutUtil.PREF]);
+//					boolean rel =  cc.getVertical().getSize().getPreferred() != null && comp.getPreferredHeight(w) != getSizes(false)[LayoutUtil.PREF];
+//					System.out.println("rel " + rel);
+//					System.out.println("");
+//					return rel;
+//
+//				case 1: // vertical size affects preferred width (uncommon)
+//					return cc.getHorizontal().getSize().getPreferred() != null && comp.getPreferredWidth(h) != getSizes(true)[LayoutUtil.PREF];
+//			}
 		}
 
 		private void setForcedSizes(int[] sizes, boolean isHor)
