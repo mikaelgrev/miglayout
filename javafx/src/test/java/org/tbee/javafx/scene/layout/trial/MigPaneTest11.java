@@ -1,4 +1,4 @@
-package org.tbee.javafx.scene.layout.test;
+package org.tbee.javafx.scene.layout.trial;
 
 import javafx.application.Application;
 import javafx.application.Platform;

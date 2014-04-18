@@ -1,4 +1,4 @@
-package org.tbee.javafx.scene.layout.test;
+package org.tbee.javafx.scene.layout.trial;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,11 +12,11 @@ import net.miginfocom.layout.LC;
 import org.tbee.javafx.scene.layout.MigPane;
 
 /**
- * Test initial layout
+ * Test miglayout managed and unmanaged nodes
  * @author Tom Eugelink
  *
  */
-public class MigPaneTest1 extends Application {
+public class MigPaneTest4 extends Application {
 
     public static void main(String[] args) {
     	launch(args);
@@ -26,11 +26,15 @@ public class MigPaneTest1 extends Application {
 	public void start(Stage stage) {
 
         // root
-        MigPane lRoot = new MigPane(new LC().debug(1000), new AC(), new AC());
+        MigPane lRoot = new MigPane(new LC(), new AC(), new AC());
 
-        // add nodes
+        // add managed nodes
         lRoot.add(new TextField(), new CC());
-        lRoot.add(new Rectangle(30,30, Color.YELLOW), new CC());
+        lRoot.add(new Rectangle(30,30, Color.RED), new CC());
+
+		// add external (not unmanaged..) nodes
+		Rectangle rectangle = new Rectangle(100, 50, 30, 30);
+		lRoot.add(rectangle, new CC().external());
 
         // create scene
         Scene scene = new Scene(lRoot, -1, -1);
@@ -41,4 +45,5 @@ public class MigPaneTest1 extends Application {
 		stage.sizeToScene();
         stage.show();
     }
+
 }
