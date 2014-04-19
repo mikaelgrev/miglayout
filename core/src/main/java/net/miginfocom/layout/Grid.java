@@ -177,11 +177,9 @@ public final class Grid
 				sizeGroupsY++;
 
 			// Special treatment of absolute positioned components.
-			UnitValue[] pos = getPos(comp, rootCc);
-			BoundSize[] cbSz = getCallbackSize(comp);
-			if (pos != null || rootCc.isExternal()) {
+			if (getPos(comp, rootCc) != null || rootCc.isExternal()) {
 
-				CompWrap cw = new CompWrap(comp, rootCc, hideMode, useVisualPadding, pos, cbSz);
+				CompWrap cw = new CompWrap(comp, rootCc, hideMode, useVisualPadding);
 				Cell cell = grid.get(null);
 				if (cell == null) {
 					grid.put(null, new Cell(cw));
@@ -189,7 +187,7 @@ public final class Grid
 					cell.compWraps.add(cw);
 				}
 
-				if (rootCc.isBoundsInGrid() == false || rootCc.isExternal()) {
+				if (!rootCc.isBoundsInGrid() || rootCc.isExternal()) {
 					setLinkedBounds(comp, rootCc, comp.getX(), comp.getY(), comp.getWidth(), comp.getHeight(), rootCc.isExternal());
 					i++;
 					continue;
@@ -200,7 +198,7 @@ public final class Grid
 				if (dockInsets == null)
 					dockInsets = new int[] {-MAX_DOCK_GRID, -MAX_DOCK_GRID, MAX_DOCK_GRID, MAX_DOCK_GRID};
 
-				addDockingCell(dockInsets, rootCc.getDockSide(), new CompWrap(comp, rootCc, hideMode, useVisualPadding, pos, cbSz));
+				addDockingCell(dockInsets, rootCc.getDockSide(), new CompWrap(comp, rootCc, hideMode, useVisualPadding));
 				i++;
 				continue;
 			}
@@ -296,11 +294,11 @@ public final class Grid
 						break;
 					}
 
-					pos = getPos(compAdd, cc);
-					cbSz = getCallbackSize(compAdd);
+//					pos = getPos(compAdd, cc);
+//					cbSz = getCallbackSize(compAdd);
 				}
 
-				CompWrap cw = new CompWrap(compAdd, cc, hideMode, useVisualPadding, pos, cbSz);
+				CompWrap cw = new CompWrap(compAdd, cc, hideMode, useVisualPadding);
 				cell.compWraps.add(cw);
 				cell.hasTagged |= cc.getTag() != null;
 				hasTagged |= cell.hasTagged;
@@ -657,20 +655,20 @@ public final class Grid
 
 	private UnitValue[] getPos(ComponentWrapper cw, CC cc)
 	{
-		UnitValue[] cbPos = null;
+		UnitValue[] callbackPos = null;
 		if (callbackList != null) {
-			for (int i = 0; i < callbackList.size() && cbPos == null; i++)
-				cbPos = callbackList.get(i).getPosition(cw);   // NOT a copy!
+			for (int i = 0; i < callbackList.size() && callbackPos == null; i++)
+				callbackPos = callbackList.get(i).getPosition(cw);   // NOT a copy!
 		}
 
 		// If one is null, return the other (which many also be null)
 		UnitValue[] ccPos = cc.getPos();    // A copy!!
-		if (cbPos == null || ccPos == null)
-			return cbPos != null ? cbPos : ccPos;
+		if (callbackPos == null || ccPos == null)
+			return callbackPos != null ? callbackPos : ccPos;
 
 		// Merge
 		for (int i = 0; i < 4; i++) {
-			UnitValue cbUv = cbPos[i];
+			UnitValue cbUv = callbackPos[i];
 			if (cbUv != null)
 				ccPos[i] = cbUv;
 		}
@@ -678,7 +676,7 @@ public final class Grid
 		return ccPos;
 	}
 
-	private BoundSize[] getCallbackSize(ComponentWrapper cw)
+	private BoundSize[] getCallbackSize2(ComponentWrapper cw)
 	{
 		if (callbackList != null) {
 			for (LayoutCallback callback : callbackList) {
@@ -1017,7 +1015,8 @@ public final class Grid
 		UnitValue[] pad = cw.cc.getPadding();
 
 		// If no changes do not create a lot of objects
-		if (cw.pos == null && pad == null)
+		UnitValue[] pos = getPos(cw.comp, cw.cc);
+		if (pos == null && pad == null)
 			return null;
 
 		// Set start
@@ -1025,9 +1024,9 @@ public final class Grid
 		int sz = isHor ? cw.w : cw.h;
 
 		// If absolute, use those coordinates instead.
-		if (cw.pos != null) {
-			UnitValue stUV = cw.pos != null ? cw.pos[isHor ? 0 : 1] : null;
-			UnitValue endUV = cw.pos != null ? cw.pos[isHor ? 2 : 3] : null;
+		if (pos != null) {
+			UnitValue stUV = pos != null ? pos[isHor ? 0 : 1] : null;
+			UnitValue endUV = pos != null ? pos[isHor ? 2 : 3] : null;
 
 			int minSz = cw.getSize(LayoutUtil.MIN, isHor);
 			int maxSz = cw.getSize(LayoutUtil.MAX, isHor);
@@ -1735,13 +1734,11 @@ public final class Grid
 	 *
 	 * Note! Does not ask the min/pref/max sizes again after the constructor. This means that
 	 */
-	private final static class CompWrap
+	private final class CompWrap
 	{
 		private final ComponentWrapper comp;
 		private final CC cc;
-		private final UnitValue[] pos;
 		private final int eHideMode;
-		private final BoundSize[] callbackSz;
 		private final boolean useVisualPadding;
 		private boolean sizesOk = false;
 
@@ -1759,16 +1756,12 @@ public final class Grid
 		 * @param cc
 		 * @param eHideMode Effective hide mode. <= 0 means visible.
 		 * @param useVisualPadding
-		 * @param pos
-		 * @param callbackSz
 		 */
-		private CompWrap(ComponentWrapper c, CC cc, int eHideMode, boolean useVisualPadding, UnitValue[] pos, BoundSize[] callbackSz)
+		private CompWrap(ComponentWrapper c, CC cc, int eHideMode, boolean useVisualPadding)
 		{
 			this.comp = c;
 			this.cc = cc;
-			this.pos = pos;
 			this.eHideMode = eHideMode;
-			this.callbackSz = callbackSz;
 			this.useVisualPadding = useVisualPadding;
 
 			if (eHideMode > 1) {
@@ -1786,7 +1779,9 @@ public final class Grid
 
 		private void validateSize()
 		{
-			if (sizesOk)
+			BoundSize[] callbackSz = getCallbackSize2(comp);
+
+			if (sizesOk && callbackSz == null)
 				return;
 
 			if (eHideMode <= 0) {

@@ -1,10 +1,6 @@
 package net.miginfocom.layout;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.ObjectStreamException;
+import java.io.*;
 /*
  * License (BSD):
  * ==============
@@ -248,7 +244,7 @@ public final class LC implements Externalizable
 
 	/** How a component that is hidden (not visible) should be treated by default.
 	 * @return The mode:<br>
-	 * 0 == Normal. Bounds will be caclulated as if the component was visible.<br>
+	 * 0 == Normal. Bounds will be calculated as if the component was visible.<br>
 	 * 1 == If hidden the size will be 0, 0 but the gaps remain.<br>
 	 * 2 == If hidden the size will be 0, 0 and gaps set to zero.<br>
 	 * 3 == If hidden the component will be disregarded completely and not take up a cell in the grid..
@@ -260,7 +256,7 @@ public final class LC implements Externalizable
 
 	/** How a component that is hidden (not visible) should be treated.
 	 * @param mode The mode:<br>
-	 * 0 == Normal. Bounds will be caclulated as if the component was visible.<br>
+	 * 0 == Normal. Bounds will be calculated as if the component was visible.<br>
 	 * 1 == If hidden the size will be 0, 0 but the gaps remain.<br>
 	 * 2 == If hidden the size will be 0, 0 and gaps set to zero.<br>
 	 * 3 == If hidden the component will be disregarded completely and not take up a cell in the grid..
@@ -382,7 +378,7 @@ public final class LC implements Externalizable
 
 	/** Returns the "pack width" for the <b>window</b> that this container is located in. When the size of this container changes
 	 * the size of the window will be corrected to be within this BoundsSize. It can be used to set the minimum and/or maximum size of the window
-	 * as well as the size window should optimally get. This optimal size is normaly its "preferred" size which is why "preferred"
+	 * as well as the size window should optimally get. This optimal size is normally its "preferred" size which is why "preferred"
 	 * is the normal value to set here.
 	 * <p>
 	 * ":push" can be appended to the bound size to only push the size bigger and never shrink it if the preferred size gets smaller.
@@ -398,7 +394,7 @@ public final class LC implements Externalizable
 
 	/** Sets the "pack width" for the <b>window</b> that this container is located in. When the size of this container changes
 	 * the size of the window will be corrected to be within this BoundsSize. It can be used to set the minimum and/or maximum size of the window
-	 * as well as the size window should optimally get. This optimal size is normaly its "preferred" size which is why "preferred"
+	 * as well as the size window should optimally get. This optimal size is normally its "preferred" size which is why "preferred"
 	 * is the normal value to set here.
 	 * <p>
 	 * ":push" can be appended to the bound size to only push the size bigger and never shrink it if the preferred size gets smaller.
@@ -414,7 +410,7 @@ public final class LC implements Externalizable
 
 	/** Returns the "pack height" for the <b>window</b> that this container is located in. When the size of this container changes
 	 * the size of the window will be corrected to be within this BoundsSize. It can be used to set the minimum and/or maximum size of the window
-	 * as well as the size window should optimally get. This optimal size is normaly its "preferred" size which is why "preferred"
+	 * as well as the size window should optimally get. This optimal size is normally its "preferred" size which is why "preferred"
 	 * is the normal value to set here.
 	 * <p>
 	 * ":push" can be appended to the bound size to only push the size bigger and never shrink it if the preferred size gets smaller.
@@ -430,7 +426,7 @@ public final class LC implements Externalizable
 
 	/** Sets the "pack height" for the <b>window</b> that this container is located in. When the size of this container changes
 	 * the size of the window will be corrected to be within this BoundsSize. It can be used to set the minimum and/or maximum size of the window
-	 * as well as the size window should optimally get. This optimal size is normaly its "preferred" size which is why "preferred"
+	 * as well as the size window should optimally get. This optimal size is normally its "preferred" size which is why "preferred"
 	 * is the normal value to set here.
 	 * <p>
 	 * ":push" can be appended to the bound size to only push the size bigger and never shrink it if the preferred size gets smaller.
@@ -446,7 +442,7 @@ public final class LC implements Externalizable
 
 
 	/** If there is a resize of the window due to packing (see {@link #setPackHeight(BoundSize)} this value, which is between 0f and 1f,
-	 * decides where the extra/surpurflous size is placed. 0f means that the window will resize so that the upper part moves up and the
+	 * decides where the extra/superfluous size is placed. 0f means that the window will resize so that the upper part moves up and the
 	 * lower side stays in the same place. 0.5f will expand/reduce the window equally upwards and downwards. 1f will do the opposite of 0f
 	 * of course.
 	 * @return The pack alignment. Always between 0f and 1f, inclusive.
@@ -458,7 +454,7 @@ public final class LC implements Externalizable
 	}
 
 	/** If there is a resize of the window due to packing (see {@link #setPackHeight(BoundSize)} this value, which is between 0f and 1f,
-	 * decides where the extra/surpurflous size is placed. 0f means that the window will resize so that the upper part moves up and the
+	 * decides where the extra/superfluous size is placed. 0f means that the window will resize so that the upper part moves up and the
 	 * lower side stays in the same place. 0.5f will expand/reduce the window equally upwards and downwards. 1f will do the opposite of 0f
 	 * of course.
 	 * @param align The pack alignment. Always between 0f and 1f, inclusive. Values outside this will be truncated.
@@ -470,7 +466,7 @@ public final class LC implements Externalizable
 	}
 
 	/** If there is a resize of the window due to packing (see {@link #setPackHeight(BoundSize)} this value, which is between 0f and 1f,
-	 * decides where the extra/surpurflous size is placed. 0f means that the window will resize so that the left part moves left and the
+	 * decides where the extra/superfluous size is placed. 0f means that the window will resize so that the left part moves left and the
 	 * right side stays in the same place. 0.5f will expand/reduce the window equally to the right and lefts. 1f will do the opposite of 0f
 	 * of course.
 	 * @return The pack alignment. Always between 0f and 1f, inclusive.
@@ -482,7 +478,7 @@ public final class LC implements Externalizable
 	}
 
 	/** If there is a resize of the window due to packing (see {@link #setPackHeight(BoundSize)} this value, which is between 0f and 1f,
-	 * decides where the extra/surpurflous size is placed. 0f means that the window will resize so that the left part moves left and the
+	 * decides where the extra/superfluous size is placed. 0f means that the window will resize so that the left part moves left and the
 	 * right side stays in the same place. 0.5f will expand/reduce the window equally to the right and lefts. 1f will do the opposite of 0f
 	 * of course.
 	 * @param align The pack alignment. Always between 0f and 1f, inclusive. Values outside this will be truncated.
@@ -494,7 +490,7 @@ public final class LC implements Externalizable
 	}
 
 	/** Returns the minimum/preferred/maximum size for the container that this layout constraint is set for. Any of these
-	 * sizes that is not <code>null</code> will be returned directly instead of determining the correspondig size through
+	 * sizes that is not <code>null</code> will be returned directly instead of determining the corresponding size through
 	 * asking the components in this container.
 	 * @return The width for the container that this layout constraint is set for. Not <code>null</code> but
 	 * all sizes can be <code>null</code>.
@@ -506,7 +502,7 @@ public final class LC implements Externalizable
 	}
 
 	/** Sets the minimum/preferred/maximum size for the container that this layout constraint is set for. Any of these
-	 * sizes that is not <code>null</code> will be returned directly instead of determining the correspondig size through
+	 * sizes that is not <code>null</code> will be returned directly instead of determining the corresponding size through
 	 * asking the components in this container.
 	 * @param size The width for the container that this layout constraint is set for. <code>null</code> is translated to
 	 * a bound size containing only null sizes.
@@ -518,7 +514,7 @@ public final class LC implements Externalizable
 	}
 
 	/** Returns the minimum/preferred/maximum size for the container that this layout constraint is set for. Any of these
-	 * sizes that is not <code>null</code> will be returned directly instead of determining the correspondig size through
+	 * sizes that is not <code>null</code> will be returned directly instead of determining the corresponding size through
 	 * asking the components in this container.
 	 * @return The height for the container that this layout constraint is set for. Not <code>null</code> but
 	 * all sizes can be <code>null</code>.
@@ -530,7 +526,7 @@ public final class LC implements Externalizable
 	}
 
 	/** Sets the minimum/preferred/maximum size for the container that this layout constraint is set for. Any of these
-	 * sizes that is not <code>null</code> will be returned directly instead of determining the correspondig size through
+	 * sizes that is not <code>null</code> will be returned directly instead of determining the corresponding size through
 	 * asking the components in this container.
 	 * @param size The height for the container that this layout constraint is set for. <code>null</code> is translated to
 	 * a bound size containing only null sizes.
@@ -572,7 +568,7 @@ public final class LC implements Externalizable
 	 */
 	public final LC pack(String width, String height)
 	{
-		setPackWidth(width != null ? ConstraintParser.parseBoundSize(width, false, false) : BoundSize.NULL_SIZE);
+		setPackWidth(width != null ? ConstraintParser.parseBoundSize(width, false, true) : BoundSize.NULL_SIZE);
 		setPackHeight(height != null ? ConstraintParser.parseBoundSize(height, false, false) : BoundSize.NULL_SIZE);
 		return this;
 	}
@@ -907,6 +903,16 @@ public final class LC implements Externalizable
 		if (gapy != null)
 			gridGapY(gapy);
 
+		return this;
+	}
+
+	/** Calls {@link #debug(int)} with 300 as an argument.
+	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
+	 * @see #setDebugMillis(int)
+	 */
+	public final LC debug()
+	{
+		setDebugMillis(300);
 		return this;
 	}
 

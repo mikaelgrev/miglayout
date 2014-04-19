@@ -15,7 +15,7 @@ import org.tbee.javafx.scene.layout.MigPane;
  * @author Tom Eugelink
  *
  */
-public class MigPaneBaselineTest extends Application {
+public class MigPaneBaselineTrial extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
@@ -29,9 +29,9 @@ public class MigPaneBaselineTest extends Application {
 
 
 		// add managed nodes
-		Label bitLabel = new Label("We should");
-		bitLabel.setFont(new Font(40));
-		lRoot.add(bitLabel, "split 2");
+		Label label = new Label("We should");
+		label.setFont(new Font(40));
+		lRoot.add(label, "split 2");
 		lRoot.add(new TextField("have the same baseline"));
 //		lRoot.add(new Rectangle(30,30, Color.YELLOW), new CC());
 
@@ -44,5 +44,4 @@ public class MigPaneBaselineTest extends Application {
 		stage.sizeToScene();
 		stage.show();
 	}
-
 }

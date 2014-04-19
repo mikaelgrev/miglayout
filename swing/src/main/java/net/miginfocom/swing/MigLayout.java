@@ -667,8 +667,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 		synchronized(parent.getTreeLock()) {
            if (lastParentSize == null || !parent.getSize().equals(lastParentSize)) {
                for (ComponentWrapper wrapper : ccMap.keySet()) {
-                   Component c = (Component) wrapper.getComponent();
-                   if (c instanceof JTextArea || c instanceof JEditorPane || (c instanceof JComponent && Boolean.TRUE.equals(((JComponent)c).getClientProperty("migLayout.dynamicAspectRatio")))) {
+	               if (wrapper.getContentBias() != -1) {
                        layoutContainer(parent);
                        break;
                    }
@@ -731,10 +730,7 @@ public final class MigLayout implements LayoutManager2, Externalizable
 
 	public void invalidateLayout(Container target)
 	{
-//		if (lc.isNoCache())  // Commented for 3.5 since there was too often that the "nocache" was needed and the user did not know.
 		dirty = true;
-
-		// the validity of components is maintained automatically.
 	}
 
 	// ************************************************

@@ -616,6 +616,6 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	public int getContentBias()
 	{
-		return c instanceof JTextComponent ? LayoutUtil.HORIZONTAL : -1;
+		return c instanceof JTextArea || c instanceof JEditorPane || (c instanceof JComponent && Boolean.TRUE.equals(((JComponent)c).getClientProperty("migLayout.dynamicAspectRatio"))) ? LayoutUtil.HORIZONTAL : -1;
 	}
 }

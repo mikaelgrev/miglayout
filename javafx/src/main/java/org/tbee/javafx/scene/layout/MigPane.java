@@ -1,5 +1,6 @@
 package org.tbee.javafx.scene.layout;
 
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -8,11 +9,13 @@ import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
+import javafx.stage.Window;
 import net.miginfocom.layout.*;
 
 import java.util.ArrayList;
@@ -140,9 +143,8 @@ public class MigPane extends javafx.scene.layout.Pane
 
 						// get cc or use default
 						CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
-
-						// create wrapper information
-						MigPane.this.wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
+						if (cc != null) // Only put the value if this comes from FXML
+							wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
 
 						invalidateGrid();
 					}
@@ -156,18 +158,13 @@ public class MigPane extends javafx.scene.layout.Pane
 	//
 
 	@Override
-	protected double computeMinHeight(double width) {
-		return computeHeight(width, LayoutUtil.MIN);
-	}
-
-	@Override
 	protected double computeMinWidth(double height) {
 		return computeWidth(height, LayoutUtil.MIN);
 	}
 
 	@Override
-	protected double computePrefHeight(double width) {
-		return computeHeight(width, LayoutUtil.PREF);
+	protected double computeMinHeight(double width) {
+		return computeHeight(width, LayoutUtil.MIN);
 	}
 
 	@Override
@@ -176,13 +173,18 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	@Override
-	protected double computeMaxHeight(double width) {
-		return computeHeight(width, LayoutUtil.MAX);
+	protected double computePrefHeight(double width) {
+		return computeHeight(width, LayoutUtil.PREF);
 	}
 
 	@Override
 	protected double computeMaxWidth(double height) {
 		return computeWidth(height, LayoutUtil.MAX);
+	}
+
+	@Override
+	protected double computeMaxHeight(double width) {
+		return computeHeight(width, LayoutUtil.MAX);
 	}
 
 
@@ -212,6 +214,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	private Orientation bias = null;
 	private boolean biasDirty = true;
+	private boolean debug = false;
 
 	@Override
 	public Orientation getContentBias() {
@@ -242,23 +245,23 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// Set debug. Clear it if LC is null.
 		debug = lc != null && lc.getDebugMillis() > 0;
+		invalidateGrid();
+		requestLayout();
 	}
 	public MigPane withLayoutConstraints(LC value) { setLayoutConstraints(value); return this; }
 	private LC layoutConstraints = null;
 	final static public String LAYOUTCONSTRAINTS_PROPERTY_ID = "layoutConstraints";
-	//
-	private boolean debug = false;
 
 	/** ColumnConstraints: */
 	public AC getColumnConstraints() { return this.columnConstraints; }
-	public void setColumnConstraints(AC value) { this.columnConstraints = value; requestLayout();}
+	public void setColumnConstraints(AC value) { this.columnConstraints = value; invalidateGrid(); requestLayout();}
 	public MigPane withColumnConstraints(AC value) { setColumnConstraints(value); return this; }
 	private AC columnConstraints = null;
 	final static public String COLUMNCONSTRAINTS_PROPERTY_ID = "columnConstraints";
 
 	/** RowConstraints: */
 	public AC getRowConstraints() { return this.rowConstraints; }
-	public void setRowConstraints(AC value) { this.rowConstraints = value; requestLayout();}
+	public void setRowConstraints(AC value) { this.rowConstraints = value; invalidateGrid(); requestLayout();}
 	public MigPane withRowConstraints(AC value) { setRowConstraints(value); return this; }
 	private AC rowConstraints = null;
 	final static public String ROWCONSTRAINTS_PROPERTY_ID = "rowConstraints";
@@ -319,6 +322,8 @@ public class MigPane extends javafx.scene.layout.Pane
 	// Store constraints. Key order important.
 	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<FX2ComponentWrapper, CC>();
 
+	private long lastSize = 0;
+
 	/**
 	 * This is where the actual layout happens
 	 */
@@ -339,6 +344,13 @@ public class MigPane extends javafx.scene.layout.Pane
 		if (debug) {
 			clearDebug();
 			lGrid.paintDebug();
+		}
+
+		// Handle the "pack" keyword
+		long newSize = lGrid.getHeight()[1] + (((long) lGrid.getWidth()[1]) << 32);
+		if (lastSize != newSize) {
+			lastSize = newSize;
+			Platform.runLater(this::adjustWindowSize);
 		}
 
 		performingLayout = false;
@@ -375,6 +387,63 @@ public class MigPane extends javafx.scene.layout.Pane
 	private void invalidateGrid()
 	{
 		_grid = null;
+		biasDirty = true;
+	}
+
+	/** Checks the parent window/popup if its size is within parameters as set by the LC.
+	 */
+	private void adjustWindowSize()
+	{
+		BoundSize wBounds = layoutConstraints.getPackWidth();
+		BoundSize hBounds = layoutConstraints.getPackHeight();
+		Scene scene = getScene();
+		Window window = scene.getWindow();
+
+		if (window == null || wBounds == BoundSize.NULL_SIZE && hBounds == BoundSize.NULL_SIZE)
+			return;
+
+		Parent root = scene.getRoot();
+
+		double winWidth = window.getWidth();
+		double winHeight = window.getHeight();
+
+		double prefWidth = root.prefWidth(-1);
+		double prefHeight = root.prefHeight(-1);
+		FX2ContainerWrapper container = new FX2ContainerWrapper(root);
+
+		double horIns = winWidth - scene.getWidth();
+		double verIns = winHeight - scene.getHeight();
+
+		double targetW = constrain(container, winWidth, prefWidth, wBounds) + horIns;
+		double targetH = constrain(container, winHeight, prefHeight, hBounds) + verIns;
+
+		double x = window.getX() - ((targetW - winWidth) * (1 - layoutConstraints.getPackWidthAlign()));
+		double y = window.getY() - ((targetH - winHeight) * (1 - layoutConstraints.getPackHeightAlign()));
+
+		window.setX(x);
+		window.setY(y);
+		window.setWidth(targetW);
+		window.setHeight(targetH);
+	}
+
+	private double constrain(ContainerWrapper parent, double winSize, double prefSize, BoundSize constrain)
+	{
+		if (constrain == null)
+			return winSize;
+
+		double retSize = winSize;
+		UnitValue wUV = constrain.getPreferred();
+		if (wUV != null)
+			retSize = wUV.getPixels((float) prefSize, parent, parent);
+
+		retSize = constrain.constrain(round(retSize), (float) prefSize, parent);
+
+		return constrain.getGapPush() ? Math.max(winSize, retSize) : retSize;
+	}
+
+	private int round(double d)
+	{
+		return (int) Math.round(d);
 	}
 
 	// ============================================================================================================
@@ -560,13 +629,13 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public int getX() {
-			int v = (int) node.getLayoutBounds().getMinX();
+			int v = (int) node.getLayoutX();
 			return v;
 		}
 
 		// as of JDK 1.6: @Override
 		public int getY() {
-			int v = (int) node.getLayoutBounds().getMinY();
+			int v = (int) node.getLayoutY();
 			return v;
 		}
 
