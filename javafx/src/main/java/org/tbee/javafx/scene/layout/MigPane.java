@@ -156,16 +156,6 @@ public class MigPane extends javafx.scene.layout.Pane
 	//
 
 	@Override
-	protected double computeMaxHeight(double width) {
-		return computeHeight(width, LayoutUtil.MAX);
-	}
-
-	@Override
-	protected double computeMaxWidth(double height) {
-		return computeWidth(height, LayoutUtil.MAX);
-	}
-
-	@Override
 	protected double computeMinHeight(double width) {
 		return computeHeight(width, LayoutUtil.MIN);
 	}
@@ -184,6 +174,17 @@ public class MigPane extends javafx.scene.layout.Pane
 	protected double computePrefWidth(double height) {
 		return computeWidth(height, LayoutUtil.PREF);
 	}
+
+	@Override
+	protected double computeMaxHeight(double width) {
+		return computeHeight(width, LayoutUtil.MAX);
+	}
+
+	@Override
+	protected double computeMaxWidth(double height) {
+		return computeWidth(height, LayoutUtil.MAX);
+	}
+
 
 	protected double computeWidth(double refHeight, int type) {
 		int ins = getHorIns();
@@ -262,6 +263,37 @@ public class MigPane extends javafx.scene.layout.Pane
 	private AC rowConstraints = null;
 	final static public String ROWCONSTRAINTS_PROPERTY_ID = "rowConstraints";
 
+
+	// ============================================================================================================
+	// CALLBACK
+
+	private ArrayList<LayoutCallback> callbackList = null;
+
+	/** Adds the callback function that will be called at different stages of the layout cylce.
+	 * @param callback The callback. Not <code>null</code>.
+	 */
+	public void addLayoutCallback(LayoutCallback callback)
+	{
+		if (callback == null)
+			throw new NullPointerException();
+
+		if (callbackList == null)
+			callbackList = new ArrayList<>(1);
+
+		callbackList.add(callback);
+
+		invalidateGrid();
+	}
+
+	/** Removes the callback if it exists.
+	 * @param callback The callback. May be <code>null</code>.
+	 */
+	public void removeLayoutCallback(LayoutCallback callback)
+	{
+		if (callbackList != null)
+			callbackList.remove(callback);
+	}
+
 	// ============================================================================================================
 	// SCENE
 
@@ -275,19 +307,16 @@ public class MigPane extends javafx.scene.layout.Pane
 		getChildren().add(node);
 	}
 
-	public void add(Node node, String cc) {
-		if (node.isManaged()) {
-			CC lCC = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(cc));
-			wrapperToCCMap.put(new FX2ComponentWrapper(node), lCC);
-		}
-		getChildren().add(node);
+	public void add(Node node, String sCc) {
+		CC cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(sCc));
+		add(node, cc);
 	}
 
 
 	// ============================================================================================================
 	// LAYOUT
 
-	// store of constraints
+	// Store constraints. Key order important.
 	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<FX2ComponentWrapper, CC>();
 
 	/**
@@ -303,7 +332,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		// this will use FX2ComponentWrapper.setBounds to actually place the components
 
 		Insets ins = getInsets();
-		int[] lBounds = new int[]{(int) Math.round(ins.getLeft()), (int) Math.round(ins.getTop()), (int) Math.ceil(getWidth() - getHorIns()), (int) Math.ceil(getHeight() - getVerIns())};
+		int[] lBounds = new int[] {(int) Math.round(ins.getLeft()), (int) Math.round(ins.getTop()), (int) Math.ceil(getWidth() - getHorIns()), (int) Math.ceil(getHeight() - getVerIns())};
 		lGrid.layout(lBounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug);
 
 		// paint debug
@@ -335,7 +364,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	private Grid getGrid() {
 
 		if (_grid == null)
-			_grid = new Grid(new FX2ContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, null);
+			_grid = new Grid(new FX2ContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, callbackList);
 
 		return _grid;
 	}

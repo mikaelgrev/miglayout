@@ -338,6 +338,8 @@ public final class MigLayout implements LayoutManager2, Externalizable
 			callbackList = new ArrayList<LayoutCallback>(1);
 
 		callbackList.add(callback);
+
+		grid = null;
 	}
 
 	/** Removes the callback if it exists.

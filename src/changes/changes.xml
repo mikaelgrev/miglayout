@@ -6,6 +6,9 @@
 	<body>
         <release version="5.0" date="2014-04-14" description="Release 5.0">
             <action dev="mikaelgrev" type="enhancement">
+                JavaFX: Added layout callbacks.
+            </action>
+            <action dev="mikaelgrev" type="enhancement">
                 JavaFX: Added two test panels and made the old ones startup with sizeToScene bounds to catch initial prefSize problems.
             </action>
             <action dev="mikaelgrev" type="enhancement">
