@@ -307,7 +307,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	public void add(Node node) {
-		getChildren().add(node);
+		add(node, (CC) null);
 	}
 
 	public void add(Node node, String sCc) {
