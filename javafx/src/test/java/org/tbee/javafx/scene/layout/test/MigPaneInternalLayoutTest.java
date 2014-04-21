@@ -1,13 +1,23 @@
 package org.tbee.javafx.scene.layout.test;
 
+import java.util.List;
+
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import jfxtras.test.AssertNode;
+import jfxtras.test.TestUtil;
 import jfxtras.util.PlatformUtil;
-import org.junit.Assert;
-import org.tbee.javafx.scene.layout.MigPane;
+import net.miginfocom.layout.AC;
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.LC;
 
-import java.util.List;
+import org.junit.Assert;
+import org.junit.Test;
+import org.tbee.javafx.scene.layout.MigPane;
 
 /**
  * TestFX is able to layout a single node per class.
@@ -37,51 +47,51 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 	private Pane pane = null;
 	private Label label = null;
 
-//	@Test
-//	public void twoChildBasicLayout() {
-//		setLabel("twoChildBasicLayout");
-//
-//		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
-//			MigPane constructMigPane = new MigPane(new LC().debug(1000), new AC(), new AC());
-//	        pane.getChildren().add(constructMigPane);
-//
-//	        // add nodes
-//	        constructMigPane.add(new TextField(), new CC());
-//	        constructMigPane.add(new Rectangle(30,30, Color.YELLOW), new CC());
-//	        return constructMigPane;
-//		});
-//
-//		assertWH(migPane, 200, 44);
-//		//AssertNode.generateSource("migPane", migPane.getChildren(), EXCLUDED_CLASSES, false, A.XYWH, A.CLASS);
-//		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-//		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
-//	}
-//
-//
-//	@Test
-//	public void wrappingLabel() {
-//		setLabel("wrappingLabel");
-//
-//		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
-//			MigPane constructMigPane = new MigPane(new LC().width("400px").debug(1000), new AC(), new AC());
-//	        pane.getChildren().add(constructMigPane);
-//
-//	        // add nodes
-//	        Label label = new Label("Test long label to see if the wrap works ok in a Migpane. I am going to have to keep writing because this may not be long enough yet!!");
-//	        label.setWrapText(true);
-//	        constructMigPane.add(label, new CC().grow());
-//	        return constructMigPane;
-//		});
-//
-//		assertWH(migPane, 400, 48);
-//		AssertNode.generateSource("migPane", migPane.getChildren(), EXCLUDED_CLASSES, false, AssertNode.A.XYWH, AssertNode.A.CLASS);
-//		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 386.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
-//	}
+	@Test
+	public void twoChildBasicLayout() {
+		setLabel("twoChildBasicLayout");
+
+		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
+			MigPane constructMigPane = new MigPane(new LC().debug(1000), new AC(), new AC());
+	        pane.getChildren().add(constructMigPane);
+
+	        // add nodes
+	        constructMigPane.add(new TextField(), new CC());
+	        constructMigPane.add(new Rectangle(30,30, Color.YELLOW), new CC());
+	        return constructMigPane;
+		});
+
+		//generateSource(migPane);
+		assertWH(migPane, 200.0, 44.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
+	}
+
+
+	@Test
+	public void wrappingLabel() {
+		setLabel("wrappingLabel");
+
+		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
+			MigPane constructMigPane = new MigPane(new LC().width("400px").debug(1000), new AC(), new AC());
+	        pane.getChildren().add(constructMigPane);
+
+	        // add nodes
+	        Label label = new Label("Test long label to see if the wrap works ok in a Migpane. I am going to have to keep writing because this may not be long enough yet!!");
+	        label.setWrapText(true);
+	        constructMigPane.add(label, new CC().grow());
+	        return constructMigPane;
+		});
+
+		//generateSource(migPane);
+		assertWH(migPane, 400.0, 48.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 386.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
+	}
 
 	// =============================================================================================================================================================================================================================
 	// SUPPORT
 
-	List<String> EXCLUDED_CLASSES = java.util.Arrays.asList(new String[]{"jfxtras.labs.scene.layout.CircularPane$Bead"});
+	List<String> EXCLUDED_CLASSES = java.util.Arrays.asList(new String[]{"org.tbee.javafx.scene.layout.MigPane$DebugRectangle"});
 
 	private void assertWH(MigPane migPane, double w, double h) {
 		Assert.assertEquals(w, migPane.getWidth(), 0.01);
@@ -93,4 +103,12 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 			label.setText(s);
 		});
 	}
+	
+	private void generateSource(Pane pane) {
+		System.out.println(label.getText()); 
+		System.out.println("assertWH(migPane, " + pane.getWidth() + ", " + pane.getHeight() + ");");
+		AssertNode.generateSource("migPane", pane.getChildren(), EXCLUDED_CLASSES, false, AssertNode.A.XYWH, AssertNode.A.CLASS);
+		TestUtil.sleep(3000);
+	}
+
 }
