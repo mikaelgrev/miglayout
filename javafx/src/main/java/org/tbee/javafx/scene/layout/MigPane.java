@@ -21,7 +21,6 @@ import net.miginfocom.layout.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -110,11 +109,11 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private void construct() {
 		// defaults
-		if (getLayoutConstraints() == null) setLayoutConstraints(new LC());
-		if (getRowConstraints() == null) setRowConstraints(new AC());
-		if (getColumnConstraints() == null) setColumnConstraints(new AC());
+		if (layoutConstraints == null) setLayoutConstraints(new LC());
+		if (rowConstraints == null) setRowConstraints(new AC());
+		if (columnConstraints == null) setColumnConstraints(new AC());
 
-		// just in case when someone sneekly removes a child the JavaFX's way; prevent memory leaking
+		// just in case when someone sneakily removes a child the JavaFX way; prevent memory leaking
 		getChildren().addListener(new ListChangeListener<Node>()
 		{
 			// as of JDK 1.6: @Override
@@ -126,14 +125,8 @@ public class MigPane extends javafx.scene.layout.Pane
 						if (!node.isManaged())
 							continue;
 
-						// clean up. Iterate is fast enough and we don't have to have one more map.
-						for (Map.Entry<FX2ComponentWrapper, CC> e : wrapperToCCMap.entrySet()) {
-							if (e.getKey().getComponent() == node) {
-								wrapperToCCMap.remove(e.getKey());
-								break;
-							}
-						}
-						invalidateGrid();
+						if (wrapperToCCMap.remove(new FX2ComponentWrapper(node)) != null)
+							invalidateGrid();
 					}
 
 					for (Node node : c.getAddedSubList()) {
@@ -143,8 +136,11 @@ public class MigPane extends javafx.scene.layout.Pane
 
 						// get cc or use default
 						CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
-						if (cc != null) // Only put the value if this comes from FXML
-							wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
+						FX2ComponentWrapper wrapper = new FX2ComponentWrapper(node);
+
+						// Only put the value if this comes from FXML or from direct list manipulation (not in wrapperToCCMap yet)
+						if (cc != null || !wrapperToCCMap.containsKey(wrapper))
+							wrapperToCCMap.put(wrapper, cc);
 
 						invalidateGrid();
 					}
@@ -319,8 +315,8 @@ public class MigPane extends javafx.scene.layout.Pane
 	// ============================================================================================================
 	// LAYOUT
 
-	// Store constraints. Key order important.
-	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<FX2ComponentWrapper, CC>();
+	// Store constraints. Key order important. Can have null values but all components that MigPane handles must be a key.
+	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<>();
 
 	private long lastSize = 0;
 
@@ -822,6 +818,5 @@ public class MigPane extends javafx.scene.layout.Pane
 			}
 			return getComponent().equals( ((FX2ComponentWrapper)o).getComponent() );
 		}
-
 	}
 }
