@@ -676,7 +676,7 @@ public final class Grid
 		return ccPos;
 	}
 
-	private BoundSize[] getCallbackSize2(ComponentWrapper cw)
+	private BoundSize[] getCallbackSize(ComponentWrapper cw)
 	{
 		if (callbackList != null) {
 			for (LayoutCallback callback : callbackList) {
@@ -1741,6 +1741,7 @@ public final class Grid
 		private final int eHideMode;
 		private final boolean useVisualPadding;
 		private boolean sizesOk = false;
+		private boolean isAbsolute;
 
 		private int[][] gaps; // [top,left(actually before),bottom,right(actually after)][min,pref,max]
 
@@ -1763,6 +1764,7 @@ public final class Grid
 			this.cc = cc;
 			this.eHideMode = eHideMode;
 			this.useVisualPadding = useVisualPadding;
+			this.isAbsolute = cc.getHorizontal().getSize().isAbsolute() && cc.getVertical().getSize().isAbsolute();
 
 			if (eHideMode > 1) {
 				gaps = new int[4][];
@@ -1779,9 +1781,9 @@ public final class Grid
 
 		private void validateSize()
 		{
-			BoundSize[] callbackSz = getCallbackSize2(comp);
+			BoundSize[] callbackSz = getCallbackSize(comp);
 
-			if (sizesOk && callbackSz == null)
+			if (isAbsolute && sizesOk && callbackSz == null)
 				return;
 
 			if (eHideMode <= 0) {
@@ -1844,7 +1846,8 @@ public final class Grid
 				}
 			} else {
 				ContainerWrapper par = comp.getParent();
-				size = uvs.getSize(sizeType).getPixels(isHor ? par.getWidth() : par.getHeight(), par, comp);
+				float refValue = isHor ? par.getWidth() : par.getHeight();
+				size = uvs.getSize(sizeType).getPixels(refValue, par, comp);
 			}
 			return size;
 		}
@@ -1924,24 +1927,6 @@ public final class Grid
 			}
 
 			comp.setBounds(compX, compY, compW, compH);
-
-//			// Return if the preferred size has changed due to the new bounds, but only for components with a bias.
-//			switch (comp.getContentBias()) {
-//				default:
-//				case -1: // no bias
-//					return false;
-//
-//				case 0: // horizontal size affects preferred height
-//					System.out.println("compPH for w " + w + " is " + comp.getPreferredHeight(w));
-//					System.out.println("cw same is " + getSizes(false)[LayoutUtil.PREF]);
-//					boolean rel =  cc.getVertical().getSize().getPreferred() != null && comp.getPreferredHeight(w) != getSizes(false)[LayoutUtil.PREF];
-//					System.out.println("rel " + rel);
-//					System.out.println("");
-//					return rel;
-//
-//				case 1: // vertical size affects preferred width (uncommon)
-//					return cc.getHorizontal().getSize().getPreferred() != null && comp.getPreferredWidth(h) != getSizes(true)[LayoutUtil.PREF];
-//			}
 		}
 
 		private void setForcedSizes(int[] sizes, boolean isHor)
@@ -2063,8 +2048,7 @@ public final class Grid
 			align = UnitValue.CENTER;
 
 		int offset = start + aboveBelow[0] + (align != null ? Math.max(0, align.getPixels(size - blRowSize, parent, null)) : 0);
-		for (int i = 0, iSz = compWraps.size(); i < iSz; i++) {
-			CompWrap cw = compWraps.get(i);
+		for (CompWrap cw : compWraps) {
 			cw.y += offset;
 			if (cw.y + cw.h > start + size)
 				cw.h = start + size - cw.y;

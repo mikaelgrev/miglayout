@@ -3,11 +3,7 @@ package net.miginfocom.layout;
 import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamException;
-import java.io.Serializable;
+import java.io.*;
 /*
  * License (BSD):
  * ==============
@@ -229,8 +225,18 @@ public class BoundSize implements Serializable
 
 	void checkNotLinked()
 	{
-		if (min != null && min.isLinkedDeep() || pref != null && pref.isLinkedDeep() || max != null && max.isLinkedDeep())
+		if (isLinked())
 			throw new IllegalArgumentException("Size may not contain links");
+	}
+
+	boolean isLinked()
+	{
+		return min != null && min.isLinkedDeep() || pref != null && pref.isLinkedDeep() || max != null && max.isLinkedDeep();
+	}
+
+	boolean isAbsolute()
+	{
+		return (min == null || min.isAbsoluteDeep()) && (pref == null || pref.isAbsoluteDeep()) && (max == null || max.isAbsoluteDeep());
 	}
 
 	static {

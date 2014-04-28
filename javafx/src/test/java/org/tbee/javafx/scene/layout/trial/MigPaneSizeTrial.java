@@ -28,19 +28,19 @@ public class MigPaneSizeTrial extends Application
 //		System.out.println(Toolkit.getDefaultToolkit().getScreenResolution());
 
 		// add nodes
-		lRoot.add(new Button("500 logical pixels (def)"), "w 500!, wrap");
-		lRoot.add(new Button("500 logical pixels"), "w 500lp!, wrap");
-		lRoot.add(new Button("500 pixels"), "w 500px!, wrap");
-		lRoot.add(new Button("10 centimeters"), "w 10cm!, wrap");
-		lRoot.add(new Button("4 inches"), "w 4in!, wrap");
-		lRoot.add(new Button("30% of container"), "w 30%!, wrap");
-		lRoot.add(new Button("30% of screen"), "w 30sp!, wrap");
+		lRoot.add(new Button("500 logical pixels (def)"), "w 500, wrap");
+		lRoot.add(new Button("500 logical pixels"), "w 500lp, wrap");
+		lRoot.add(new Button("500 pixels"), "w 500px, wrap");
+		lRoot.add(new Button("10 centimeters"), "w 10cm, wrap");
+		lRoot.add(new Button("4 inches"), "w 4in, wrap");
+		lRoot.add(new Button("30% of screen"), "w 30sp, wrap");
+		lRoot.add(new Button("30% of container"), "w 30%, wrap");
 
 		// create scene
 		Scene scene = new Scene(lRoot);
 
 		// create stage
-		stage.setTitle("Test");
+		stage.setTitle("Test - resize to check container percentage");
 		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.show();

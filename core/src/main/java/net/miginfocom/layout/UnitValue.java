@@ -465,6 +465,54 @@ public final class UnitValue implements Serializable
 		throw new IllegalArgumentException("Unknown keyword: " + unitStr);
 	}
 
+	final boolean isAbsolute()
+	{
+		switch (unit) {
+			case PIXEL:
+			case LPX:
+			case LPY:
+			case MM:
+			case CM:
+			case INCH:
+			case PT:
+				return true;
+
+			case SPX:
+			case SPY:
+			case PERCENT:
+			case ALIGN:
+			case MIN_SIZE:
+			case PREF_SIZE:
+			case MAX_SIZE:
+			case BUTTON:
+			case LINK_X:
+			case LINK_Y:
+			case LINK_W:
+			case LINK_H:
+			case LINK_X2:
+			case LINK_Y2:
+			case LINK_XPOS:
+			case LINK_YPOS:
+			case LOOKUP:
+			case LABEL_ALIGN:
+				return false;
+
+			case IDENTITY:
+		}
+		throw new IllegalArgumentException("Unknown/illegal unit: " + unit + ", unitStr: " + unitStr);
+	}
+
+	final boolean isAbsoluteDeep()
+	{
+		if (subUnits != null) {
+			for (UnitValue subUnit : subUnits) {
+				if (subUnit.isAbsoluteDeep())
+					return true;
+			}
+		}
+		return isAbsolute();
+	}
+
 	final boolean isLinked()
 	{
 		return linkId != null;
@@ -472,15 +520,13 @@ public final class UnitValue implements Serializable
 
 	final boolean isLinkedDeep()
 	{
-		if (subUnits == null)
-			return linkId != null;
-
-		for (UnitValue subUnit : subUnits) {
-			if (subUnit.isLinkedDeep())
-				return true;
+		if (subUnits != null) {
+			for (UnitValue subUnit : subUnits) {
+				if (subUnit.isLinkedDeep())
+					return true;
+			}
 		}
-
-		return false;
+		return isLinked();
 	}
 
 	final String getLinkTargetId()
