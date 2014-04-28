@@ -204,12 +204,12 @@ public class SwtComponentWrapper implements ComponentWrapper
 
 	public int getHorizontalScreenDPI()
 	{
-		return c.getDisplay().getDPI().x;
+		return PlatformDefaults.getDefaultDPI();
 	}
 
 	public int getVerticalScreenDPI()
 	{
-		return c.getDisplay().getDPI().y;
+		return PlatformDefaults.getDefaultDPI();
 	}
 
 	public final int getScreenWidth()

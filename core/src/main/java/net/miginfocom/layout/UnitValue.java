@@ -36,11 +36,7 @@ package net.miginfocom.layout;
 import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -316,8 +312,6 @@ public final class UnitValue implements Serializable
 					Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 					if (s != null)
 						f *= s;
-					if (PlatformDefaults.getPlatform() == PlatformDefaults.MAC_OSX)
-						f *= 72f/96f; // For some reason Macs always report 72 DPI even though it compensate to always draw in 96 DPI.
 
 					return (isHor ? parent.getHorizontalScreenDPI() : parent.getVerticalScreenDPI()) * value / f;
 

@@ -31,6 +31,11 @@ import java.util.List;
  */
 public class MigPane extends javafx.scene.layout.Pane
 {
+	static {
+		// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+		PlatformDefaults.setDefaultDPI(96);
+	}
+
 	protected final static String FXML_CC_KEY = "MigPane.cc";
 
 	// ============================================================================================================
@@ -705,6 +710,13 @@ public class MigPane extends javafx.scene.layout.Pane
 		}
 
 		// as of JDK 1.6: @Override
+		public boolean hasBaseline() {
+			// For some reason not resizable just return their height as the baseline, not BASELINE_OFFSET_SAME_AS_HEIGHT as logic would suggest.
+			// For more info : https://javafx-jira.kenai.com/browse/RT-36728
+			return node.isResizable() && node.getBaselineOffset() != BASELINE_OFFSET_SAME_AS_HEIGHT;
+		}
+
+		// as of JDK 1.6: @Override
 		public int getScreenLocationX() {
 			// this code is called when absolute layout is used
 			Bounds lBoundsInSceneNode = node.localToScene(node.getBoundsInLocal());
@@ -745,12 +757,19 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		// as of JDK 1.6: @Override
 		public int getHorizontalScreenDPI() {
-			return (int)Math.ceil(Screen.getPrimary().getDpi());
+			// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+			// todo NOTE Also remove the static block at the top of this file that sets the default DPI on the platform to 96 DPI which makes LP and PX 1:1.
+			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
+			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
+
+//			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
 		// as of JDK 1.6: @Override
 		public int getVerticalScreenDPI() {
-			return (int)Math.ceil(Screen.getPrimary().getDpi());
+			// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
+//			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
 		// as of JDK 1.6: @Override
@@ -763,6 +782,7 @@ public class MigPane extends javafx.scene.layout.Pane
 					Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 					if (s == null)
 						s = 1.0f;
+
 					return s * (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
 
 				default:
@@ -778,12 +798,6 @@ public class MigPane extends javafx.scene.layout.Pane
 		// as of JDK 1.6: @Override
 		public String getLinkId() {
 			return node.getId();
-		}
-
-		// as of JDK 1.6: @Override
-		public boolean hasBaseline() {
-			// For some reason not resizable just return their height as the baseline, not BASELINE_OFFSET_SAME_AS_HEIGHT as logic would suggest.
-			return node.isResizable() && node.getBaselineOffset() != BASELINE_OFFSET_SAME_AS_HEIGHT;
 		}
 
 		// as of JDK 1.6: @Override

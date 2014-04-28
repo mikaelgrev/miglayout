@@ -459,7 +459,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 							break;
 					}
 
-					padValue = UIManager.get(classID + "." + VISUAL_PADDING_PROPERTY);
+					padValue = PlatformDefaults.getDefaultVisualPadding(classID + "." + VISUAL_PADDING_PROPERTY);
 					if (padValue instanceof int[]) {
 						//client property value could be an int[]
 						padding = (int[]) padValue;

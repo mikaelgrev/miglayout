@@ -1,9 +1,7 @@
 package net.miginfocom.layout;
 
-import javax.swing.*;
-
-import java.awt.Toolkit;
 import java.util.HashMap;
+
 /*
  * License (BSD):
  * ==============
@@ -142,6 +140,8 @@ public final class PlatformDefaults
 
 	private static boolean dra = true;
 
+	private static final HashMap<String, int[]> VISUAL_BOUNDS = new HashMap<String, int[]>(64);
+
 	static {
 		setPlatform(getCurrentPlatform());
 		MOD_COUNT = 0;
@@ -175,7 +175,7 @@ public final class PlatformDefaults
 	{
 		switch (plaf) {
 			case WINDOWS_XP:
-				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {1, 0, 1, 2});
+				setDefaultVisualPadding("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[]{1, 0, 1, 2});
 				setRelatedGap(LPX7, LPY7);
 				setUnrelatedGap(LPX11, LPY11);
 				setParagraphGap(LPX20, LPY20);
@@ -189,41 +189,42 @@ public final class PlatformDefaults
 				break;
 
 			case MAC_OSX:
-				UIManager.put("Button." + VISUAL_PADDING_PROPERTY, new int[] {3, 6, 5, 6});
-				UIManager.put("Button.icon." + VISUAL_PADDING_PROPERTY, new int[] {3, 2, 3, 2});
-				UIManager.put("Button.square." + VISUAL_PADDING_PROPERTY, new int[] {4, 4, 4, 4});
-				UIManager.put("Button.square.icon." + VISUAL_PADDING_PROPERTY, new int[] {4, 4, 4, 4});
-				UIManager.put("Button.gradient." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
-				UIManager.put("Button.gradient.icon." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
-				UIManager.put("Button.bevel." + VISUAL_PADDING_PROPERTY, new int[] {2, 2, 3, 2});
-				UIManager.put("Button.bevel.icon." + VISUAL_PADDING_PROPERTY, new int[] {2, 2, 3, 2});
-				UIManager.put("Button.textured." + VISUAL_PADDING_PROPERTY, new int[] {3, 2, 3, 2});
-				UIManager.put("Button.textured.icon." + VISUAL_PADDING_PROPERTY, new int[] {3, 2, 3, 2});
-				UIManager.put("Button.roundRect." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
-				UIManager.put("Button.roundRect.icon." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
-				UIManager.put("Button.recessed." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
-				UIManager.put("Button.recessed.icon." + VISUAL_PADDING_PROPERTY, new int[] {5, 4, 5, 4});
-				UIManager.put("Button.help." + VISUAL_PADDING_PROPERTY, new int[] {4, 3, 3, 4});
-				UIManager.put("Button.help.icon." + VISUAL_PADDING_PROPERTY, new int[] {4, 3, 3, 4});
 
-				UIManager.put("ComboBox." + VISUAL_PADDING_PROPERTY, new int[] {2, 4, 4, 5});
-				UIManager.put("ComboBox.isPopDown." + VISUAL_PADDING_PROPERTY, new int[] {2, 5, 4, 5});
-				UIManager.put("ComboBox.isSquare." + VISUAL_PADDING_PROPERTY, new int[] {1, 6, 5, 7});
+				setDefaultVisualPadding("Button." + VISUAL_PADDING_PROPERTY, new int[]{3, 6, 5, 6});
+				setDefaultVisualPadding("Button.icon." + VISUAL_PADDING_PROPERTY, new int[]{3, 2, 3, 2});
+				setDefaultVisualPadding("Button.square." + VISUAL_PADDING_PROPERTY, new int[]{4, 4, 4, 4});
+				setDefaultVisualPadding("Button.square.icon." + VISUAL_PADDING_PROPERTY, new int[]{4, 4, 4, 4});
+				setDefaultVisualPadding("Button.gradient." + VISUAL_PADDING_PROPERTY, new int[]{5, 4, 5, 4});
+				setDefaultVisualPadding("Button.gradient.icon." + VISUAL_PADDING_PROPERTY, new int[]{5, 4, 5, 4});
+				setDefaultVisualPadding("Button.bevel." + VISUAL_PADDING_PROPERTY, new int[]{2, 2, 3, 2});
+				setDefaultVisualPadding("Button.bevel.icon." + VISUAL_PADDING_PROPERTY, new int[]{2, 2, 3, 2});
+				setDefaultVisualPadding("Button.textured." + VISUAL_PADDING_PROPERTY, new int[]{3, 2, 3, 2});
+				setDefaultVisualPadding("Button.textured.icon." + VISUAL_PADDING_PROPERTY, new int[]{3, 2, 3, 2});
+				setDefaultVisualPadding("Button.roundRect." + VISUAL_PADDING_PROPERTY, new int[]{5, 4, 5, 4});
+				setDefaultVisualPadding("Button.roundRect.icon." + VISUAL_PADDING_PROPERTY, new int[]{5, 4, 5, 4});
+				setDefaultVisualPadding("Button.recessed." + VISUAL_PADDING_PROPERTY, new int[]{5, 4, 5, 4});
+				setDefaultVisualPadding("Button.recessed.icon." + VISUAL_PADDING_PROPERTY, new int[]{5, 4, 5, 4});
+				setDefaultVisualPadding("Button.help." + VISUAL_PADDING_PROPERTY, new int[]{4, 3, 3, 4});
+				setDefaultVisualPadding("Button.help.icon." + VISUAL_PADDING_PROPERTY, new int[]{4, 3, 3, 4});
 
-				UIManager.put("ComboBox.editable." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 2});
-				UIManager.put("ComboBox.editable.isSquare." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 1});
+				setDefaultVisualPadding("ComboBox." + VISUAL_PADDING_PROPERTY, new int[]{2, 4, 4, 5});
+				setDefaultVisualPadding("ComboBox.isPopDown." + VISUAL_PADDING_PROPERTY, new int[]{2, 5, 4, 5});
+				setDefaultVisualPadding("ComboBox.isSquare." + VISUAL_PADDING_PROPERTY, new int[]{1, 6, 5, 7});
 
-				UIManager.put("TextField." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 3});
-				UIManager.put("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[] {4, 8, 11, 8});
+				setDefaultVisualPadding("ComboBox.editable." + VISUAL_PADDING_PROPERTY, new int[]{3, 3, 3, 2});
+				setDefaultVisualPadding("ComboBox.editable.isSquare." + VISUAL_PADDING_PROPERTY, new int[]{3, 3, 3, 1});
 
-				UIManager.put("Spinner." + VISUAL_PADDING_PROPERTY, new int[] {3, 3, 3, 1});
+				setDefaultVisualPadding("TextField." + VISUAL_PADDING_PROPERTY, new int[]{3, 3, 3, 3});
+				setDefaultVisualPadding("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[]{4, 8, 11, 8});
 
-				UIManager.put("RadioButton." + VISUAL_PADDING_PROPERTY, new int[] {4, 6, 3, 5});
-				UIManager.put("RadioButton.small." + VISUAL_PADDING_PROPERTY, new int[] {4, 6, 3, 5});
-				UIManager.put("RadioButton.mini." + VISUAL_PADDING_PROPERTY, new int[] {5, 7, 4, 5});
-				UIManager.put("CheckBox." + VISUAL_PADDING_PROPERTY, new int[] {5, 7, 4, 5});
-				UIManager.put("CheckBox.small." + VISUAL_PADDING_PROPERTY, new int[] {5, 7, 4, 5});
-				UIManager.put("CheckBox.mini." + VISUAL_PADDING_PROPERTY, new int[] {6, 7, 3, 5});
+				setDefaultVisualPadding("Spinner." + VISUAL_PADDING_PROPERTY, new int[]{3, 3, 3, 1});
+
+				setDefaultVisualPadding("RadioButton." + VISUAL_PADDING_PROPERTY, new int[]{4, 6, 3, 5});
+				setDefaultVisualPadding("RadioButton.small." + VISUAL_PADDING_PROPERTY, new int[]{4, 6, 3, 5});
+				setDefaultVisualPadding("RadioButton.mini." + VISUAL_PADDING_PROPERTY, new int[]{5, 7, 4, 5});
+				setDefaultVisualPadding("CheckBox." + VISUAL_PADDING_PROPERTY, new int[]{5, 7, 4, 5});
+				setDefaultVisualPadding("CheckBox.small." + VISUAL_PADDING_PROPERTY, new int[]{5, 7, 4, 5});
+				setDefaultVisualPadding("CheckBox.mini." + VISUAL_PADDING_PROPERTY, new int[]{6, 7, 3, 5});
 
 				setRelatedGap(LPX7, LPY7);
 				setUnrelatedGap(LPX11, LPY11);
@@ -257,6 +258,26 @@ public final class PlatformDefaults
 		BASE_DPI = BASE_DPI_FORCED != null ? BASE_DPI_FORCED : getPlatformDPI(plaf);
 	}
 
+	/** Sets the visual bounds for a component type.
+	 * @param key The component type. E.g. "TabbedPane.visualPadding" or "ComboBox.editable.isSquare.visualPadding". See source code for list.
+	 * @param insets Top, left, bottom, right. Always length 4 or null.
+	 * @see net.miginfocom.layout.ComponentWrapper#getVisualPadding()
+	 */
+	public static void setDefaultVisualPadding(String key, int[] insets)
+	{
+		VISUAL_BOUNDS.put(key, insets);
+	}
+
+	/** Returns the visual bounds for a component type.
+	 * @param key The component type. E.g. "TabbedPane.visualPadding" or "ComboBox.editable.isSquare.visualPadding". See source code for list.
+	 * @return insets Top, left, bottom, right. Always length 4 or null. Live object, MUST NOT BE CHANGED!.
+	 * @see net.miginfocom.layout.ComponentWrapper#getVisualPadding()
+	 */
+	public static int[] getDefaultVisualPadding(String key)
+	{
+		return VISUAL_BOUNDS.get(key);
+	}
+
 	public static int getPlatformDPI(int plaf)
 	{
 		switch (plaf) {
@@ -265,7 +286,7 @@ public final class PlatformDefaults
 				return 96;
 			case MAC_OSX:
 				try {
-					return Toolkit.getDefaultToolkit().getScreenResolution();
+					return java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
 				} catch (Throwable t) {
 					return 72;
 				}
@@ -320,7 +341,7 @@ public final class PlatformDefaults
 	 */
 	public static void setHorizontalScaleFactor(Float f)
 	{
-		if (LayoutUtil.equals(horScale, f) == false) {
+		if (!LayoutUtil.equals(horScale, f)) {
 			horScale = f;
 			MOD_COUNT++;
 		}
@@ -347,7 +368,7 @@ public final class PlatformDefaults
 	 */
 	public static void setVerticalScaleFactor(Float f)
 	{
-		if (LayoutUtil.equals(verScale, f) == false) {
+		if (!LayoutUtil.equals(verScale, f)) {
 			verScale = f;
 			MOD_COUNT++;
 		}
@@ -684,8 +705,8 @@ public final class PlatformDefaults
 	/** Returns the default gap between two components that <b>are in the same cell</b>.
 	 * @param comp The component that the gap is for. Never <code>null</code>.
 	 * @param adjacentComp The adjacent component if any. May be <code>null</code>.
-	 * @param adjacentSide What side the <code>adjacentComp</code> is on. {@link javax.swing.SwingUtilities#TOP} or
-	 * {@link javax.swing.SwingUtilities#LEFT} or {@link javax.swing.SwingUtilities#BOTTOM} or {@link javax.swing.SwingUtilities#RIGHT}.
+	 * @param adjacentSide What side the <code>adjacentComp</code> is on. {@link javax.swing.SwingUtilities#TOP} (1) or
+	 * {@link javax.swing.SwingUtilities#LEFT} (2) or {@link javax.swing.SwingUtilities#BOTTOM} (3) or {@link javax.swing.SwingUtilities#RIGHT} (4).
 	 * @param tag The tag string that the component might be tagged with in the component constraints. May be <code>null</code>.
 	 * @param isLTR If it is left-to-right.
 	 * @return The default gap between two components or <code>null</code> if there should be no gap.
@@ -701,7 +722,8 @@ public final class PlatformDefaults
 //		if (adjacentComp == null || adjacentSide == SwingConstants.LEFT || adjacentSide == SwingConstants.TOP)
 //			return null;
 
-		return (adjacentSide == SwingConstants.LEFT || adjacentSide == SwingConstants.RIGHT) ? RELATED_X : RELATED_Y;
+//		SwingConstants.RIGHT == 4, SwingConstants.LEFT == 2
+		return (adjacentSide == 2 || adjacentSide == 4) ? RELATED_X : RELATED_Y;
 	}
 
 	/** Returns the current gap provider or <code>null</code> if none is set and "related" should always be used.
