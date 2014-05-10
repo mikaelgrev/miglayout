@@ -1,6 +1,7 @@
 package org.tbee.javafx.scene.layout;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -37,6 +38,13 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	protected final static String FXML_CC_KEY = "MigPane.cc";
+
+	// We need to invalidate the grid since we can have a component with hidemode 3
+	// We need to request layout since JavaFX doesn't do this.
+	private final ChangeListener<Boolean> gridInvalidator = (observable, oldValue, newValue) -> {
+		invalidateGrid();
+		requestLayout();
+	};
 
 	// ============================================================================================================
 	// CONSTRUCTOR
@@ -119,36 +127,31 @@ public class MigPane extends javafx.scene.layout.Pane
 		if (columnConstraints == null) setColumnConstraints(new AC());
 
 		// just in case when someone sneakily removes a child the JavaFX way; prevent memory leaking
-		getChildren().addListener(new ListChangeListener<Node>()
-		{
-			// as of JDK 1.6: @Override
-			public void onChanged(Change<? extends Node> c)
-			{
-				while (c.next()) {
-					for (Node node : c.getRemoved()) {
-						// debug rectangles are not handled by miglayout, neither are not managed ones
-						if (!node.isManaged())
-							continue;
+		getChildren().addListener((ListChangeListener<Node>) c -> {
+			while (c.next()) {
+				for (Node node : c.getRemoved()) {
+					node.visibleProperty().removeListener(gridInvalidator);
 
-						if (wrapperToCCMap.remove(new FX2ComponentWrapper(node)) != null)
-							invalidateGrid();
-					}
-
-					for (Node node : c.getAddedSubList()) {
-						// debug rectangles are not handled by miglayout, neither are not managed ones
-						if (!node.isManaged())
-							continue;
-
-						// get cc or use default
-						CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
-						FX2ComponentWrapper wrapper = new FX2ComponentWrapper(node);
-
-						// Only put the value if this comes from FXML or from direct list manipulation (not in wrapperToCCMap yet)
-						if (cc != null || !wrapperToCCMap.containsKey(wrapper))
-							wrapperToCCMap.put(wrapper, cc);
-
+					if (wrapperToCCMap.remove(new FX2ComponentWrapper(node)) != null)
 						invalidateGrid();
-					}
+				}
+
+				for (Node node : c.getAddedSubList()) {
+					// debug rectangles are not handled by miglayout, neither are not managed ones
+					if (!node.isManaged())
+						continue;
+
+					// get cc or use default
+					CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
+					FX2ComponentWrapper wrapper = new FX2ComponentWrapper(node);
+
+					// Only put the value if this comes from FXML or from direct list manipulation (not in wrapperToCCMap yet)
+					if (cc != null || !wrapperToCCMap.containsKey(wrapper))
+						wrapperToCCMap.put(wrapper, cc);
+
+					node.visibleProperty().addListener(gridInvalidator);
+
+					invalidateGrid();
 				}
 			}
 		});
@@ -268,6 +271,14 @@ public class MigPane extends javafx.scene.layout.Pane
 	final static public String ROWCONSTRAINTS_PROPERTY_ID = "rowConstraints";
 
 
+	/** Returns the constraints for the node
+	 * @return May be null which means all default constraints.
+	 */
+	public CC getComponentConstraints(Node node)
+	{
+		return wrapperToCCMap.get(new FX2ComponentWrapper(node));
+	}
+
 	// ============================================================================================================
 	// CALLBACK
 
@@ -316,6 +327,16 @@ public class MigPane extends javafx.scene.layout.Pane
 		add(node, cc);
 	}
 
+	public boolean remove(Node node)
+	{
+		return getChildren().remove(node);
+	}
+
+	public Node remove(int ix)
+	{
+		return getChildren().remove(ix);
+	}
+
 
 	// ============================================================================================================
 	// LAYOUT
@@ -358,6 +379,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	@Override public void requestLayout() {
+
 		if (performingLayout)
 			return;
 
@@ -383,9 +405,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	/** Removes the grid so it is recreated as needed next time. Should only be needed when the grid structure, or the interpretation of it,
-	 * has changed.
+	 * has changed. Should normally don't have to be called by client code since this should be fully handled by MigPane.
 	 */
-	private void invalidateGrid()
+	public void invalidateGrid()
 	{
 		_grid = null;
 		biasDirty = true;
@@ -398,7 +420,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		BoundSize wBounds = layoutConstraints.getPackWidth();
 		BoundSize hBounds = layoutConstraints.getPackHeight();
 		Scene scene = getScene();
-		Window window = scene.getWindow();
+		Window window = scene != null ? scene.getWindow() : null;
 
 		if (window == null || wBounds == BoundSize.NULL_SIZE && hBounds == BoundSize.NULL_SIZE)
 			return;
