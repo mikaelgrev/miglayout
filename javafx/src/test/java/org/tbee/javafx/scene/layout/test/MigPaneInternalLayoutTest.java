@@ -1,7 +1,5 @@
 package org.tbee.javafx.scene.layout.test;
 
-import java.util.List;
-
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,10 +15,12 @@ import jfxtras.util.PlatformUtil;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
-
+import net.miginfocom.layout.PlatformDefaults;
 import org.junit.Assert;
 import org.junit.Test;
 import org.tbee.javafx.scene.layout.MigPane;
+
+import java.util.List;
 
 /**
  * TestFX is able to layout a single node per class.
@@ -35,6 +35,9 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 
 	@Override
 	protected Parent getRootNode() {
+		PlatformDefaults.setDefaultDPI(96);
+		PlatformDefaults.setPlatform(PlatformDefaults.WINDOWS_XP);
+
 		// use a pane to force the scene large enough, migpane is placed top-left
 		pane = new Pane();
 		pane.setMinSize(1000, 600);
@@ -141,7 +144,7 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 		assertWH(migPane, 140.0, 76.0);
 		new AssertNode(migPane.getChildren().get(0)).assertXYWH(42.0, 7.0, 56.0, 17.0, 0.01).assertClass(javafx.scene.control.Label.class);
 		new AssertNode(migPane.getChildren().get(1)).assertXYWH(7.0, 35.0, 126.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		
+
 		// increase font size
 		TestUtil.runThenWaitForPaintPulse( () -> {
 			label.setFont(new Font(50));
@@ -151,7 +154,7 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 		assertWH(migPane, 244.0, 132.0);
 		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 230.0, 73.0, 0.01).assertClass(javafx.scene.control.Label.class);
 		new AssertNode(migPane.getChildren().get(1)).assertXYWH(59.0, 91.0, 126.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		
+
 		// increase font size
 		TestUtil.runThenWaitForPaintPulse( () -> {
 			label.setFont(new Font(100));
@@ -294,7 +297,7 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 		new AssertNode(migPane.getChildren().get(18)).assertXYWH(7.0, 295.0, 124.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
 
 	}
-	
+
 	// =============================================================================================================================================================================================================================
 	// SUPPORT
 
@@ -310,9 +313,9 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 			label.setText(s);
 		});
 	}
-	
+
 	private void generateSource(Pane pane) {
-		System.out.println(label.getText()); 
+		System.out.println(label.getText());
 		System.out.println("assertWH(migPane, " + pane.getWidth() + ", " + pane.getHeight() + ");");
 		AssertNode.generateSource("migPane", pane.getChildren(), EXCLUDED_CLASSES, false, AssertNode.A.XYWH, AssertNode.A.CLASS);
 		TestUtil.sleep(3000);
