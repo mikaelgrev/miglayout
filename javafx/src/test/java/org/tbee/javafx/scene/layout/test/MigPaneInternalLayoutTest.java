@@ -1,5 +1,7 @@
 package org.tbee.javafx.scene.layout.test;
 
+import java.util.List;
+
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import jfxtras.test.AssertNode;
 import jfxtras.test.TestUtil;
 import jfxtras.util.PlatformUtil;
@@ -16,11 +19,10 @@ import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.PlatformDefaults;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.tbee.javafx.scene.layout.MigPane;
-
-import java.util.List;
 
 /**
  * TestFX is able to layout a single node per class.
@@ -52,6 +54,29 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 	}
 	private Pane pane = null;
 	private Label label = null;
+
+	@Test
+	public void twoChildBasicLayoutWithCSS() {
+		loadCSS();
+		
+		setLabel("twoChildBasicLayoutWithCSS");
+
+		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
+			MigPane constructMigPane = new MigPane(new LC().debug(1000), new AC(), new AC());
+	        pane.getChildren().add(constructMigPane);
+
+	        // add nodes
+	        constructMigPane.add(new TextField("blablabla"), new CC());
+	        constructMigPane.add(new Rectangle(30,30, Color.YELLOW), new CC());
+	        return constructMigPane;
+		});
+TestUtil.sleep(5000);
+		//generateSource(migPane);
+//		assertWH(migPane, 200.0, 44.0);
+//		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+//		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
+	}
+
 
 	@Test
 	public void twoChildBasicLayout() {
@@ -321,4 +346,10 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 		TestUtil.sleep(3000);
 	}
 
+	private void loadCSS() {
+		TestUtil.runThenWaitForPaintPulse( () -> {
+			Stage lStage = (Stage)getWindows().get(0);
+			lStage.getScene().getStylesheets().addAll(this.getClass().getResource("MigPaneInternalLayoutTest.css").toExternalForm());
+		});
+	}
 }
