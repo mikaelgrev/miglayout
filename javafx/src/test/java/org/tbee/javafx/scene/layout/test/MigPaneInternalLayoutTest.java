@@ -56,30 +56,8 @@ public class MigPaneInternalLayoutTest extends org.loadui.testfx.GuiTest {
 	private Label label = null;
 
 	@Test
-	public void twoChildBasicLayoutWithCSS() {
-		loadCSS();
-		
-		setLabel("twoChildBasicLayoutWithCSS");
-
-		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
-			MigPane constructMigPane = new MigPane(new LC().debug(1000), new AC(), new AC());
-	        pane.getChildren().add(constructMigPane);
-
-	        // add nodes
-	        constructMigPane.add(new TextField("blablabla"), new CC());
-	        constructMigPane.add(new Rectangle(30,30, Color.YELLOW), new CC());
-	        return constructMigPane;
-		});
-TestUtil.sleep(5000);
-		//generateSource(migPane);
-//		assertWH(migPane, 200.0, 44.0);
-//		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-//		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
-	}
-
-
-	@Test
 	public void twoChildBasicLayout() {
+		loadCSS();
 		setLabel("twoChildBasicLayout");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -93,13 +71,13 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 200.0, 44.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
-	}
+		assertWH(migPane, 187.0, 45.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(150.0, 8.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);	}
 
 	@Test
 	public void wrappingLabel() {
+		loadCSS();
 		setLabel("wrappingLabel");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -114,12 +92,13 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 400.0, 48.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 386.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		assertWH(migPane, 400.0, 90.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 386.0, 76.0, 0.01).assertClass(javafx.scene.control.Label.class);
 	}
 
 	@Test
 	public void size() {
+		loadCSS();
 		setLabel("size");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -138,18 +117,19 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 781.0, 238.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 500.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(7.0, 39.0, 500.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(2)).assertXYWH(7.0, 71.0, 500.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(3)).assertXYWH(7.0, 103.0, 378.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(4)).assertXYWH(7.0, 135.0, 384.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(5)).assertXYWH(7.0, 167.0, 767.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(6)).assertXYWH(7.0, 199.0, 234.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		assertWH(migPane, 781.0, 280.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 500.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(7.0, 45.0, 500.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(2)).assertXYWH(7.0, 83.0, 500.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(3)).assertXYWH(7.0, 121.0, 378.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(4)).assertXYWH(7.0, 159.0, 384.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(5)).assertXYWH(7.0, 197.0, 767.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(6)).assertXYWH(7.0, 235.0, 234.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
 	}
 
 	@Test
 	public void pack() {
+		loadCSS();
 		setLabel("pack");
 
 		final Label label = new Label("Pack it up!");
@@ -166,33 +146,34 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 140.0, 76.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(42.0, 7.0, 56.0, 17.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(7.0, 35.0, 126.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
-
+		assertWH(migPane, 226.0, 82.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(60.0, 7.0, 106.0, 19.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(7.0, 37.0, 212.0, 38.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		
 		// increase font size
 		TestUtil.runThenWaitForPaintPulse( () -> {
 			label.setFont(new Font(50));
 	        return null;
 		});
 		//generateSource(migPane);
-		assertWH(migPane, 244.0, 132.0);
+		assertWH(migPane, 244.0, 136.0);
 		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 230.0, 73.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(59.0, 91.0, 126.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
-
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(16.0, 91.0, 212.0, 38.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		
 		// increase font size
 		TestUtil.runThenWaitForPaintPulse( () -> {
 			label.setFont(new Font(100));
 	        return null;
 		});
 		//generateSource(migPane);
-		assertWH(migPane, 474.0, 205.0);
+		assertWH(migPane, 474.0, 209.0);
 		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 460.0, 146.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(174.0, 164.0, 126.0, 34.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(131.0, 164.0, 212.0, 38.0, 0.01).assertClass(javafx.scene.control.Label.class);
 	}
 
 	@Test
 	public void wrap() {
+		loadCSS();
 		setLabel("wrap");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -213,21 +194,22 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 475.0, 135.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(2)).assertXYWH(319.0, 7.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(3)).assertXYWH(7.0, 39.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(4)).assertXYWH(163.0, 39.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(5)).assertXYWH(319.0, 39.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(6)).assertXYWH(7.0, 71.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(7)).assertXYWH(163.0, 71.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(8)).assertXYWH(319.0, 71.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(9)).assertXYWH(7.0, 103.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		assertWH(migPane, 436.0, 159.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(150.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(2)).assertXYWH(293.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(3)).assertXYWH(7.0, 45.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(4)).assertXYWH(150.0, 45.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(5)).assertXYWH(293.0, 45.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(6)).assertXYWH(7.0, 83.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(7)).assertXYWH(150.0, 83.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(8)).assertXYWH(293.0, 83.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(9)).assertXYWH(7.0, 121.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
 	}
 
 	@Test
 	public void external() {
+		loadCSS();
 		setLabel("external");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -245,14 +227,15 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 200.0, 44.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 10.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(163.0, 7.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
+		assertWH(migPane, 187.0, 45.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(150.0, 8.0, 30.0, 30.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
 		new AssertNode(migPane.getChildren().get(2)).assertXYWH(0.0, 0.0, 130.0, 80.0, 0.01).assertClass(javafx.scene.shape.Rectangle.class);
 	}
 
 	@Test
 	public void defaultLayout() {
+		loadCSS();
 		setLabel("defaultLayout");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -270,17 +253,18 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 453.0, 71.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 11.0, 55.0, 17.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(69.0, 7.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(2)).assertXYWH(236.0, 11.0, 54.0, 17.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		new AssertNode(migPane.getChildren().get(3)).assertXYWH(297.0, 7.0, 149.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
-		new AssertNode(migPane.getChildren().get(4)).assertXYWH(7.0, 43.0, 43.0, 17.0, 0.01).assertClass(javafx.scene.control.Label.class);
-		new AssertNode(migPane.getChildren().get(5)).assertXYWH(69.0, 39.0, 377.0, 25.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		assertWH(migPane, 502.0, 83.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 13.0, 97.0, 19.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(111.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(2)).assertXYWH(265.0, 13.0, 87.0, 19.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		new AssertNode(migPane.getChildren().get(3)).assertXYWH(359.0, 7.0, 136.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
+		new AssertNode(migPane.getChildren().get(4)).assertXYWH(7.0, 51.0, 68.0, 19.0, 0.01).assertClass(javafx.scene.control.Label.class);
+		new AssertNode(migPane.getChildren().get(5)).assertXYWH(111.0, 45.0, 384.0, 31.0, 0.01).assertClass(javafx.scene.control.TextField.class);
 	}
 
 	@Test
 	public void span() {
+		loadCSS();
 		setLabel("span");
 
 		MigPane migPane = TestUtil.runThenWaitForPaintPulse( () -> {
@@ -300,26 +284,26 @@ TestUtil.sleep(5000);
 		});
 
 		//generateSource(migPane);
-		assertWH(migPane, 834.0, 334.0);
-		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 27.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(1)).assertXYWH(41.0, 7.0, 38.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(2)).assertXYWH(86.0, 7.0, 49.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(3)).assertXYWH(142.0, 7.0, 60.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(4)).assertXYWH(209.0, 7.0, 70.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(5)).assertXYWH(286.0, 7.0, 81.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(6)).assertXYWH(374.0, 7.0, 92.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(7)).assertXYWH(473.0, 7.0, 103.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(8)).assertXYWH(583.0, 7.0, 113.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(9)).assertXYWH(703.0, 7.0, 124.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(10)).assertXYWH(7.0, 39.0, 38.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(11)).assertXYWH(7.0, 71.0, 49.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(12)).assertXYWH(7.0, 103.0, 60.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(13)).assertXYWH(7.0, 135.0, 70.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(14)).assertXYWH(7.0, 167.0, 81.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(15)).assertXYWH(7.0, 199.0, 92.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(16)).assertXYWH(7.0, 231.0, 103.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(17)).assertXYWH(7.0, 263.0, 113.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
-		new AssertNode(migPane.getChildren().get(18)).assertXYWH(7.0, 295.0, 124.0, 25.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		assertWH(migPane, 831.0, 394.0);
+		new AssertNode(migPane.getChildren().get(0)).assertXYWH(7.0, 7.0, 32.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(1)).assertXYWH(46.0, 7.0, 42.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(2)).assertXYWH(95.0, 7.0, 51.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(3)).assertXYWH(153.0, 7.0, 61.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(4)).assertXYWH(221.0, 7.0, 71.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(5)).assertXYWH(299.0, 7.0, 80.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(6)).assertXYWH(386.0, 7.0, 90.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(7)).assertXYWH(483.0, 7.0, 99.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(8)).assertXYWH(589.0, 7.0, 109.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(9)).assertXYWH(705.0, 7.0, 119.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(10)).assertXYWH(7.0, 45.0, 42.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(11)).assertXYWH(7.0, 83.0, 51.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(12)).assertXYWH(7.0, 121.0, 61.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(13)).assertXYWH(7.0, 159.0, 71.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(14)).assertXYWH(7.0, 197.0, 80.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(15)).assertXYWH(7.0, 235.0, 90.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(16)).assertXYWH(7.0, 273.0, 99.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(17)).assertXYWH(7.0, 311.0, 109.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
+		new AssertNode(migPane.getChildren().get(18)).assertXYWH(7.0, 349.0, 119.0, 31.0, 0.01).assertClass(javafx.scene.control.Button.class);
 
 	}
 
