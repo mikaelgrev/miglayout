@@ -312,30 +312,35 @@ public class MigPane extends javafx.scene.layout.Pane
 	// ============================================================================================================
 	// SCENE
 
-	public void add(Node node, CC cc) {
+	public MigPane add(Node node, CC cc) {
 		if (node.isManaged())
 			wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
 		getChildren().add(node);
+		return this;
 	}
 
-	public void add(Node node) {
+	public MigPane add(Node node) {
 		add(node, (CC) null);
+		return this;
 	}
 
-	public void add(Node node, String sCc) {
+	public MigPane add(Node node, String sCc) {
 		CC cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(sCc));
 		add(node, cc);
+		return this;
 	}
 
-	public void add(int index, Node node, String sCc) {
+	public MigPane add(int index, Node node, String sCc) {
 		CC cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(sCc));
 		add(index, node, cc);
+		return this;
 	}
 
-	public void add(int index, Node node, CC cc) {
+	public MigPane add(int index, Node node, CC cc) {
 		if (node.isManaged())
 			wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
 		getChildren().add(index, node);
+		return this;
 	}
 
 	public boolean remove(Node node)
