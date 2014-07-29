@@ -234,7 +234,7 @@ public final class PlatformDefaults
 
 				setMinimumButtonWidth(new UnitValue(70, UnitValue.LPX, null));
 				setButtonOrder("L_HE+U+NYBXCOA_R");
-				setDialogInsets(LPY14, LPX20, LPY20, LPX20);
+				setDialogInsets(LPY20, LPX20, LPY20, LPX20);
 				setPanelInsets(LPY16, LPX16, LPY16, LPX16);
 				break;
 
