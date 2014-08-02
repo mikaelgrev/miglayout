@@ -183,7 +183,7 @@ public final class PlatformDefaults
 				setGridCellGap(LPX7, LPY7);
 
 				setMinimumButtonWidth(new UnitValue(75, UnitValue.LPX, null));
-				setButtonOrder("L_E+U+YNBXOCAH_R");
+				setButtonOrder("L_E+U+YNBXOCAH_I_R");
 				setDialogInsets(LPY11, LPX11, LPY11, LPX11);
 				setPanelInsets(LPY7, LPX7, LPY7, LPX7);
 				break;
@@ -233,7 +233,7 @@ public final class PlatformDefaults
 				setGridCellGap(LPX7, LPY7);
 
 				setMinimumButtonWidth(new UnitValue(70, UnitValue.LPX, null));
-				setButtonOrder("L_HE+U+NYBXCOA_R");
+				setButtonOrder("L_HE+U+NYBXCOA_I_R");
 				setDialogInsets(LPY20, LPX20, LPY20, LPX20);
 				setPanelInsets(LPY16, LPX16, LPY16, LPX16);
 				break;
@@ -247,7 +247,7 @@ public final class PlatformDefaults
 
 				// GtkButtonBox, child-min-width property default value
 				setMinimumButtonWidth(new UnitValue(85, UnitValue.LPX, null));
-				setButtonOrder("L_HE+UNYACBXIO_R");           // GNOME HIG 3.4.2, 3.7.1
+				setButtonOrder("L_HE+UNYACBXO_I_R");          // GNOME HIG 3.4.2, 3.7.1
 				setDialogInsets(LPY12, LPX12, LPY12, LPX12);  // GNOME HIG 3.4.3
 				setPanelInsets(LPY6, LPX6, LPY6, LPX6);       // ???
 				break;
