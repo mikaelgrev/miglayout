@@ -132,7 +132,6 @@ public final class Grid
 	 */
 	public Grid(ContainerWrapper container, LC lc, AC rowConstr, AC colConstr, Map<? extends ComponentWrapper, CC> ccMap, ArrayList<LayoutCallback> callbackList)
 	{
-//		System.out.println("new grid!");
 		this.lc = lc;
 		this.rowConstr = rowConstr;
 		this.colConstr = colConstr;
