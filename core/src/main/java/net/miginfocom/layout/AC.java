@@ -48,7 +48,7 @@ import java.util.ArrayList;
  */
 public final class AC implements Externalizable
 {
-	private final ArrayList<DimConstraint> cList = new ArrayList<DimConstraint>(8);
+	private final ArrayList<DimConstraint> cList = new ArrayList<DimConstraint>(1);
 
 	private transient int curIx = 0;
 

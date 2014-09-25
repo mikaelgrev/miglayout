@@ -497,8 +497,7 @@ public final class Grid
 				do {
 					doAgain = false;
 					for (Cell cell : grid.values()) {
-						ArrayList<CompWrap> compWraps = cell.compWraps;
-						for (CompWrap cw : compWraps) {
+						for (CompWrap cw : cell.compWraps) {
 							if (j == 0) {
 								doAgain |= doAbsoluteCorrections(cw, bounds);
 								if (!doAgain) { // If we are going to do this again, do not bother this time around
@@ -538,7 +537,7 @@ public final class Grid
 					}
 					clearGroupLinkBounds();
 					if (++count > ((compCount << 3) + 10)) {
-						System.err.println("Unstable cyclic dependency in absolute linked values!");
+						System.err.println("Unstable cyclic dependency in absolute linked values.");
 						break;
 					}
 

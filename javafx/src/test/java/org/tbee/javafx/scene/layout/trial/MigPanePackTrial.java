@@ -51,7 +51,7 @@ public class MigPanePackTrial extends Application {
 		stage.show();
 
 		AtomicBoolean up = new AtomicBoolean(true);
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50), event -> {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(40), event -> {
 				double oldSize = label.getFont().getSize();
 				if (oldSize > 100) {
 					up.set(false);

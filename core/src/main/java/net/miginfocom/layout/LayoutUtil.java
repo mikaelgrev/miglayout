@@ -360,6 +360,28 @@ public final class LayoutUtil
 		return sum(terms, 0, terms.length);
 	}
 
+	/** Keeps f within min and max. Min is of higher priority if min is larger than max.
+	 * @param f The value to clamp
+	 * @param min
+	 * @param max
+	 * @return The clamped value, between min and max.
+	 */
+	static float clamp(float f, float min, float max)
+	{
+		return Math.max(min, Math.min(f, max));
+	}
+
+	/** Keeps i within min and max. Min is of higher priority if min is larger than max.
+	 * @param i The value to clamp
+	 * @param min
+	 * @param max
+	 * @return The clamped value, between min and max.
+	 */
+	static int clamp(int i, int min, int max)
+	{
+		return Math.max(min, Math.min(i, max));
+	}
+
 	public static int getSizeSafe(int[] sizes, int sizeType)
 	{
 		if (sizes == null || sizes[sizeType] == NOT_SET)

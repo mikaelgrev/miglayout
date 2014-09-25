@@ -1,10 +1,6 @@
 package net.miginfocom.layout;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.ObjectStreamException;
+import java.io.*;
 import java.util.ArrayList;
 /*
  * License (BSD):
@@ -87,6 +83,8 @@ public final class CC implements Externalizable
 	private boolean external = false;
 
 	private Float pushX = null, pushY = null;
+
+	private AnimSpec animSpec = AnimSpec.DEF;
 
 
 	// ***** Tmp cache field
@@ -1836,6 +1834,15 @@ public final class CC implements Externalizable
 	{
 		newline = s == null ? (newline != null ? DEF_GAP : null) : s;
 	}
+
+	/** Returns the animation spec. Default is a spec where animation is off (prio 0).
+	 * @return Never null.
+	 */
+	public AnimSpec getAnimSpec()
+	{
+		return animSpec;
+	}
+
 
 	// ************************************************
 	// Persistence Delegate and Serializable combined.
