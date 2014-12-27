@@ -23,6 +23,7 @@
 		<module>ideutil</module>
 		<module>demo</module>
 		<module>examples</module>
+		<module>nbm</module>
 	</modules>
 
 	<dependencies>
