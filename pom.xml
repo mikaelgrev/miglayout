@@ -119,7 +119,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- sign the artifacts -->
+			<!-- sign the artifacts: this should be done by Sonatype's OSS parent pom during a normal mvn release
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -134,7 +134,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+			 -->
+			 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
