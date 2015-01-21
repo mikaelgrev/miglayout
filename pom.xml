@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>5.0-SNAPSHOT</version>
+	<version>5.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>MiGLayout</name>
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
@@ -23,6 +23,7 @@
 		<module>ideutil</module>
 		<module>demo</module>
 		<module>examples</module>
+		<module>nbm</module>
 	</modules>
 
 	<dependencies>
@@ -118,6 +119,23 @@
 				</configuration>
 			</plugin>
 
+			<!-- sign the artifacts: this should be done by Sonatype's OSS parent pom during a normal mvn release
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			 -->
+			 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>

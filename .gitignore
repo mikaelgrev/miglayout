@@ -29,3 +29,13 @@
 /javafx/.settings
 /javafx/target
 /javafx/.classpath
+#
+#  ignore target folders in the build tree
+#
+**/target
+#
+# ignore eclipse local settings files
+#
+**/.project
+**/.classpath
+**/.settings
