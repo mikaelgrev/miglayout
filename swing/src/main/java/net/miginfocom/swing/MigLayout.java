@@ -47,7 +47,7 @@ import java.util.*;
  * <p>
  * Read the documentation that came with this layout manager for information on usage.
  */
-public final class MigLayout implements LayoutManager2, Externalizable
+public class MigLayout implements LayoutManager2, Externalizable
 {
 	// ******** Instance part ********
 
