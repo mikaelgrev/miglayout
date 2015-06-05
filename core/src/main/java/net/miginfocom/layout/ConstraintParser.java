@@ -904,7 +904,7 @@ public final class ConstraintParser
 	{
 		if (s.length() == 0 || s.equals("dialog") || s.equals("panel")) {
 			if (acceptPanel == false)
-				throw new IllegalAccessError("Insets now allowed: " + s + "\n");
+				throw new IllegalArgumentException("Insets now allowed: " + s + "\n");
 
 			boolean isPanel = s.startsWith("p");
 			UnitValue[] ins = new UnitValue[4];

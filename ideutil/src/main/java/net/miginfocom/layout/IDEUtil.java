@@ -612,8 +612,13 @@ public class IDEUtil
 		if (noGrowAdd)
 			sb.append(asAPI ? ".grow()" : ",grow");   // Combine ".growX().growY()" into ".grow()".
 
-		if (cc.isWrap())
-			sb.append(asAPI ? ".wrap()" : ",wrap");
+		if (cc.isWrap()) {
+			BoundSize wrap = cc.getWrapGapSize();
+			if (wrap != null)
+				sb.append(asAPI ? ".wrap(\"" : ",wrap ").append(getBS(wrap)).append(asAPI ? "\")" : "");
+			else
+				sb.append(asAPI ? ".wrap()" : ",wrap");
+		}
 
 		String s = sb.toString();
 		return s.length() == 0 || s.charAt(0) != ',' ? s : s.substring(1);
