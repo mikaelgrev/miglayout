@@ -115,7 +115,7 @@ public final class MigLayout extends Layout implements Externalizable
 	}
 
 	/** Constructor.
-	 * @param layoutConstraints The constraints that concern the whole layout. <code>null</code> will be treated as an empty cosntraint.
+	 * @param layoutConstraints The constraints that concern the whole layout. <code>null</code> will be treated as an empty constraint.
 	 */
 	public MigLayout(LC layoutConstraints)
 	{
@@ -123,7 +123,7 @@ public final class MigLayout extends Layout implements Externalizable
 	}
 
 	/** Constructor.
-	 * @param layoutConstraints The constraints that concern the whole layout. <code>null</code> will be treated as an empty cosntraint.
+	 * @param layoutConstraints The constraints that concern the whole layout. <code>null</code> will be treated as an empty constraint.
 	 * @param colConstraints The constraints for the columns in the grid. <code>null</code> will be treated as an empty constraint.
 	 */
 	public MigLayout(LC layoutConstraints, AC colConstraints)
@@ -132,7 +132,7 @@ public final class MigLayout extends Layout implements Externalizable
 	}
 
 	/** Constructor.
-	 * @param layoutConstraints The constraints that concern the whole layout. <code>null</code> will be treated as an empty cosntraint.
+	 * @param layoutConstraints The constraints that concern the whole layout. <code>null</code> will be treated as an empty constraint.
 	 * @param colConstraints The constraints for the columns in the grid. <code>null</code> will be treated as an empty constraint.
 	 * @param rowConstraints The constraints for the rows in the grid. <code>null</code> will be treated as an empty constraint.
 	 */
@@ -145,7 +145,7 @@ public final class MigLayout extends Layout implements Externalizable
 
 	/** Returns layout constraints either as a <code>String</code> or {@link net.miginfocom.layout.LC} depending what was sent in
 	 * to the constructor or set with {@link #setLayoutConstraints(Object)}.
-	 * @return The layout constraints eighter as a <code>String</code> or {@link net.miginfocom.layout.LC} depending what was sent in
+	 * @return The layout constraints either as a <code>String</code> or {@link net.miginfocom.layout.LC} depending what was sent in
 	 * to the constructor or set with {@link #setLayoutConstraints(Object)}. Never <code>null</code>.
 	 */
 	public Object getLayoutConstraints()
@@ -174,7 +174,7 @@ public final class MigLayout extends Layout implements Externalizable
 	}
 
 	/** Returns the column layout constraints either as a <code>String</code> or {@link net.miginfocom.layout.AC}.
-	 * @return The column constraints eighter as a <code>String</code> or {@link net.miginfocom.layout.LC} depending what was sent in
+	 * @return The column constraints either as a <code>String</code> or {@link net.miginfocom.layout.LC} depending what was sent in
 	 * to the constructor or set with {@link #setLayoutConstraints(Object)}. Never <code>null</code>.
 	 */
 	public Object getColumnConstraints()
@@ -217,7 +217,7 @@ public final class MigLayout extends Layout implements Externalizable
 	 * <p>
 	 * See the class JavaDocs for information on how this string is formatted.
 	 * @param constr The row layout constraints as a String representation. <code>null</code> is converted to <code>""</code> for storage.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @throws RuntimeException if the constraint was not valid.
 	 */
 	public void setRowConstraints(Object constr)
 	{
