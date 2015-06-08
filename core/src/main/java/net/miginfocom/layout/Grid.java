@@ -737,7 +737,7 @@ public final class Grid
 	/** Go to next cell.
 	 * @param p The point to increase
 	 * @param cnt How many cells to advance.
-	 * @return The new value in the "incresing" dimension.
+	 * @return The new value in the "increasing" dimension.
 	 */
 	private int increase(int[] p, int cnt)
 	{
@@ -1529,7 +1529,7 @@ public final class Grid
 	/** Spanning is specified in the uncompressed grid number. They can for instance be more than 60000 for the outer
 	 * edge dock grid cells. When the grid is compressed and indexed after only the cells that area occupied the span
 	 * is erratic. This method use the row/col indexes and corrects the span to be correct for the compressed grid.
-	 * @param span The span un the uncompressed grid. <code>LayoutUtil.INF</code> will be interpreted to span the rest
+	 * @param span The span in the uncompressed grid. <code>LayoutUtil.INF</code> will be interpreted to span the rest
 	 * of the column/row excluding the surrounding docking components.
 	 * @param indexes The indexes in the correct dimension.
 	 * @return The converted span.
@@ -2244,7 +2244,7 @@ public final class Grid
 	}
 
 	/** Merges sizes and gaps together with Resize Constraints. For gaps {@link #GAP_RC_CONST} is used.
-	 * @param resConstr One resize constriant for every row/component. Can be lesser in length and the last element should be used for missing elements.
+	 * @param resConstr One resize constraint for every row/component. Can be lesser in length and the last element should be used for missing elements.
 	 * @param gapPush If the corresponding gap should be considered pushing and thus want to take free space if left over. Should be one more than resConstrs!
 	 * @param minPrefMaxSizes The sizes (min/pref/max) for every row/component.
 	 * @param gapSizes The gaps before and after each row/component packed in one double sized array.

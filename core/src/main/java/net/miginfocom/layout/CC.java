@@ -608,7 +608,7 @@ public final class CC implements Externalizable
 	 * returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
-	 * @param colRowWidthHeight cellX, cellY, spanX, spanY repectively. 1-4 arguments, not null.
+	 * @param colRowWidthHeight cellX, cellY, spanX, spanY respectively. 1-4 arguments, not null.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
 	 * @see #setCellX(int)
 	 * @see #setCellY(int)
@@ -1006,7 +1006,7 @@ public final class CC implements Externalizable
 	/** Same functionality as {@link #setNewlineGapSize(BoundSize)} only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
-	 * @param gapSize The gap size that will override the gap size in the row/colum constraints if <code>!= null</code>. E.g. "5px" or "unrel".
+	 * @param gapSize The gap size that will override the gap size in the row/column constraints if <code>!= null</code>. E.g. "5px" or "unrel".
 	 * If <code>null</code> or <code>""</code> the newline size will be set to the default size and turned on. This is different compared to
 	 * {@link #setNewlineGapSize(BoundSize)}.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1038,7 +1038,7 @@ public final class CC implements Externalizable
 	/** Same functionality as {@link #setWrapGapSize(BoundSize)} only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
-	 * @param gapSize The gap size that will override the gap size in the row/colum constraints if <code>!= null</code>. E.g. "5px" or "unrel".
+	 * @param gapSize The gap size that will override the gap size in the row/column constraints if <code>!= null</code>. E.g. "5px" or "unrel".
 	 * If <code>null</code> or <code>""</code> the wrap size will be set to the default size and turned on. This is different compared to
 	 * {@link #setWrapGapSize(BoundSize)}.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
@@ -1172,7 +1172,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #x(String x)} and {@link #y(String y)} toghether.
+	/** Same functionality as {@link #x(String x)} and {@link #y(String y)} together.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @param x The x position as a UnitValue. E.g. "10" or "40mm" or "container.x+10".
@@ -1194,7 +1194,7 @@ public final class CC implements Externalizable
 		return this;
 	}
 
-	/** Same functionality as {@link #x(String x)}, {@link #y(String y)}, {@link #y2(String y)} and {@link #y2(String y)} toghether.
+	/** Same functionality as {@link #x(String x)}, {@link #y(String y)}, {@link #y2(String y)} and {@link #y2(String y)} together.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @param x The x position as a UnitValue. E.g. "10" or "40mm" or "container.x+10".
@@ -1252,7 +1252,7 @@ public final class CC implements Externalizable
 	// **********************************************************
 
 	/** Returns the horizontal dimension constraint for this component constraint. It has constraints for the horizontal size
-	 * and grow/shink priorities and weights.
+	 * and grow/shrink priorities and weights.
 	 * <p>
 	 * Note! If any changes is to be made it must be made direct when the object is returned. It is not allowed to save the
 	 * constraint for later use.
@@ -1311,7 +1311,7 @@ public final class CC implements Externalizable
 	 * <code>null</code> value(s) for the x2 and y2 will be interpreted as to keep the preferred size and thus the x1
 	 * and x2 will just absolutely positions the component.
 	 * <p>
-	 * Note that {@link #setBoundsInGrid(boolean)} changes the interpretation of thisproperty slightly.
+	 * Note that {@link #setBoundsInGrid(boolean)} changes the interpretation of this property slightly.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @return The current value as a new array, free to modify.
@@ -1327,7 +1327,7 @@ public final class CC implements Externalizable
 	 * <code>null</code> value(s) for the x2 and y2 will be interpreted as to keep the preferred size and thus the x1
 	 * and x2 will just absolutely positions the component.
 	 * <p>
-	 * Note that {@link #setBoundsInGrid(boolean)} changes the interpretation of thisproperty slightly.
+	 * Note that {@link #setBoundsInGrid(boolean)} changes the interpretation of this property slightly.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 * @param pos <code>UnitValue[] {x, y, x2, y2}</code>. Must be <code>null</code> or of length 4. Elements can be <code>null</code>.
@@ -1736,7 +1736,7 @@ public final class CC implements Externalizable
 		return tag;
 	}
 
-	/** Optinal tag that gives more context to this constraint's component. It is for instance used to tag buttons in a
+	/** Optional tag that gives more context to this constraint's component. It is for instance used to tag buttons in a
 	 * button bar with the button type such as "ok", "help" or "cancel".
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.

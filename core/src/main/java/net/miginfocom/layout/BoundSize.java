@@ -65,7 +65,7 @@ public class BoundSize implements Serializable
 		this(minMaxPref, minMaxPref, minMaxPref, createString);
 	}
 
-	/** Constructor. <b>This method is here for serilization only and should normally not be used.</b> Use
+	/** Constructor. <b>This method is here for serialization only and should normally not be used.</b> Use
 	 * {@link ConstraintParser#parseBoundSize(String, boolean, boolean)} instead.
 	 * @param min The minimum size. May be <code>null</code>.
 	 * @param preferred  The preferred size. May be <code>null</code>.
@@ -77,7 +77,7 @@ public class BoundSize implements Serializable
 		this(min, preferred, max, false, createString);
 	}
 
-	/** Constructor. <b>This method is here for serilization only and should normally not be used.</b> Use
+	/** Constructor. <b>This method is here for serialization only and should normally not be used.</b> Use
 	 * {@link ConstraintParser#parseBoundSize(String, boolean, boolean)} instead.
 	 * @param min The minimum size. May be <code>null</code>.
 	 * @param preferred  The preferred size. May be <code>null</code>.
@@ -119,7 +119,7 @@ public class BoundSize implements Serializable
 		return max;
 	}
 
-	/** If the size should be hinted as "pushing" and thus want to occupy free space if noone else is claiming it.
+	/** If the size should be hinted as "pushing" and thus want to occupy free space if no one else is claiming it.
 	 * @return The value.
 	 */
 	public boolean getGapPush()
@@ -175,7 +175,7 @@ public class BoundSize implements Serializable
 	 * @param refSize The reference size.
 	 * @param parent The parent. Not <code>null</code>.
 	 * @param comp The component, if applicable, can be <code>null</code>.
-	 * @return An array of lenth three (min,pref,max).
+	 * @return An array of length three (min,pref,max).
 	 */
 	final int[] getPixelSizes(float refSize, ContainerWrapper parent, ComponentWrapper comp)
 	{

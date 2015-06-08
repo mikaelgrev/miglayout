@@ -157,7 +157,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 	/** Sets the layout constraints for the layout manager instance as a String.
 	 * <p>
 	 * See the class JavaDocs for information on how this string is formatted.
-	 * @param constr The layout constraints as a String pr {@link net.miginfocom.layout.LC} representation. <code>null</code> is converted to <code>""</code> for storage.
+	 * @param constr The layout constraints as a String or {@link net.miginfocom.layout.LC} representation. <code>null</code> is converted to <code>""</code> for storage.
 	 * @throws RuntimeException if the constraint was not valid.
 	 */
 	public void setLayoutConstraints(Object constr)
@@ -285,7 +285,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 	 * See the class JavaDocs for information on how this string is formatted.
 	 * @param constr The component constraints as a String or {@link net.miginfocom.layout.CC}. <code>null</code> is ok.
 	 * @param comp The component to set the constraints for.
-	 * @param noCheck Doe not check if the component is handled if true
+	 * @param noCheck Does not check if the component is handled if true
 	 * @throws RuntimeException if the constraint was not valid.
 	 * @throws IllegalArgumentException If the component is not handling the component.
 	 */
@@ -326,7 +326,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 		return scrConstrMap.containsKey(c);
 	}
 
-	/** Adds the callback function that will be called at different stages of the layout cylce.
+	/** Adds the callback function that will be called at different stages of the layout cycle.
 	 * @param callback The callback. Not <code>null</code>.
 	 */
 	public void addLayoutCallback(LayoutCallback callback)
@@ -622,7 +622,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 			Container popupComp = popup;
 			while (popupComp != null) {
 				if (popupComp.getClass().getName().contains("HeavyWeightWindow"))
-					return popupComp; // Return the heavyweight window for normal processing
+					return popupComp; // Return the heavy weight window for normal processing
 				popupComp = popupComp.getParent();
 			}
 			return popup; // Return the JPopup.

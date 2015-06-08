@@ -43,7 +43,7 @@ import java.util.WeakHashMap;
  */
 public final class LayoutUtil
 {
-	/** A substitute value for aa really large value. Integer.MAX_VALUE is not used since that means a lot of defensive code
+	/** A substitute value for a really large value. Integer.MAX_VALUE is not used since that means a lot of defensive code
 	 * for potential overflow must exist in many places. This value is large enough for being unreasonable yet it is hard to
 	 * overflow.
 	 */
@@ -213,7 +213,7 @@ public final class LayoutUtil
 	}
 
 	/** Takes a number on min/preferred/max sizes and resize constraints and returns the calculated sizes which sum should add up to <code>bounds</code>. Whether the sum
-	 * will actually equal <code>bounds</code> is dependent om the pref/max sizes and resize constraints.
+	 * will actually equal <code>bounds</code> is dependent on the pref/max sizes and resize constraints.
 	 * @param sizes [ix],[MIN][PREF][MAX]. Grid.CompWrap.NOT_SET will be treated as N/A or 0. A "[MIN][PREF][MAX]" array with null elements will be interpreted as very flexible (no bounds)
 	 * but if the array itself is null it will not get any size.
 	 * @param resConstr Elements can be <code>null</code> and the whole array can be <code>null</code>. <code>null</code> means that the size will not be flexible at all.
@@ -327,8 +327,8 @@ public final class LayoutUtil
 	 * are broken, the lower one is returned. If <code>sz</code> is &lt; 0 then <code>new Float(0f)</code> is returned so that no sizes can be
 	 * negative.
 	 * @param sz The size to check
-	 * @param lower The lower boundary (or <code>null</code> fo no boundary).
-	 * @param upper The upper boundary (or <code>null</code> fo no boundary).
+	 * @param lower The lower boundary (or <code>null</code> for no boundary).
+	 * @param upper The upper boundary (or <code>null</code> for no boundary).
 	 * @return The broken boundary.
 	 */
 	private static int getBrokenBoundary(float sz, int lower, int upper)
@@ -405,7 +405,7 @@ public final class LayoutUtil
 	/** Returns if left-to-right orientation is used. If not set explicitly in the layout constraints the Locale
 	 * of the <code>parent</code> is used.
 	 * @param lc The constraint if there is one. Can be <code>null</code>.
-	 * @param container The parent that may be used to get the left-to-right if ffc does not specify this.
+	 * @param container The parent that may be used to get the left-to-right if lc does not specify this.
 	 * @return If left-to-right orientation is currently used.
 	 */
 	public static boolean isLeftToRight(LC lc, ContainerWrapper container)
@@ -471,10 +471,10 @@ public final class LayoutUtil
 //	}
 
 
-	/** Returns the inset for the side.
+	/** Returns the insets for the side.
 	 * @param side top == 0, left == 1, bottom = 2, right = 3.
 	 * @param getDefault If <code>true</code> the default insets will get retrieved if <code>lc</code> has none set.
-	 * @return The inset for the side. Never <code>null</code>.
+	 * @return The insets for the side. Never <code>null</code>.
 	 */
 	static UnitValue getInsets(LC lc, int side, boolean getDefault)
 	{
@@ -482,10 +482,10 @@ public final class LayoutUtil
 		return (i != null && i[side] != null) ? i[side] : (getDefault ? PlatformDefaults.getPanelInsets(side) : UnitValue.ZERO);
 	}
 
-	/** Writes the objet and CLOSES the stream. Uses the persistence delegate registered in this class.
+	/** Writes the object and CLOSES the stream. Uses the persistence delegate registered in this class.
 	 * @param os The stream to write to. Will be closed.
 	 * @param o The object to be serialized.
-	 * @param listener The listener to recieve the exeptions if there are any. If <code>null</code> not used.
+	 * @param listener The listener to receive the exceptions if there are any. If <code>null</code> not used.
 	 */
 	static void writeXMLObject(OutputStream os, Object o, ExceptionListener listener)
 	{
@@ -505,7 +505,7 @@ public final class LayoutUtil
 
 	private static ByteArrayOutputStream writeOutputStream = null;
 	/** Writes an object to XML.
-	 * @param out The boject out to write to. Will not be closed.
+	 * @param out The object out to write to. Will not be closed.
 	 * @param o The object to write.
 	 */
 	public static synchronized void writeAsXML(ObjectOutput out, Object o) throws IOException

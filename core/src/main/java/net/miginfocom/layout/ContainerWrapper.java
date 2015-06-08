@@ -60,8 +60,8 @@ public interface ContainerWrapper extends ComponentWrapper
 	public abstract boolean isLeftToRight();
 
 	/** Paints a cell to indicate where it is.
-	 * @param x The x coordinate to start the drwaing.
-	 * @param y The x coordinate to start the drwaing.
+	 * @param x The x coordinate to start the drawing.
+	 * @param y The x coordinate to start the drawing.
 	 * @param width The width to draw/fill
 	 * @param height The height to draw/fill
 	 */

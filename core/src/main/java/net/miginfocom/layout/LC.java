@@ -45,7 +45,7 @@ public final class LC implements Externalizable
 
 	private Boolean leftToRight = null;
 
-	private UnitValue[] insets = null;    // Never null elememts but if unset array is null
+	private UnitValue[] insets = null;    // Never null elements but if unset array is null
 
 	private UnitValue alignX = null, alignY = null;
 
@@ -326,7 +326,7 @@ public final class LC implements Externalizable
 		this.noGrid = b;
 	}
 
-	/** If the layout should go from the default top-to-bottom in the grid instead of the optinal bottom-to-top.
+	/** If the layout should go from the default top-to-bottom in the grid instead of the optional bottom-to-top.
 	 * @return <code>true</code> for the default top-to-bottom.
 	 */
 	public final boolean isTopToBottom()
@@ -334,7 +334,7 @@ public final class LC implements Externalizable
 		return topToBottom;
 	}
 
-	/** If the layout should go from the default top-to-bottom in the grid instead of the optinal bottom-to-top.
+	/** If the layout should go from the default top-to-bottom in the grid instead of the optional bottom-to-top.
 	 * @param b <code>true</code> for the default top-to-bottom.
 	 */
 	public final void setTopToBottom(boolean b)

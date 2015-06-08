@@ -109,7 +109,7 @@ public final class AC implements Externalizable
 		return this;
 	}
 
-	/** Specifies that the current row/column should not be grid-like. The while row/colum will have its components layed out
+	/** Specifies that the current row/column should not be grid-like. The while row/column will have its components layed out
 	 * in one single cell. It is the same as to say that the cells in this column/row will all be merged (a.k.a spanned).
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -120,7 +120,7 @@ public final class AC implements Externalizable
 		return noGrid(curIx);
 	}
 
-	/** Specifies that the indicated rows/columns should not be grid-like. The while row/colum will have its components layed out
+	/** Specifies that the indicated rows/columns should not be grid-like. The while row/column will have its components layed out
 	 * in one single cell. It is the same as to say that the cells in this column/row will all be merged (a.k.a spanned).
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -331,7 +331,7 @@ public final class AC implements Externalizable
 	}
 
 	/** Specifies the current row/column's columns default alignment <b>for its components</b>. It does not affect the positioning
-	 * or size of the columns/row itself. For columns it is the horizonal alignment (e.g. "left") and for rows it is the vertical
+	 * or size of the columns/row itself. For columns it is the horizontal alignment (e.g. "left") and for rows it is the vertical
 	 * alignment (e.g. "top").
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -344,7 +344,7 @@ public final class AC implements Externalizable
 	}
 
 	/** Specifies the indicated rows'/columns' columns default alignment <b>for its components</b>. It does not affect the positioning
-	 * or size of the columns/row itself. For columns it is the horizonal alignment (e.g. "left") and for rows it is the vertical
+	 * or size of the columns/row itself. For columns it is the horizontal alignment (e.g. "left") and for rows it is the vertical
 	 * alignment (e.g. "top").
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -464,7 +464,7 @@ public final class AC implements Externalizable
 		return this;
 	}
 
-	/** Specifies that the current row/column's shrink weight withing the columns/rows with the <code>shrink priority</code> 100f.
+	/** Specifies that the current row/column's shrink weight within the columns/rows with the <code>shrink priority</code> 100f.
 	 * <p>
 	 * Same as <code>shrink(100f)</code>.
 	 * <p>
@@ -477,7 +477,7 @@ public final class AC implements Externalizable
 		return shrink(100f, curIx);
 	}
 
-	/** Specifies that the current row/column's shrink weight withing the columns/rows with the same <code>shrink priority</code>.
+	/** Specifies that the current row/column's shrink weight within the columns/rows with the same <code>shrink priority</code>.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the White Paper or Cheat Sheet at www.migcomponents.com.
 	 * @param w The shrink weight.
@@ -489,7 +489,7 @@ public final class AC implements Externalizable
 		return shrink(w, curIx);
 	}
 
-	/** Specifies the indicated rows'/columns' shrink weight withing the columns/rows with the same <code>shrink priority</code>.
+	/** Specifies the indicated rows'/columns' shrink weight within the columns/rows with the same <code>shrink priority</code>.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the White Paper or Cheat Sheet at www.migcomponents.com.
 	 * @param w The shrink weight.
@@ -508,7 +508,7 @@ public final class AC implements Externalizable
 		return this;
 	}
 
-	/** Specifies that the current row/column's shrink weight withing the columns/rows with the same <code>shrink priority</code>.
+	/** Specifies that the current row/column's shrink weight within the columns/rows with the same <code>shrink priority</code>.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the White Paper or Cheat Sheet at www.migcomponents.com.
 	 * @param w The shrink weight.
@@ -520,7 +520,7 @@ public final class AC implements Externalizable
 		return shrink(w);
 	}
 
-	/** Specifies the indicated rows'/columns' shrink weight withing the columns/rows with the same <code>shrink priority</code>.
+	/** Specifies the indicated rows'/columns' shrink weight within the columns/rows with the same <code>shrink priority</code>.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the White Paper or Cheat Sheet at www.migcomponents.com.
 	 * @param w The shrink weight.

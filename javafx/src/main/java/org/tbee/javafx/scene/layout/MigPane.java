@@ -87,7 +87,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	/**
-	 * usee the string layout constraints
+	 * use the string layout constraints
 	 */
 	public MigPane(String layoutConstraints) {
 		super();
@@ -96,7 +96,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	/**
-	 * usee the string layout constraints
+	 * use the string layout constraints
 	 */
 	public MigPane(String layoutConstraints, String colConstraints) {
 		super();
@@ -106,7 +106,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	/**
-	 * usee the string layout constraints
+	 * use the string layout constraints
 	 */
 	public MigPane(String layoutConstraints, String colConstraints, String rowConstraints) {
 		super();
@@ -346,7 +346,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	private ArrayList<LayoutCallback> callbackList = null;
 
-	/** Adds the callback function that will be called at different stages of the layout cylce.
+	/** Adds the callback function that will be called at different stages of the layout cycle.
 	 * @param callback The callback. Not <code>null</code>.
 	 */
 	public void addLayoutCallback(LayoutCallback callback)
@@ -492,7 +492,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	/*
-	 * the _grid is valid if all hashcodes are unchanged
+	 * the _grid is valid if all hash codes are unchanged
 	 */
 	private Grid getGrid() {
 

@@ -46,9 +46,9 @@ public final class ConstraintParser
 	{
 	}
 
-	/** Parses the layout constraints and stores the parsed values in the transient (cache) member varables.
+	/** Parses the layout constraints and stores the parsed values in the transient (cache) member variables.
 	 * @param s The String to parse. Should not be <code>null</code> and <b>must be lower case and trimmed</b>.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @throws RuntimeException if the constraint was not valid.
 	 * @return The parsed constraint. Never <code>null</code>.
 	 */
 	public static LC parseLayoutConstraint(String s)
@@ -563,7 +563,7 @@ public final class ConstraintParser
 					ix = startsWithLenient(part, new String[]{"shrinkprio", "shp"}, new int[]{10, 3}, true);
 					if (ix > -1) {
 						String sp = part.substring(ix).trim();
-						if (sp.startsWith("x") || sp.startsWith("y")) { // To gandle "gpx", "gpy", "shrinkpriorityx", shrinkpriorityy"
+						if (sp.startsWith("x") || sp.startsWith("y")) { // To handle "gpx", "gpy", "shrinkpriorityx", shrinkpriorityy"
 							(sp.startsWith("x") ? cc.getHorizontal() : cc.getVertical()).setShrinkPriority(Integer.parseInt(sp.substring(2)));
 						} else {
 							String[] shrinks = toTrimmedTokens(sp, ' ');
@@ -611,7 +611,7 @@ public final class ConstraintParser
 					if (ix > -1) {
 						String gp = part.substring(ix).trim();
 						char c0 = gp.length() > 0 ? gp.charAt(0) : ' ';
-						if (c0 == 'x' || c0 == 'y') { // To gandle "gpx", "gpy", "growpriorityx", growpriorityy"
+						if (c0 == 'x' || c0 == 'y') { // To handle "gpx", "gpy", "growpriorityx", growpriorityy"
 							(c0 == 'x' ? cc.getHorizontal() : cc.getVertical()).setGrowPriority(Integer.parseInt(gp.substring(2)));
 						} else {
 							String[] grows = toTrimmedTokens(gp, ' ');
