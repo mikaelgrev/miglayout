@@ -226,8 +226,12 @@ public final class ConstraintParser
 					if (ix > -1) {
 						String[] gaps = toTrimmedTokens(part.substring(ix).trim(), ' ');
 						lc.setAlignX(parseUnitValueOrAlign(gaps[0], true, null));
-						if (gaps.length > 1)
-							lc.setAlignY(parseUnitValueOrAlign(gaps[1], false, null));
+						if (gaps.length > 1) {
+							UnitValue align = parseUnitValueOrAlign(gaps[1], false, null);
+							if (align == UnitValue.BASELINE_IDENTITY)
+								throw new IllegalArgumentException("'baseline' can not be used to align the whole component group.");
+							lc.setAlignY(align);
+						}
 						continue;
 					}
 				}
