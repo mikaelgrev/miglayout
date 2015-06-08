@@ -42,8 +42,8 @@ final class ResizeConstraint implements Externalizable
 {
 	static final Float WEIGHT_100 = 100f;
 
-	/** How flexilble the entity should be, relative to other entities, when it comes to growing. <code>null</code> or
-	 * zero mean it will never grow. An entity that has twise the growWeight compared to another entity will get twice
+	/** How flexible the entity should be, relative to other entities, when it comes to growing. <code>null</code> or
+	 * zero mean it will never grow. An entity that has twice the growWeight compared to another entity will get twice
 	 * as much of available space.
 	 * <p>
 	 * "grow" are only compared within the same "growPrio".

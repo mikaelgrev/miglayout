@@ -545,8 +545,8 @@ public final class PlatformDefaults
 	 * <p>
 	 * These are the characters that can be used:
 	 * <ul>
-	 * <li><code>'L'</code> - Buttons with this style tag will staticall end up on the left end of the bar.
-	 * <li><code>'R'</code> - Buttons with this style tag will staticall end up on the right end of the bar.
+	 * <li><code>'L'</code> - Buttons with this style tag will statically end up on the left end of the bar.
+	 * <li><code>'R'</code> - Buttons with this style tag will statically end up on the right end of the bar.
 	 * <li><code>'H'</code> - A tag for the "help" button that normally is supposed to be on the right.
 	 * <li><code>'E'</code> - A tag for the "help2" button that normally is supposed to be on the left.
 	 * <li><code>'Y'</code> - A tag for the "yes" button.
@@ -558,8 +558,8 @@ public final class PlatformDefaults
 	 * <li><code>'C'</code> - A tag for the "cancel" or "close" button.
 	 * <li><code>'O'</code> - A tag for the "ok" or "done" button.
 	 * <li><code>'U'</code> - All Uncategorized, Other, or "Unknown" buttons. Tag will be "other".
-	 * <li><code>'+'</code> - A glue push gap that will take as much space as it can and at least an "unrelated" gap. (Platform dependant)
-	 * <li><code>'_'</code> - (underscore) An "unrelated" gap. (Platform dependant)
+	 * <li><code>'+'</code> - A glue push gap that will take as much space as it can and at least an "unrelated" gap. (Platform dependent)
+	 * <li><code>'_'</code> - (underscore) An "unrelated" gap. (Platform dependent)
 	 * </ul>
 	 * <p>
 	 * Even though the style tags are normally applied to buttons this works with all components.
@@ -630,9 +630,9 @@ public final class PlatformDefaults
 		return DEF_VGAP;
 	}
 
-	/** Returns the default dialog inset depending of the current platform.
+	/** Returns the default dialog insets depending of the current platform.
 	 * @param side top == 0, left == 1, bottom = 2, right = 3.
-	 * @return The inset. Never <code>null</code>.
+	 * @return The insets. Never <code>null</code>.
 	 */
 	public static UnitValue getDialogInsets(int side)
 	{
@@ -662,9 +662,9 @@ public final class PlatformDefaults
 		MOD_COUNT++;
 	}
 
-	/** Returns the default panel inset depending of the current platform.
+	/** Returns the default panel insets depending of the current platform.
 	 * @param side top == 0, left == 1, bottom = 2, right = 3.
-	 * @return The inset. Never <code>null</code>.
+	 * @return The insets. Never <code>null</code>.
 	 */
 	public static UnitValue getPanelInsets(int side)
 	{

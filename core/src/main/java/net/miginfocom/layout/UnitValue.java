@@ -137,7 +137,7 @@ public final class UnitValue implements Serializable
 	 */
 	public static final int MAX_SIZE = 15;
 
-	/** A unit indicating botton size.
+	/** A unit indicating button size.
 	 */
 	public static final int BUTTON = 16;
 

@@ -297,7 +297,7 @@ public final class DimConstraint implements Externalizable
 
 	/** Returns the size group that this entity should be in for the dimension that this object is describing.
 	 * If this constraint is in a size group that is specified here. <code>null</code> means no size group
-	 * and all other values are legal. Comparison with .equals(). Components/columnss/rows in the same size group
+	 * and all other values are legal. Comparison with .equals(). Components/columns/rows in the same size group
 	 * will have the same min/preferred/max size; that of the largest in the group for the first two and the
 	 * smallest for max.
 	 * <p>
@@ -311,7 +311,7 @@ public final class DimConstraint implements Externalizable
 
 	/** Sets the size group that this entity should be in for the dimension that this object is describing.
 	 * If this constraint is in a size group that is specified here. <code>null</code> means no size group
-	 * and all other values are legal. Comparison with .equals(). Components/columnss/rows in the same size group
+	 * and all other values are legal. Comparison with .equals(). Components/columns/rows in the same size group
 	 * will have the same min/preferred/max size; that of the largest in the group for the first two and the
 	 * smallest for max.
 	 * <p>
@@ -325,7 +325,7 @@ public final class DimConstraint implements Externalizable
 
 	// **************  Only applicable on components ! *******************
 
-	/** Returns the end group that this entity should be in for the demension that this object is describing.
+	/** Returns the end group that this entity should be in for the dimension that this object is describing.
 	 * If this constraint is in an end group that is specified here. <code>null</code> means no end group
 	 * and all other values are legal. Comparison with .equals(). Components in the same end group
 	 * will have the same end coordinate.
@@ -338,7 +338,7 @@ public final class DimConstraint implements Externalizable
 		return endGroup;
 	}
 
-	/** Sets the end group that this entity should be in for the demension that this object is describing.
+	/** Sets the end group that this entity should be in for the dimension that this object is describing.
 	 * If this constraint is in an end group that is specified here. <code>null</code> means no end group
 	 * and all other values are legal. Comparison with .equals(). Components in the same end group
 	 * will have the same end coordinate.
