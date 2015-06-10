@@ -225,6 +225,7 @@ public class LayoutAnimator
 			//				setInterpolator(Interpolator.EASE_OUT);
 		}
 
+		@Override
 		protected void interpolate(double frac)
 		{
 			double x = fromX + (toBounds.getMinX() - fromX) * frac;
