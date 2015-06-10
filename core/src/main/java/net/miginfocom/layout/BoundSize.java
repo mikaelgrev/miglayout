@@ -242,6 +242,7 @@ public class BoundSize implements Serializable
 	static {
         if(LayoutUtil.HAS_BEANS){
             LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate() {
+                @Override
                 protected Expression instantiate(Object oldInstance, Encoder out)
                 {
                     BoundSize bs = (BoundSize) oldInstance;

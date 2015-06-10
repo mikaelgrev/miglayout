@@ -574,6 +574,7 @@ public final class UnitValue implements Serializable
 		return isHor;
 	}
 
+	@Override
 	final public String toString()
 	{
 		return getClass().getName() + ". Value=" + value + ", unit=" + unit + ", unitString: " + unitStr + ", oper=" + oper + ", isHor: " + isHor;
@@ -588,6 +589,7 @@ public final class UnitValue implements Serializable
 		return LayoutUtil.getCCString(this);
 	}
 
+	@Override
 	public final int hashCode()
 	{
 		return (int) (value * 12345) + (oper >>> 5) + unit >>> 17;
@@ -649,6 +651,7 @@ public final class UnitValue implements Serializable
 	static {
         if(LayoutUtil.HAS_BEANS){
             LayoutUtil.setDelegate(UnitValue.class, new PersistenceDelegate() {
+                @Override
                 protected Expression instantiate(Object oldInstance, Encoder out)
                 {
                     UnitValue uv = (UnitValue) oldInstance;
