@@ -73,6 +73,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		this.c = c;
 	}
 
+	@Override
 	public final int getBaseline(int width, int height)
 	{
 		int baseLine = c.getBaseline(width < 0 ? c.getWidth() : width, height < 0 ? c.getHeight() : height);
@@ -84,6 +85,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return baseLine;
 	}
 
+	@Override
 	public final Object getComponent()
 	{
 		return c;
@@ -94,6 +96,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 	private final static IdentityHashMap<FontMetrics, Point.Float> FM_MAP = new IdentityHashMap<FontMetrics, Point.Float>(4);
 	private final static Font SUBST_FONT = new Font("sansserif", Font.PLAIN, 11);
 
+	@Override
 	public final float getPixelUnitFactor(boolean isHor)
 	{
 		switch (PlatformDefaults.getLogicalPixelBase()) {
@@ -141,26 +144,31 @@ public class SwingComponentWrapper implements ComponentWrapper
 //		return isHor ? dluP.x : dluP.y;
 //	}
 
+	@Override
 	public final int getX()
 	{
 		return c.getX();
 	}
 
+	@Override
 	public final int getY()
 	{
 		return c.getY();
 	}
 
+	@Override
 	public final int getHeight()
 	{
 		return c.getHeight();
 	}
 
+	@Override
 	public final int getWidth()
 	{
 		return c.getWidth();
 	}
 
+	@Override
 	public final int getScreenLocationX()
 	{
 		Point p = new Point();
@@ -168,6 +176,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return p.x;
 	}
 
+	@Override
 	public final int getScreenLocationY()
 	{
 		Point p = new Point();
@@ -175,6 +184,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return p.y;
 	}
 
+	@Override
 	public final int getMinimumHeight(int sz)
 	{
 		if (prefCalled == false) {
@@ -184,6 +194,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c.getMinimumSize().height;
 	}
 
+	@Override
 	public final int getMinimumWidth(int sz)
 	{
 		if (prefCalled == false) {
@@ -192,6 +203,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 		return c.getMinimumSize().width;
 	}
+	@Override
 	public final int getPreferredHeight(int sz)
 	{
 		// If the component has not gotten size yet and there is a size hint, trick Swing to return a better height.
@@ -201,6 +213,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c.getPreferredSize().height;
 	}
 
+	@Override
 	public final int getPreferredWidth(int sz)
 	{
 		// If the component has not gotten size yet and there is a size hint, trick Swing to return a better height.
@@ -210,6 +223,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c.getPreferredSize().width;
 	}
 
+	@Override
 	public final int getMaximumHeight(int sz)
 	{
 		if (!isMaxSet(c))
@@ -218,6 +232,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c.getMaximumSize().height;
 	}
 
+	@Override
 	public final int getMaximumWidth(int sz)
 	{
 		if (!isMaxSet(c))
@@ -232,12 +247,14 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c.isMaximumSizeSet();
 	}
 
+	@Override
 	public final ContainerWrapper getParent()
 	{
 		Container p = c.getParent();
 		return p != null ? new SwingContainerWrapper(p) : null;
 	}
 
+    @Override
     public final int getHorizontalScreenDPI() {
         try {
             return c.getToolkit().getScreenResolution();
@@ -246,6 +263,7 @@ public class SwingComponentWrapper implements ComponentWrapper
         }
     }
 
+	@Override
 	public final int getVerticalScreenDPI()
 	{
         try {
@@ -255,6 +273,7 @@ public class SwingComponentWrapper implements ComponentWrapper
         }
 	}
 
+	@Override
 	public final int getScreenWidth()
 	{
 		try {
@@ -264,6 +283,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 	}
 
+	@Override
 	public final int getScreenHeight()
 	{
 		try {
@@ -273,6 +293,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 	}
 
+	@Override
 	public final boolean hasBaseline()
 	{
 		if (bl == null) {
@@ -291,21 +312,25 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return bl;
 	}
 
+	@Override
 	public final String getLinkId()
 	{
 		return c.getName();
 	}
 
+	@Override
 	public final void setBounds(int x, int y, int width, int height)
 	{
 		c.setBounds(x, y, width, height);
 	}
 
+	@Override
 	public boolean isVisible()
 	{
 		return c.isVisible();
 	}
 
+	@Override
 	public final int[] getVisualPadding()
 	{
 		int[] padding = null;
@@ -500,6 +525,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		vp = b;
 	}
 
+	@Override
 	public final void paintDebugOutline(boolean showVisualPadding)
 	{
 		if (c.isShowing() == false)
@@ -522,6 +548,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 	}
 
+	@Override
 	public int getComponentType(boolean disregardScrollPane)
 	{
 		if (compType == TYPE_UNSET)
@@ -530,6 +557,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return compType;
 	}
 
+	@Override
 	public int getLayoutHashCode()
 	{
 		Dimension d = c.getMaximumSize();
@@ -601,11 +629,13 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return TYPE_UNKNOWN;
 	}
 
+	@Override
 	public final int hashCode()
 	{
 		return getComponent().hashCode();
 	}
 
+	@Override
 	public final boolean equals(Object o)
 	{
 		if (o instanceof ComponentWrapper == false)
@@ -614,6 +644,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c.equals(((ComponentWrapper) o).getComponent());
 	}
 
+	@Override
 	public int getContentBias()
 	{
 		return c instanceof JTextArea || c instanceof JEditorPane || (c instanceof JComponent && Boolean.TRUE.equals(((JComponent)c).getClientProperty("migLayout.dynamicAspectRatio"))) ? LayoutUtil.HORIZONTAL : -1;

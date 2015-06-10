@@ -61,16 +61,19 @@ public class SwtComponentWrapper implements ComponentWrapper
 		this.c = c;
 	}
 
+	@Override
 	public final int getBaseline(int width, int height)
 	{
 		return -1;
 	}
 
+	@Override
 	public final Object getComponent()
 	{
 		return c;
 	}
 
+	@Override
 	public final float getPixelUnitFactor(boolean isHor)
 	{
 		switch (PlatformDefaults.getLogicalPixelBase()) {
@@ -113,61 +116,73 @@ public class SwtComponentWrapper implements ComponentWrapper
 //		return isHor ? dluP.x : dluP.y;
 //	}
 
+	@Override
 	public final int getX()
 	{
 		return c.getLocation().x;
 	}
 
+	@Override
 	public final int getY()
 	{
 		return c.getLocation().y;
 	}
 
+	@Override
 	public final int getWidth()
 	{
 		return c.getSize().x;
 	}
 
+	@Override
 	public final int getHeight()
 	{
 		return c.getSize().y;
 	}
 
+	@Override
 	public final int getScreenLocationX()
 	{
 		return c.toDisplay(0, 0).x;
 	}
 
+	@Override
 	public final int getScreenLocationY()
 	{
 		return c.toDisplay(0, 0).y;
 	}
 
+	@Override
 	public final int getMinimumHeight(int sz)
 	{
 		return mz ? 0 : computeSize(false, sz).y;
 	}
 
+	@Override
 	public final int getMinimumWidth(int sz)
 	{
 		return mz ? 0 : computeSize(true, sz).x;
 	}
 
+	@Override
 	public final int getPreferredHeight(int sz)
 	{
 		return computeSize(false, sz).y;
 	}
 
+	@Override
 	public final int getPreferredWidth(int sz)
 	{
 		return computeSize(true, sz).x;
 	}
 
+	@Override
 	public final int getMaximumHeight(int sz)
 	{
 		return Integer.MAX_VALUE;
 	}
 
+	@Override
 	public final int getMaximumWidth(int sz)
 	{
 		return Integer.MAX_VALUE;
@@ -197,51 +212,61 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return c.computeSize(wHint, hHint);
 	}
 
+	@Override
 	public final ContainerWrapper getParent()
 	{
 		return new SwtContainerWrapper(c.getParent());
 	}
 
+	@Override
 	public int getHorizontalScreenDPI()
 	{
 		return PlatformDefaults.getDefaultDPI();
 	}
 
+	@Override
 	public int getVerticalScreenDPI()
 	{
 		return PlatformDefaults.getDefaultDPI();
 	}
 
+	@Override
 	public final int getScreenWidth()
 	{
 		return c.getDisplay().getBounds().width;
 	}
 
+	@Override
 	public final int getScreenHeight()
 	{
 		return c.getDisplay().getBounds().height;
 	}
 
+	@Override
 	public final boolean hasBaseline()
 	{
 		return false;
 	}
 
+	@Override
 	public final String getLinkId()
 	{
 		return null;
 	}
 
+	@Override
 	public final void setBounds(int x, int y, int width, int height)
 	{
 		c.setBounds(x, y, width, height);
 	}
 
+	@Override
 	public boolean isVisible()
 	{
 		return c.getVisible();
 	}
 
+	@Override
 	public final int[] getVisualPadding()
 	{
 		return null;
@@ -273,6 +298,7 @@ public class SwtComponentWrapper implements ComponentWrapper
 		mz = b;
 	}
 
+	@Override
 	public int getLayoutHashCode()
 	{
 		if (c.isDisposed())
@@ -291,6 +317,7 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return h;
 	}
 
+	@Override
 	public final void paintDebugOutline(boolean useVisaualPadding)
 	{
 		if (c.isDisposed())
@@ -308,6 +335,7 @@ public class SwtComponentWrapper implements ComponentWrapper
 		gc.dispose();
 	}
 
+	@Override
 	public int getComponentType(boolean disregardScrollPane)
 	{
 		if (compType == TYPE_UNSET)
@@ -346,11 +374,13 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return TYPE_UNKNOWN;
 	}
 
+	@Override
 	public final int hashCode()
 	{
 		return c.hashCode();
 	}
 
+	@Override
 	public final boolean equals(Object o)
 	{
 		if (o == null || o instanceof ComponentWrapper == false)
@@ -359,11 +389,13 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return getComponent().equals(((ComponentWrapper) o).getComponent());
 	}
 
+	@Override
 	public String toString()
 	{
 		return getClass().getSimpleName() + "{" + c + "}";
 	}
 
+	@Override
 	public int getContentBias()
 	{
 		return (c instanceof Text || c instanceof StyledText) && (c.getStyle() & SWT.MULTI) > 0 ? LayoutUtil.HORIZONTAL : -1;

@@ -48,6 +48,7 @@ public final class SwtContainerWrapper extends SwtComponentWrapper implements Co
 		super(c);
 	}
 
+	@Override
 	public ComponentWrapper[] getComponents()
 	{
 		Composite c = (Composite) getComponent();
@@ -58,31 +59,37 @@ public final class SwtContainerWrapper extends SwtComponentWrapper implements Co
 		return cws;
 	}
 
+	@Override
 	public int getComponentCount()
 	{
 		return ((Composite) getComponent()).getChildren().length;
 	}
 
+	@Override
 	public Object getLayout()
 	{
 		return ((Composite) getComponent()).getLayout();
 	}
 
+	@Override
 	public final boolean isLeftToRight()
 	{
 		return (((Composite) getComponent()).getStyle() & SWT.LEFT_TO_RIGHT) > 0;
 	}
 
+	@Override
 	public final void paintDebugCell(int x, int y, int width, int height)
 	{
 		// A Composite can not draw above its children, so the cells can not be painted.
 	}
 
+	@Override
 	public int getComponentType(boolean disregardScrollPane)
 	{
 		return TYPE_CONTAINER;
 	}
 
+	@Override
 	public int getLayoutHashCode()
 	{
 		int h = super.getLayoutHashCode();

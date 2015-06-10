@@ -55,6 +55,7 @@ public final class SwingContainerWrapper extends SwingComponentWrapper implement
 		super(c);
 	}
 
+	@Override
 	public ComponentWrapper[] getComponents()
 	{
 		Container c = (Container) getComponent();
@@ -64,21 +65,25 @@ public final class SwingContainerWrapper extends SwingComponentWrapper implement
 		return cws;
 	}
 
+	@Override
 	public int getComponentCount()
 	{
 		return ((Container) getComponent()).getComponentCount();
 	}
 
+	@Override
 	public Object getLayout()
 	{
 		return ((Container) getComponent()).getLayout();
 	}
 
+	@Override
 	public final boolean isLeftToRight()
 	{
 		return ((Container) getComponent()).getComponentOrientation().isLeftToRight();
 	}
 
+	@Override
 	public final void paintDebugCell(int x, int y, int width, int height)
 	{
 		Component c = (Component) getComponent();
@@ -94,12 +99,14 @@ public final class SwingContainerWrapper extends SwingComponentWrapper implement
 		g.drawRect(x, y, width - 1, height - 1);
 	}
 
+	@Override
 	public int getComponentType(boolean disregardScrollPane)
 	{
 		return TYPE_CONTAINER;
 	}
 
 	// Removed for 2.3 because the parent.isValid() in MigLayout will catch this instead.
+	@Override
 	public int getLayoutHashCode()
 	{
 		long n = System.nanoTime();

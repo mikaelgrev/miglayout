@@ -375,6 +375,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 
 			if (parent != null) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						Container p = parent.getParent();
 						if (p != null) {
@@ -522,6 +523,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 
 	private long lastSize = 0;
 
+	@Override
 	public void layoutContainer(final Container parent)
 	{
 		synchronized(parent.getTreeLock()) {
@@ -549,6 +551,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 				if (win != null) {
 				   if (win.isVisible()) {
 					   SwingUtilities.invokeLater(new Runnable() {
+						   @Override
 						   public void run() {
 							   adjustWindowSize(containerWrapper);
 						   }
@@ -655,6 +658,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 		return constrain.getGapPush() ? Math.max(winSize, retSize) : retSize;
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container parent)
 	{
 		synchronized(parent.getTreeLock()) {
@@ -662,6 +666,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 		}
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container parent)
 	{
 		synchronized(parent.getTreeLock()) {
@@ -679,6 +684,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 		}
 	}
 
+	@Override
 	public Dimension maximumLayoutSize(Container parent)
 	{
 		return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -697,21 +703,25 @@ public class MigLayout implements LayoutManager2, Externalizable
 		return new Dimension(w, h);
 	}
 
+	@Override
 	public float getLayoutAlignmentX(Container parent)
 	{
 		return lc != null && lc.getAlignX() != null ? lc.getAlignX().getPixels(1, checkParent(parent), null) : 0;
 	}
 
+	@Override
 	public float getLayoutAlignmentY(Container parent)
 	{
 		return lc != null && lc.getAlignY() != null ? lc.getAlignY().getPixels(1, checkParent(parent), null) : 0;
 	}
 
+	@Override
 	public void addLayoutComponent(String s, Component comp)
 	{
 		addLayoutComponent(comp, s);
 	}
 
+	@Override
 	public void addLayoutComponent(Component comp, Object constraints)
 	{
 		synchronized(comp.getParent().getTreeLock()) {
@@ -719,6 +729,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 		}
 	}
 
+	@Override
 	public void removeLayoutComponent(Component comp)
 	{
 		synchronized(comp.getParent().getTreeLock()) {
@@ -728,6 +739,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 		}
 	}
 
+	@Override
 	public void invalidateLayout(Container target)
 	{
 		dirty = true;
@@ -742,11 +754,13 @@ public class MigLayout implements LayoutManager2, Externalizable
 		return LayoutUtil.getSerializedObject(this);
 	}
 
+	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
 	{
 		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
 	}
 
+	@Override
 	public void writeExternal(ObjectOutput out) throws IOException
 	{
 		if (getClass() == MigLayout.class)
@@ -755,6 +769,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 
 	private class MyDebugRepaintListener implements ActionListener
 	{
+		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			if (grid != null) {
