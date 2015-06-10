@@ -450,6 +450,7 @@ public final class MigLayout extends Layout implements Externalizable
 		return lc != null && lc.getAlignY() != null ? lc.getAlignY().getPixels(1, checkParent(parent), null) : 0;
 	}
 
+	@Override
 	protected Point computeSize(Composite parent, int wHint, int hHint, boolean flushCache)
 	{
 		checkCache(parent);
@@ -460,6 +461,7 @@ public final class MigLayout extends Layout implements Externalizable
 		return new Point(w, h);
 	}
 
+	@Override
 	protected void layout(Composite parent, boolean flushCache)
 	{
 		if (flushCache)
@@ -479,6 +481,7 @@ public final class MigLayout extends Layout implements Externalizable
 		}
 	}
 
+	@Override
 	protected boolean flushCache(Control control)
 	{
 		grid = null;
@@ -494,11 +497,13 @@ public final class MigLayout extends Layout implements Externalizable
 		return LayoutUtil.getSerializedObject(this);
 	}
 
+	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
 	{
 		LayoutUtil.setSerializedObject(this, LayoutUtil.readAsXML(in));
 	}
 
+	@Override
 	public void writeExternal(ObjectOutput out) throws IOException
 	{
 		if (getClass() == MigLayout.class)
@@ -514,11 +519,13 @@ public final class MigLayout extends Layout implements Externalizable
 			this.layoutRef = new WeakReference<MigLayout>(layout);
 		}
 
+		@Override
 		public void run()
 		{
 			final MigLayout layout = layoutRef.get();
 			if (layout != null && layout.grid != null) {
 				Display.getDefault().asyncExec(new Runnable () {
+					@Override
 					public void run () {
 						if (layout.grid != null)
 							layout.grid.paintDebug();
