@@ -142,6 +142,11 @@ public final class LayoutUtil
 		if (DT_MAP == null)
 			return HAS_BEANS && Beans.isDesignTime();
 
+		// assume design time "in general" (cw is null) if there is at least one container with design time
+		// (for storing constraints creation strings in method putCCString())
+		if (cw == null && DT_MAP != null && !DT_MAP.isEmpty() )
+			return true;
+
 		if (cw != null && DT_MAP.containsKey(cw.getComponent()) == false)
 			cw = null;
 
