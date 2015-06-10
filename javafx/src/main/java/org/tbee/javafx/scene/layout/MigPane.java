@@ -432,6 +432,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	/**
 	 * This is where the actual layout happens
 	 */
+	@Override
 	protected void layoutChildren()	{
 		incLayoutInhibit();
 
@@ -466,6 +467,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		}
 	}
 
+	@Override
 	public void requestLayout() {
 
 		if (layoutInhibits > 0)
@@ -657,25 +659,25 @@ public class MigPane extends javafx.scene.layout.Pane
 			super(node);
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public FX2ComponentWrapper[] getComponents() {
 			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
 //			return wrapperToCCMap.keySet().toArray(new FX2ComponentWrapper[wrapperToCCMap.size()]); // must be in the order of adding!
 			return getManagedChildren().stream().map(node -> new FX2ComponentWrapper(node)).toArray(FX2ComponentWrapper[]::new);
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getComponentCount() {
 			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponentCount " + MigPane.this.wrapperToCCMap.size());
 			return MigPane.this.wrapperToCCMap.size();
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public Object getLayout() {
 			return MigPane.this;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public boolean isLeftToRight() {
 			NodeOrientation ori = getNodeOrientation();
 			if (ori == NodeOrientation.INHERIT) {
@@ -686,12 +688,12 @@ public class MigPane extends javafx.scene.layout.Pane
 			return ori != NodeOrientation.RIGHT_TO_LEFT;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public void paintDebugCell(int x, int y, int w, int h) {
 			addDebugRectangle((double)x, (double)y, (double)w, (double)h, DebugRectangleType.CELL);
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public void paintDebugOutline(boolean useVisualPadding) {
 			addDebugRectangle( 0, 0, getWidth(), getHeight(), DebugRectangleType.CONTAINER_OUTLINE);
 		}
@@ -715,14 +717,14 @@ public class MigPane extends javafx.scene.layout.Pane
 		}
 
 		// get the wrapped node
-		// as of JDK 1.6: @Override
+		@Override
 		public Object getComponent()
 		{
 			return this.node;
 		}
 
 		// get the parent
-		// as of JDK 1.6: @Override
+		@Override
 		public ContainerWrapper getParent()
 		{
 			Parent parent = node.getParent();
@@ -730,7 +732,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		}
 
 		// what type are we wrapping
-		// as of JDK 1.6: @Override
+		@Override
 		public int getComponentType(boolean arg0)
 		{
 			if (node instanceof TextField || node instanceof TextArea) {
@@ -742,21 +744,21 @@ public class MigPane extends javafx.scene.layout.Pane
 			}
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getX()
 		{
 			int v = (int) node.getLayoutX();
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getY()
 		{
 			int v = (int) node.getLayoutY();
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getWidth()
 		{
 			// for debugging if (getComponent() instanceof MigLayoutFX2 == false) System.out.println(getComponent() + " getWidth " + node.getLayoutBounds().getWidth());
@@ -764,7 +766,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getMinimumWidth(int height)
 		{
 			int v = (int) Math.ceil(this.node.minWidth(height));
@@ -772,7 +774,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getPreferredWidth(int height)
 		{
 			int v = (int) Math.ceil(this.node.prefWidth(height));
@@ -780,7 +782,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getMaximumWidth(int height)
 		{
 			// backwards compatibility with JavaFX2 (control does not extend Region there)
@@ -792,21 +794,21 @@ public class MigPane extends javafx.scene.layout.Pane
 			return (int) Math.ceil(node.maxWidth(height));
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getHeight()
 		{
 			int v = (int) Math.ceil(node.getLayoutBounds().getHeight());
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getMinimumHeight(int width)
 		{
 			int v = (int) Math.ceil(this.node.minHeight(width));
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getPreferredHeight(int width)
 		{
 			int v = (int) Math.ceil(this.node.prefHeight(width));
@@ -814,7 +816,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getMaximumHeight(int width)
 		{
 			// backwards compatibility with JavaFX2 (control does not extend Region there)
@@ -826,13 +828,13 @@ public class MigPane extends javafx.scene.layout.Pane
 			return (int) Math.ceil(node.maxHeight(width));
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getBaseline(int width, int height)
 		{
 			return (int) Math.round(node.getBaselineOffset());
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public boolean hasBaseline()
 		{
 			// For some reason not resizable just return their height as the baseline, not BASELINE_OFFSET_SAME_AS_HEIGHT as logic would suggest.
@@ -840,7 +842,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return node.isResizable() && node.getBaselineOffset() != BASELINE_OFFSET_SAME_AS_HEIGHT;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getScreenLocationX()
 		{
 			// this code is called when absolute layout is used
@@ -850,7 +852,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getScreenLocationY()
 		{
 			// this code is called when absolute layout is used
@@ -860,7 +862,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getScreenHeight()
 		{
 			// this code is never called?
@@ -869,7 +871,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getScreenWidth()
 		{
 			// this code is never called?
@@ -878,13 +880,13 @@ public class MigPane extends javafx.scene.layout.Pane
 			return v;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int[] getVisualPadding()
 		{
 			return null;
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getHorizontalScreenDPI()
 		{
 			// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
@@ -895,7 +897,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getVerticalScreenDPI()
 		{
 			// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
@@ -903,7 +905,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public float getPixelUnitFactor(boolean isHor)
 		{
 			switch (PlatformDefaults.getLogicalPixelBase()) {
@@ -922,31 +924,32 @@ public class MigPane extends javafx.scene.layout.Pane
 			}
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public int getLayoutHashCode()
 		{
 			return 0; // Not used in MigPane.
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public String getLinkId()
 		{
 			return node.getId();
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public boolean isVisible()
 		{
 			return node.isVisible();
 		}
 
+		@Override
 		public int getContentBias()
 		{
 			Orientation bias = node.getContentBias();
 			return bias == null ? -1 : bias.ordinal(); // 0 == Orientation.HORIZONTAL and Orientation.HORIZONTAL, 1 = Orientation.VERTICAL and LayoutUtil.VERTICAL
 		}
 
-		// as of JDK 1.6: @Override
+		@Override
 		public void paintDebugOutline(boolean useVisualPadding)
 		{
 			CC lCC = wrapperToCCMap.get(this);
@@ -954,6 +957,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			addDebugRectangle(this.node.getLayoutX() + this.node.getLayoutBounds().getMinX(), (double) this.node.getLayoutY() + this.node.getLayoutBounds().getMinY(), getWidth(), getHeight(), type); // always draws node size, even if less is used
 		}
 
+		@Override
 		public int hashCode()
 		{
 			return node.hashCode();
@@ -963,6 +967,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		 * This needs to be overridden so that different wrappers that hold the same component compare
 		 * as equal.  Otherwise, Grid won't be able to layout the components correctly.
 		 */
+		@Override
 		public boolean equals(Object o)
 		{
 			if (!(o instanceof FX2ComponentWrapper))
@@ -971,8 +976,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			return getComponent().equals(((FX2ComponentWrapper) o).getComponent());
 		}
 
-		// as of JDK 1.6: @Override
-
+		@Override
 		public void setBounds(int x, int y, int width, int height)
 		{
 			//			System.out.println(getComponent() + " FX2ComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
