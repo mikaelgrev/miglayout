@@ -1,8 +1,7 @@
 package net.miginfocom.layout;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.WeakHashMap;
 /*
  * License (BSD):
  * ==============
@@ -48,9 +47,11 @@ public final class LinkHandler
 	public static final int X2 = 4;
 	public static final int Y2 = 5;
 
-	private static final ArrayList<WeakReference<Object>> LAYOUTS = new ArrayList<WeakReference<Object>>(4);
-	private static final ArrayList<HashMap<String, int[]>> VALUES = new ArrayList<HashMap<String, int[]>>(4);
-	private static final ArrayList<HashMap<String, int[]>> VALUES_TEMP = new ArrayList<HashMap<String, int[]>>(4);
+	// indices for values of LAYOUTS
+	private static final int VALUES = 0;
+	private static final int VALUES_TEMP = 1;
+	
+	private static final WeakHashMap<Object, HashMap<String, int[]>[]> LAYOUTS = new WeakHashMap<Object, HashMap<String, int[]>[]>();
 
 	private LinkHandler()
 	{
@@ -59,25 +60,15 @@ public final class LinkHandler
 	public synchronized static Integer getValue(Object layout, String key, int type)
 	{
 		Integer ret = null;
-		boolean cont = true;
 
-		for (int i = LAYOUTS.size() - 1; i >= 0; i--) {
-			Object l = LAYOUTS.get(i).get();
-			if (ret == null && l == layout) {
-				int[] rect = VALUES_TEMP.get(i).get(key);
-				if (cont && rect != null && rect[type] != LayoutUtil.NOT_SET) {
-					ret = rect[type];
-				} else {
-					rect = VALUES.get(i).get(key);
-					ret = (rect != null && rect[type] != LayoutUtil.NOT_SET) ? rect[type] : null;
-				}
-				cont = false;
-			}
-
-			if (l == null) {
-				LAYOUTS.remove(i);
-				VALUES.remove(i);
-				VALUES_TEMP.remove(i);
+		HashMap<String, int[]>[] layoutValues = LAYOUTS.get(layout);
+		if (layoutValues != null) {
+			int[] rect = layoutValues[VALUES_TEMP].get(key);
+			if (rect != null && rect[type] != LayoutUtil.NOT_SET) {
+				ret = rect[type];
+			} else {
+				rect = layoutValues[VALUES].get(key);
+				ret = (rect != null && rect[type] != LayoutUtil.NOT_SET) ? rect[type] : null;
 			}
 		}
 		return ret;
@@ -99,72 +90,69 @@ public final class LinkHandler
 
 	synchronized static boolean setBounds(Object layout, String key, int x, int y, int width, int height, boolean temporary, boolean incCur)
 	{
-		for (int i = LAYOUTS.size() - 1; i >= 0; i--) {
-			Object l = LAYOUTS.get(i).get();
-			if (l == layout) {
-				HashMap<String, int[]> map = (temporary ? VALUES_TEMP : VALUES).get(i);
-				int[] old = map.get(key);
+		HashMap<String, int[]>[] layoutValues = LAYOUTS.get(layout);
+		if (layoutValues != null) {
+			HashMap<String, int[]> map = layoutValues[temporary ? VALUES_TEMP : VALUES];
+			int[] old = map.get(key);
 
-				if (old == null || old[X] != x || old[Y] != y || old[WIDTH] != width || old[HEIGHT] != height) {
-					if (old == null || incCur == false) {
-						map.put(key, new int[] {x, y, width, height, x + width, y + height});
-						return true;
-					} else {
-						boolean changed = false;
+			if (old == null || old[X] != x || old[Y] != y || old[WIDTH] != width || old[HEIGHT] != height) {
+				if (old == null || incCur == false) {
+					map.put(key, new int[] {x, y, width, height, x + width, y + height});
+					return true;
+				} else {
+					boolean changed = false;
 
-						if (x != LayoutUtil.NOT_SET) {
-							if (old[X] == LayoutUtil.NOT_SET || x < old[X]) {
-								old[X] = x;
-								old[WIDTH] = old[X2] - x;
-								changed = true;
-							}
-
-							if (width != LayoutUtil.NOT_SET) {
-								int x2 = x + width;
-								if (old[X2] == LayoutUtil.NOT_SET || x2 > old[X2]) {
-									old[X2] = x2;
-									old[WIDTH] = x2 - old[X];
-									changed = true;
-								}
-							}
+					if (x != LayoutUtil.NOT_SET) {
+						if (old[X] == LayoutUtil.NOT_SET || x < old[X]) {
+							old[X] = x;
+							old[WIDTH] = old[X2] - x;
+							changed = true;
 						}
 
-						if (y != LayoutUtil.NOT_SET) {
-							if (old[Y] == LayoutUtil.NOT_SET || y < old[Y]) {
-								old[Y] = y;
-								old[HEIGHT] = old[Y2] - y;
+						if (width != LayoutUtil.NOT_SET) {
+							int x2 = x + width;
+							if (old[X2] == LayoutUtil.NOT_SET || x2 > old[X2]) {
+								old[X2] = x2;
+								old[WIDTH] = x2 - old[X];
 								changed = true;
 							}
-
-							if (height != LayoutUtil.NOT_SET) {
-								int y2 = y + height;
-								if (old[Y2] == LayoutUtil.NOT_SET || y2 > old[Y2]) {
-									old[Y2] = y2;
-									old[HEIGHT] = y2 - old[Y];
-									changed = true;
-								}
-							}
 						}
-						return changed;
 					}
+
+					if (y != LayoutUtil.NOT_SET) {
+						if (old[Y] == LayoutUtil.NOT_SET || y < old[Y]) {
+							old[Y] = y;
+							old[HEIGHT] = old[Y2] - y;
+							changed = true;
+						}
+
+						if (height != LayoutUtil.NOT_SET) {
+							int y2 = y + height;
+							if (old[Y2] == LayoutUtil.NOT_SET || y2 > old[Y2]) {
+								old[Y2] = y2;
+								old[HEIGHT] = y2 - old[Y];
+								changed = true;
+							}
+						}
+					}
+					return changed;
 				}
-				return false;
 			}
+			return false;
 		}
 
-		LAYOUTS.add(new WeakReference<Object>(layout));
 		int[] bounds = new int[] {x, y, width, height, x + width, y + height};
 
-		HashMap<String, int[]> values = new HashMap<String, int[]>(4);
+		HashMap<String, int[]> values_temp = new HashMap<String, int[]>(4);
 		if (temporary)
-			values.put(key, bounds);
-		VALUES_TEMP.add(values);
+			values_temp.put(key, bounds);
 
-		values = new HashMap<String, int[]>(4);
+		HashMap<String, int[]> values = new HashMap<String, int[]>(4);
 		if (temporary == false)
 			values.put(key, bounds);
-		VALUES.add(values);
 
+		LAYOUTS.put(layout, new HashMap[] {values, values_temp});
+		
 		return true;
 	}
 
@@ -179,22 +167,16 @@ public final class LinkHandler
 
 	public synchronized static boolean clearBounds(Object layout, String key)
 	{
-		for (int i = LAYOUTS.size() - 1; i >= 0; i--) {
-			Object l = LAYOUTS.get(i).get();
-			if (l == layout)
-				return VALUES.get(i).remove(key) != null;
-		}
+		HashMap<String, int[]>[] layoutValues = LAYOUTS.get(layout);
+		if (layoutValues != null)
+			return layoutValues[VALUES].remove(key) != null;
 		return false;
 	}
 
 	synchronized static void clearTemporaryBounds(Object layout)
 	{
-		for (int i = LAYOUTS.size() - 1; i >= 0; i--) {
-			Object l = LAYOUTS.get(i).get();
-			if (l == layout) {
-				VALUES_TEMP.get(i).clear();
-				return;
-			}
-		}
+		HashMap<String, int[]>[] layoutValues = LAYOUTS.get(layout);
+		if (layoutValues != null)
+			layoutValues[VALUES_TEMP].clear();
 	}
 }
