@@ -915,7 +915,7 @@ public class SwtDemo
 			public void widgetSelected(SelectionEvent e)
 			{
 				MessageBox msgBox = new MessageBox(parent.getShell());
-				msgBox.setMessage("See JavaDoc for PlatformConverter.getButtonBarOrder(..) for details on the format string.");
+				msgBox.setMessage("See JavaDoc for PlatformDefaults.setButtonOrder(..) for details on the format string.");
 				msgBox.open();
 			}
 		});

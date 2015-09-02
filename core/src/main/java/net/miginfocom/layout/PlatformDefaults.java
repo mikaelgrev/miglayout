@@ -78,7 +78,7 @@ public final class PlatformDefaults
 //	private static final UnitValue LPY10 = new UnitValue(10, UnitValue.LPY, null);
 	private static final UnitValue LPY11 = new UnitValue(11, UnitValue.LPY, null);
 	private static final UnitValue LPY12 = new UnitValue(12, UnitValue.LPY, null);
-	private static final UnitValue LPY14 = new UnitValue(14, UnitValue.LPY, null);
+//	private static final UnitValue LPY14 = new UnitValue(14, UnitValue.LPY, null);
 	private static final UnitValue LPY16 = new UnitValue(16, UnitValue.LPY, null);
 	private static final UnitValue LPY18 = new UnitValue(18, UnitValue.LPY, null);
 	private static final UnitValue LPY20 = new UnitValue(20, UnitValue.LPY, null);
@@ -552,8 +552,8 @@ public final class PlatformDefaults
 	 * <li><code>'Y'</code> - A tag for the "yes" button.
 	 * <li><code>'N'</code> - A tag for the "no" button.
 	 * <li><code>'X'</code> - A tag for the "next &gt;" or "forward &gt;" button.
-	 * <li><code>'B'</code> - A tag for the "&lt; back&gt;" or "&lt; previous" button.
-	 * <li><code>'I'</code> - A tag for the "finish".
+	 * <li><code>'B'</code> - A tag for the "&lt; back" or "&lt; previous" button.
+	 * <li><code>'I'</code> - A tag for the "finish" button.
 	 * <li><code>'A'</code> - A tag for the "apply" button.
 	 * <li><code>'C'</code> - A tag for the "cancel" or "close" button.
 	 * <li><code>'O'</code> - A tag for the "ok" or "done" button.
@@ -564,9 +564,9 @@ public final class PlatformDefaults
 	 * <p>
 	 * Even though the style tags are normally applied to buttons this works with all components.
 	 * <p>
-	 * The normal style for MAC OS X is <code>"L_HE+U+FBI_NYCOA_R"</code>,
-	 * for Windows is <code>"L_E+U+FBI_YNOCAH_R"</code>, and for GNOME is
-	 * <code>"L_HE+UNYACBXIO_R"</code>.
+	 * The normal style for MAC OS X is <code>"L_HE+U+NYBXCOA_I_R"</code>,
+	 * for Windows is <code>"L_E+U+YNBXOCAH_I_R"</code>, and for GNOME is
+	 * <code>"L_HE+UNYACBXO_I_R"</code>.
 	 *
 	 * @param order The new button order for the current platform.
 	 */

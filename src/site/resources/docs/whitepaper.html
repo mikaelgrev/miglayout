@@ -440,7 +440,7 @@ The size of the component (if invisible) will be set to <code>0, 0</code> and th
 Example: <code>&quot;hidemode 1"</code></p>
 <code><strong><u>tag</u></strong> [<em>name</em>]</code><br/>
   Tags the component with metadata name that can be used by the layout engine. The tag can be used to explain for the layout manager what the components is showing, such as an <strong>OK</strong> or <strong>Cancel</strong> button. Unknown tags will be disregarded without error or any indication.<br />
-  Currently the recognized tags are used for button reordering on a per platform basis. See the JavaDoc for <code>PlatformConverter.getButtonBarOrder(int type)</code> for a longer explanation. <br />
+  Currently the recognized tags are used for button reordering on a per platform basis. See the JavaDoc for <code>PlatformDefaults.setButtonOrder(String order)</code> for a longer explanation. <br />
 The  supported tags are: </p>
 <ul>
 <li><strong>ok</strong> - An OK button.</li>
@@ -454,7 +454,8 @@ The  supported tags are: </p>
 <li><strong>back</strong> - A Previous or Back button. </li>
 <li><strong>finish</strong> - A Finished button. </li>
 <li><strong>left</strong> - A button that should normally always be placed on the far left. </li>
-<li><strong>right</strong> -  A button that should normally always be placed on the far right.</li>
+<li><strong>right</strong> - A button that should normally always be placed on the far right.</li>
+<li><strong>other</strong> - An uncategorized button.</li>
 </ul>
 <p>Example: <code>&quot;tag ok&quot; or &quot;tag help2"</code>.</p>
 <p>&nbsp;</p>

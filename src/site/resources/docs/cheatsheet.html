@@ -1251,8 +1251,8 @@ comma signs as separators. <BR><CODE>E.g. &quot;width 100px!, grid 3
 			or <STRONG>Cancel</STRONG> button. Unknown tags will be
 			disregarded without error or any indication.<BR>Currently the
 			recognized tags are used for button reordering on a per platform
-			basis. See the JavaDoc for <CODE>PlatformConverter.getButtonBarOrder(int
-			type)</CODE> for a longer explanation. <BR>The supported tags are:</P>
+			basis. See the JavaDoc for <CODE>PlatformDefaults.setButtonOrder(String
+			order)</CODE> for a longer explanation. <BR>The supported tags are:</P>
 			<UL>
 				<LI><P STYLE="margin-bottom: 0in"><STRONG>ok</STRONG> - An OK
 				button.
@@ -1289,6 +1289,8 @@ comma signs as separators. <BR><CODE>E.g. &quot;width 100px!, grid 3
 				</P>
 				<LI><P><STRONG>right</STRONG> - A button that should normally
 				always be placed on the far right.
+				</P>
+				<LI><P><STRONG>other</STRONG> - An uncategorized button.
 				</P>
 			</UL>
 		</TD>
