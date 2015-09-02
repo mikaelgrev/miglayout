@@ -1545,7 +1545,7 @@ public class SwingDemo extends JFrame
 
 			helpButt.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(mainPanel, "See JavaDoc for PlatformConverter.getButtonBarOrder(..) for details on the format string.");
+					JOptionPane.showMessageDialog(mainPanel, "See JavaDoc for PlatformDefaults.setButtonOrder(..) for details on the format string.");
 				}
 			});
 		}
@@ -1605,7 +1605,7 @@ public class SwingDemo extends JFrame
 		          "JButton helpButt = createButton(\"Help\");\n" +
 		          "helpButt.addActionListener(new ActionListener() {\n" +
 		          "\tpublic void actionPerformed(ActionEvent e) {\n" +
-		          "\t\tJOptionPane.showMessageDialog(mainPanel, \"See JavaDoc for PlatformConverter.getButtonBarOrder(..) for details on the format string.\");\n" +
+		          "\t\tJOptionPane.showMessageDialog(mainPanel, \"See JavaDoc for PlatformDefaults.setButtonOrder(..) for details on the format string.\");\n" +
 		          "\t}\n" +
 		          "});\n" +
 		          "\n" +
