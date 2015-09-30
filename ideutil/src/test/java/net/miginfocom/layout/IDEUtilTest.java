@@ -53,6 +53,71 @@ public class IDEUtilTest
 	}
 
 	@Test
+	public void testMigLayoutConstraints() {
+		// wrap
+		testLC( "wrap", null, new LC().wrap(), ".wrap()" );
+		testLC( "wrap 4", null, new LC().wrapAfter(4), ".wrapAfter(4)" );
+
+		// gap
+		testLC( "gap 5px", "gap 5px 5px", new LC().gridGap("5px", "5px"), ".gridGap(\"5px\", \"5px\")" );
+		testLC( "gap 5px 10px", null, new LC().gridGap("5px", "10px"), ".gridGap(\"5px\", \"10px\")" );
+		testLC( "gap null 10px", "gapy 10px", new LC().gridGap(null, "10px"), ".gridGapY(\"10px\")" );
+		testLC( "gapx 10::50", null, new LC().gridGapX("10::50"), ".gridGapX(\"10::50\")" );
+		testLC( "gapy 0:rel:null", null, new LC().gridGapY("0:rel:null"), ".gridGapY(\"0:rel:null\")" );
+
+		// debug
+		testLC( "debug", "debug 1000", new LC().debug(1000), ".debug(1000)" );
+		testLC( "debug 300", null, new LC().debug(), ".debug(300)" );
+		testLC( "debug 4000", null, new LC().debug(4000), ".debug(4000)" );
+
+		// nogrid
+		testLC( "nogrid", null, new LC().noGrid(), ".noGrid()" );
+
+		// novisualpadding
+		testLC( "novisualpadding", null, new LC().noVisualPadding(), ".noVisualPadding()" );
+
+		// fill
+		testLC( "fill", null, new LC().fill(), ".fill()" );
+		testLC( "fillx", null, new LC().fillX(), ".fillX()" );
+		testLC( "filly", null, new LC().fillY(), ".fillY()" );
+
+		// insets
+		testLC( "insets panel", null, new LC().insets("panel"), ".insets(\"panel\")" );
+		testLC( "insets dialog", null, new LC().insets("dialog"), ".insets(\"dialog\")" );
+		testLC( "insets", "insets dialog", new LC().insets(""), ".insets(\"dialog\")" );
+		testLC( "insets 0", "insets 0 0 0 0", new LC().insetsAll( "0" ), ".insets(\"0 0 0 0\")" );
+		testLC( "insets 0 1", "insets 0 1 1 1", new LC().insets( "0 1" ), ".insets(\"0 1 1 1\")" );
+		testLC( "insets 0 1 2", "insets 0 1 2 2", new LC().insets( "0 1 2" ), ".insets(\"0 1 2 2\")" );
+		testLC( "insets 0 1 2 3", null, new LC().insets("0 1 2 3"), ".insets(\"0 1 2 3\")" );
+		testLC( "insets 0 1 2 3", null, new LC().insets("0", "1", "2", "3"), ".insets(\"0 1 2 3\")" );
+		testLC( "insets 0 null 2 3", null, new LC().insets("0", null, "2", "3"), ".insets(\"0 null 2 3\")" );
+
+		// flowy
+		testLC( "flowy", null, new LC().flowY(), ".flowY()" );
+
+		// align
+		testLC( "align left", "alignx left", new LC().alignX("left"), ".alignX(\"left\")" );
+		testLC( "align null top", "aligny top", new LC().alignY("top"), ".alignY(\"top\")" );
+		testLC( "align left top", null, new LC().align("left", "top"), ".align(\"left\", \"top\")" );
+		testLC( "alignx left", null, new LC().alignX("left"), ".alignX(\"left\")" );
+		testLC( "aligny top", null, new LC().alignY("top"), ".alignY(\"top\")" );
+
+		// lefttoright, righttoleft
+		testLC( "ltr", null, new LC().leftToRight(true), ".leftToRight(true)" );
+		testLC( "rtl", null, new LC().rightToLeft(), ".leftToRight(false)" );
+
+		// toptobottom, bottomtotop
+		testLC( "ttb", "", new LC().topToBottom(), "" );
+		testLC( "btt", null, new LC().bottomToTop(), ".bottomToTop()" );
+
+		// hidemode
+		testLC( "hidemode 1", null, new LC().hideMode(1), ".hideMode(1)" );
+
+		// nocache
+		testLC( "nocache", null, new LC().noCache(), ".noCache()" );
+	}
+
+	@Test
 	public void testMigComponentConstraints() {
 		// wrap
 		testCC( "wrap", null, new CC().wrap(), ".wrap()" );
@@ -221,6 +286,17 @@ public class IDEUtilTest
 
 		// tag
 		testCC( "tag ok", null, new CC().tag("ok"), ".tag(\"ok\")" );
+	}
+
+	private void testLC( String input, String expected, LC inputAPI, String expectedAPI ) {
+		LC lc = ConstraintParser.parseLayoutConstraint( input );
+		String actual = IDEUtil.getConstraintString( lc, false );
+		String actualAPI = IDEUtil.getConstraintString( inputAPI, true );
+		String actualAPI2 = IDEUtil.getConstraintString( lc, true );
+
+		myAssertEquals( input, (expected != null) ? expected : input, actual );
+		myAssertEquals( input, expectedAPI, actualAPI );
+		myAssertEquals( input, actualAPI2, actualAPI );
 	}
 
 	private void testCC( String input, String expected, CC inputAPI, String expectedAPI ) {

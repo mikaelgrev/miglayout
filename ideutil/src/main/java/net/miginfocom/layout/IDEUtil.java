@@ -708,6 +708,10 @@ public class IDEUtil
 				} else {
 					sb.append(",insets ").append(cs);
 				}
+			} else if (isDialogInsets(insets)) {
+				sb.append(asAPI ? ".insets(\"dialog\")" : ",insets dialog");
+			} else if (isPanelInsets(insets)) {
+				sb.append(asAPI ? ".insets(\"panel\")" : ",insets panel");
 			} else {
 				sb.append(asAPI ? ".insets(\"" : ",insets ");
 				for (int i = 0; i < insets.length; i++)
@@ -728,7 +732,7 @@ public class IDEUtil
 			if (asAPI) {
 				sb.append(".hideMode(").append(hideMode).append(')');
 			} else {
-				sb.append(",hideMode ").append(hideMode);
+				sb.append(",hidemode ").append(hideMode);
 			}
 		}
 
@@ -739,7 +743,7 @@ public class IDEUtil
 		UnitValue alignY = lc.getAlignY();
 		if (alignX != null || alignY != null) {
 			if (alignX != null && alignY != null) {
-				sb.append(asAPI ? ".align(\"" : ",align ").append(getUV(alignX)).append(' ').append(getUV(alignY));
+				sb.append(asAPI ? ".align(\"" : ",align ").append(getUV(alignX)).append(asAPI ? "\", \"" : " ").append(getUV(alignY));
 			} else if (alignX != null) {
 				sb.append(asAPI ? ".alignX(\"" : ",alignx ").append(getUV(alignX));
 			} else if (alignY != null) {
@@ -753,7 +757,7 @@ public class IDEUtil
 		BoundSize gridGapY = lc.getGridGapY();
 		if (gridGapX != null || gridGapY != null) {
 			if (gridGapX != null && gridGapY != null) {
-				sb.append(asAPI ? ".gridGap(\"" : ",gap ").append(getBS(gridGapX)).append(' ').append(getBS(gridGapY));
+				sb.append(asAPI ? ".gridGap(\"" : ",gap ").append(getBS(gridGapX)).append(asAPI ? "\", \"" : " ").append(getBS(gridGapY));
 			} else if (gridGapX != null) {
 				sb.append(asAPI ? ".gridGapX(\"" : ",gapx ").append(getBS(gridGapX));
 			} else if (gridGapY != null) {
@@ -767,9 +771,13 @@ public class IDEUtil
 		if (wrapAfter != LayoutUtil.INF) {
 			String ws = wrapAfter > 0 ? String.valueOf(wrapAfter) : "";
 			if (asAPI) {
-				sb.append(".wrap(").append(ws).append(')');
+				if (ws.isEmpty())
+					sb.append(".wrap()");
+				else
+					sb.append(".wrapAfter(").append(ws).append(')');
 			} else {
 				sb.append(",wrap ").append(ws);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -781,6 +789,9 @@ public class IDEUtil
 				sb.append(",debug ").append(debugMillis);
 			}
 		}
+
+		if (lc.isNoCache())
+			sb.append(asAPI ? ".noCache()" : ",nocache");
 
 		String s = sb.toString();
 		return s.length() == 0 || s.charAt(0) != ',' ? s : s.substring(1);
@@ -808,6 +819,24 @@ public class IDEUtil
 		return bs != null
 			? (asAPI ? ('"' + bs.getConstraintString() + '"') : bs.getConstraintString())
 			: "null";
+	}
+
+	private static boolean isDialogInsets(UnitValue[] insets)
+	{
+		for (int i = 0; i < 4; i++) {
+			if (PlatformDefaults.getDialogInsets(i) != insets[i])
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean isPanelInsets(UnitValue[] insets)
+	{
+		for (int i = 0; i < 4; i++) {
+			if (PlatformDefaults.getPanelInsets(i) != insets[i])
+				return false;
+		}
+		return true;
 	}
 
 	/** Converts a <code>float</code> to a string and is removing the ".0" if the float is an integer.
