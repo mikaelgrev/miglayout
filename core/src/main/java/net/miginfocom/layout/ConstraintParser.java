@@ -554,9 +554,9 @@ public final class ConstraintParser
 					ix = startsWithLenient(part, "shrink", 6, false);
 					if (ix > -1) {
 						String[] shrinks = toTrimmedTokens(part.substring(ix).trim(), ' ');
-						cc.getHorizontal().setShrink(parseFloat(part.substring(ix).trim(), ResizeConstraint.WEIGHT_100));
+						cc.getHorizontal().setShrink(parseFloat(shrinks[0], ResizeConstraint.WEIGHT_100));
 						if (shrinks.length > 1)
-							cc.getVertical().setShrink(parseFloat(part.substring(ix).trim(), ResizeConstraint.WEIGHT_100));
+							cc.getVertical().setShrink(parseFloat(shrinks[1], ResizeConstraint.WEIGHT_100));
 						continue;
 					}
 

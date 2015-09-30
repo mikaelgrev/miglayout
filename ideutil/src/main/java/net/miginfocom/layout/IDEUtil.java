@@ -378,6 +378,7 @@ public class IDEUtil
 				sb.append(isHor ? ".endGroupX(\"" : ".endGroupY(\"").append(eg).append("\")");
 			} else {
 				sb.append(isHor ? ",endgroupx " : ",endgroupy ").append(eg);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -387,6 +388,7 @@ public class IDEUtil
 				sb.append(isHor ? ".sizeGroupX(\"" : ".sizeGroupY(\"").append(sg).append("\")");
 			} else {
 				sb.append(isHor ? ",sizegroupx " : ",sizegroupy ").append(sg);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -405,7 +407,7 @@ public class IDEUtil
 		BoundSize gapAft= dc.getGapAfter();
 		if (gapBef != null || gapAft != null) {
 			if (asAPI) {
-				sb.append(isHor ? ".gapX(\"" : ".gapY(\"").append(getBS(gapBef)).append("\", \"").append(getBS(gapAft)).append("\")");
+				sb.append(isHor ? ".gapX(" : ".gapY(").append(getBS(gapBef, asAPI)).append(", ").append(getBS(gapAft, asAPI)).append(")");
 			} else {
 				sb.append(isHor ? ",gapx " : ",gapy ").append(getBS(gapBef));
 				if (gapAft != null)
@@ -458,8 +460,15 @@ public class IDEUtil
 	{
 		StringBuffer sb = new StringBuffer(16);
 
-		if (cc.isNewline())
-			sb.append(asAPI ? ".newline()" : ",newline");
+		if (cc.isNewline()) {
+			sb.append(asAPI ? ".newline(" : ",newline");
+
+			BoundSize newlineGapSize = cc.getNewlineGapSize();
+			if (newlineGapSize != null)
+				sb.append(asAPI ? "" : " ").append(getBS(newlineGapSize, asAPI));
+			if (asAPI)
+				sb.append(')');
+		}
 
 		if (cc.isExternal())
 			sb.append(asAPI ? ".external()" : ",external");
@@ -490,18 +499,18 @@ public class IDEUtil
 						if (asAPI) {
 							sb.append('.').append(X_Y_STRINGS[i]).append("(\"").append(getUV(pos[i])).append("\")");
 						} else {
-							sb.append(',').append(X_Y_STRINGS[i]).append(getUV(pos[i]));
+							sb.append(',').append(X_Y_STRINGS[i]).append(' ').append(getUV(pos[i]));
 						}
 					}
 				}
 			} else {
-				sb.append(asAPI ? ".pos(\"" : ",pos ");
+				sb.append(asAPI ? ".pos(" : ",pos ");
 				int iSz = (pos[2] != null || pos[3] != null) ? 4 : 2;  // "pos x y" vs "pos x1 y1 x2 y2".
 				for (int i = 0; i < iSz; i++)
-					sb.append(getUV(pos[i])).append(i < iSz - 1 ? " " : "");
+					sb.append(getUV(pos[i], asAPI)).append(i < iSz - 1 ? (asAPI ? ", " : " ") : "");
 
 				if (asAPI)
-					sb.append("\")");
+					sb.append(")");
 			}
 		}
 
@@ -526,7 +535,7 @@ public class IDEUtil
 		int hideMode = cc.getHideMode();
 		if (hideMode >= 0) {
 			if (asAPI) {
-				sb.append(".hidemode(").append(hideMode).append(')');
+				sb.append(".hideMode(").append(hideMode).append(')');
 			} else {
 				sb.append(",hidemode ").append(hideMode);
 			}
@@ -548,6 +557,7 @@ public class IDEUtil
 				sb.append(".split(").append(s).append(')');
 			} else {
 				sb.append(",split ").append(s);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -576,6 +586,8 @@ public class IDEUtil
 			}
 			if (asAPI)
 				sb.append(')');
+			else
+				removeTrailingSpace(sb);
 		}
 
 		Float pushX = cc.getPushX();
@@ -584,14 +596,16 @@ public class IDEUtil
 			if (pushX != null && pushY != null) {
 				sb.append(asAPI ? ".push(" : ",push ");
 				if (pushX != 100.0 || pushY != 100.0)
-					sb.append(pushX).append(asAPI ? ", " : " ").append(pushY);
+					sb.append(floatObjectToString(pushX, asAPI)).append(asAPI ? ", " : " ").append(floatObjectToString(pushY, asAPI));
 			} else if (pushX != null) {
-				sb.append(asAPI ? ".pushX(" : ",pushx ").append(pushX == 100 ? "" : (String.valueOf(pushX)));
+				sb.append(asAPI ? ".pushX(" : ",pushx ").append(pushX == 100 ? "" : (floatObjectToString(pushX, asAPI)));
 			} else if (pushY != null) {
-				sb.append(asAPI ? ".pushY(" : ",pushy ").append(pushY == 100 ? "" : (String.valueOf(pushY)));
+				sb.append(asAPI ? ".pushY(" : ",pushy ").append(pushY == 100 ? "" : (floatObjectToString(pushY, asAPI)));
 			}
 			if (asAPI)
 				sb.append(')');
+			else
+				removeTrailingSpace(sb);
 		}
 
 		int dock = cc.getDockSide();
@@ -777,9 +791,23 @@ public class IDEUtil
 		return uv != null ? uv.getConstraintString() : "null";
 	}
 
+	private static String getUV(UnitValue uv, boolean asAPI)
+	{
+		return uv != null
+			? (asAPI ? ('"' + uv.getConstraintString() + '"') : uv.getConstraintString())
+			: "null";
+	}
+
 	private static String getBS(BoundSize bs)
 	{
 		return bs != null ? bs.getConstraintString() : "null";
+	}
+
+	private static String getBS(BoundSize bs, boolean asAPI)
+	{
+		return bs != null
+			? (asAPI ? ('"' + bs.getConstraintString() + '"') : bs.getConstraintString())
+			: "null";
 	}
 
 	/** Converts a <code>float</code> to a string and is removing the ".0" if the float is an integer.
@@ -790,5 +818,23 @@ public class IDEUtil
 	{
 		String valS = String.valueOf(f);
 		return valS.endsWith(".0") ? valS.substring(0, valS.length() - 2) : (valS + (asAPI ? "f" : ""));
+	}
+
+	private static String floatObjectToString(float f, boolean asAPI)
+	{
+		String valS = floatToString(f, asAPI);
+
+		// trailing 'f' is required if Java method parameter is of type java.lang.Float
+		if (asAPI && !valS.endsWith("f"))
+			valS = valS.concat("f");
+
+		return valS;
+	}
+
+	private static void removeTrailingSpace(StringBuffer sb)
+	{
+		int length = sb.length();
+		if (length > 0 && sb.charAt(length - 1) == ' ')
+			sb.setLength(length - 1);
 	}
 }
