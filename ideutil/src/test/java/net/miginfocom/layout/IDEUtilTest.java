@@ -119,6 +119,30 @@ public class IDEUtilTest
 
 	@Test
 	public void testMigColumnRowConstraints() {
+		// gaps
+		testAC( "[]", null, new AC(), "" );
+		testAC( "[][]", null, new AC().gap(), ".gap()" );
+		testAC( "[][][]", null, new AC().gap().gap(), ".gap().gap()" );
+		testAC( "[]10[]", null, new AC().gap("10"), ".gap(\"10\")" );
+		testAC( "[]para[]unrel[]", null, new AC().gap("para").gap("unrel"), ".gap(\"para\").gap(\"unrel\")" );
+
+		// complex samples from white paper
+		testAC( false, "[fill]10[10:20,top]", null,
+			new AC().fill().gap("10").size("10:20").align("top"),
+				   ".fill().gap(\"10\").size(\"10:20\").align(\"top\")" );
+		testAC( "[fill]push[]", null,
+			new AC().fill().gap("push"),
+				   ".fill().gap(\"push\")" );
+		testAC( false, "[fill]10:10:100:push[10:20,top]", null,
+			new AC().fill().gap("10:10:100:push").size("10:20").align("top"),
+				   ".fill().gap(\"10:10:100:push\").size(\"10:20\").align(\"top\")" );
+
+		// size
+		testAC( "[100]", null, new AC().size("100"), ".size(\"100\")");
+		testAC( "[100][200]", null, new AC().size("100").gap().size("200"), ".size(\"100\").gap().size(\"200\")");
+		testAC( "[pref]", null, new AC().size("pref"), ".size(\"pref\")" );
+		testAC( "[pref,fill]", null, new AC().size("pref").fill(), ".size(\"pref\").fill()" );
+
 		// sizegroup
 		testAC( "[sizegroup]", null, new AC().sizeGroup(), ".sizeGroup(\"\")" );
 		testAC( "[sizegroup grp1]", null, new AC().sizeGroup("grp1"), ".sizeGroup(\"grp1\")" );

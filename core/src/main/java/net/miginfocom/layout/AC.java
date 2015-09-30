@@ -294,6 +294,7 @@ public final class AC implements Externalizable
 	public final AC gap()
 	{
 		curIx++;
+		makeSize(curIx);
 		return this;
 	}
 
@@ -323,7 +324,7 @@ public final class AC implements Externalizable
 
 		for (int i = indexes.length - 1; i >= 0; i--) {
 			int ix = indexes[i];
-			makeSize(ix);
+			makeSize(ix + 1);
 			if (bsa != null)
 				cList.get(ix).setGapAfter(bsa);
 		}
