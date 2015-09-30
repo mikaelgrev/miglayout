@@ -118,6 +118,38 @@ public class IDEUtilTest
 	}
 
 	@Test
+	public void testMigColumnRowConstraints() {
+		// sizegroup
+		testAC( "[sizegroup]", null, new AC().sizeGroup(), ".sizeGroup(\"\")" );
+		testAC( "[sizegroup grp1]", null, new AC().sizeGroup("grp1"), ".sizeGroup(\"grp1\")" );
+
+		// fill
+		testAC( "[fill]", null, new AC().fill(), ".fill()" );
+
+		// nogrid
+		testAC( "[nogrid]", null, new AC().noGrid(), ".noGrid()" );
+
+		// grow
+		testAC( "[grow]", null, new AC().grow(), ".grow()" );
+		testAC( "[grow 50]", null, new AC().grow(50), ".grow(50)" );
+
+		// growprio
+		testAC( "[growprio 50]", null, new AC().growPrio(50), ".growPrio(50)" );
+
+		// shrink
+		testAC( "[shrink 50]", null, new AC().shrink(50), ".shrink(50)" );
+
+		// shrinkprio
+		testAC( "[shrinkprio 50]", null, new AC().shrinkPrio(50), ".shrinkPrio(50)" );
+
+		// align
+		testAC( "[align 50%]", null, null, null ); // no API because AC().align() does not support UnitValues
+		testAC( "[align 100px]", null, null, null ); // no API because AC().align() does not support UnitValues
+		testAC( true, "[align left]", "[left]", new AC().align("left"), ".align(\"left\")" );
+		testAC( false, "[align top]", "[top]", new AC().align("top"), ".align(\"top\")" );
+	}
+
+	@Test
 	public void testMigComponentConstraints() {
 		// wrap
 		testCC( "wrap", null, new CC().wrap(), ".wrap()" );
@@ -297,6 +329,27 @@ public class IDEUtilTest
 		myAssertEquals( input, (expected != null) ? expected : input, actual );
 		myAssertEquals( input, expectedAPI, actualAPI );
 		myAssertEquals( input, actualAPI2, actualAPI );
+	}
+
+	private void testAC( String input, String expected, AC inputAPI, String expectedAPI ) {
+		testAC( true, input, expected, inputAPI, expectedAPI );
+		testAC( false, input, expected, inputAPI, expectedAPI );
+	}
+
+	private void testAC( boolean isCols, String input, String expected, AC inputAPI, String expectedAPI ) {
+		AC ac = isCols
+			? ConstraintParser.parseColumnConstraints( input )
+			: ConstraintParser.parseRowConstraints( input );
+		String actual = IDEUtil.getConstraintString( ac, false, isCols );
+		myAssertEquals( input, (expected != null) ? expected : input, actual );
+
+		if( inputAPI != null ) {
+			String actualAPI = IDEUtil.getConstraintString( inputAPI, true, isCols );
+			String actualAPI2 = IDEUtil.getConstraintString( ac, true, isCols );
+
+			myAssertEquals( input, expectedAPI, actualAPI );
+			myAssertEquals( input, actualAPI2, actualAPI );
+		}
 	}
 
 	private void testCC( String input, String expected, CC inputAPI, String expectedAPI ) {

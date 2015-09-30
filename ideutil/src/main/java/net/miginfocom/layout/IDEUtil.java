@@ -226,7 +226,7 @@ public class IDEUtil
 
 		if (gp != 100) {
 			if (asAPI) {
-				sb.append(".growPrio(").append(gp).append("\")");
+				sb.append(".growPrio(").append(gp).append(")");
 			} else {
 				sb.append(",growprio ").append(gp);
 			}
@@ -239,7 +239,7 @@ public class IDEUtil
 				if (g.length() == 0) {
 					sb.append(".grow()");
 				} else {
-					sb.append(".grow(\"").append(g).append("\")");
+					sb.append(".grow(").append(g).append(")");
 				}
 			} else {
 				sb.append(",grow").append(g.length() > 0 ? (" " + g) : "");
@@ -249,7 +249,7 @@ public class IDEUtil
 		int sp = dc.getShrinkPriority();
 		if (sp != 100) {
 			if (asAPI) {
-				sb.append(".shrinkPrio(").append(sp).append("\")");
+				sb.append(".shrinkPrio(").append(sp).append(")");
 			} else {
 				sb.append(",shrinkprio ").append(sp);
 			}
@@ -259,7 +259,7 @@ public class IDEUtil
 		if (sw != null && sw.intValue() != 100) {
 			String s = floatToString(sw, asAPI);
 			if (asAPI) {
-				sb.append(".shrink(\"").append(s).append("\")");
+				sb.append(".shrink(").append(s).append(")");
 			} else {
 				sb.append(",shrink ").append(s);
 			}
@@ -280,6 +280,7 @@ public class IDEUtil
 				sb.append(".sizeGroup(\"").append(sg).append("\")");
 			} else {
 				sb.append(",sizegroup ").append(sg);
+				removeTrailingSpace(sb);
 			}
 		}
 

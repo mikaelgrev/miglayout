@@ -404,7 +404,7 @@ public final class AC implements Externalizable
 	 */
 	public final AC grow()
 	{
-		return grow(1f, curIx);
+		return grow(100f, curIx);
 	}
 
 	/** Specifies the current row/column's grow weight within columns/rows with the same <code>grow priority</code>.
