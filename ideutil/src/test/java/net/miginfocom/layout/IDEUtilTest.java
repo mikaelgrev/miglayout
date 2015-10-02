@@ -235,6 +235,7 @@ public class IDEUtilTest
 		testCC( "grow 100", "grow", new CC().grow(100, 100), ".grow()" );
 		testCC( "grow 50", "growx 50,growy", new CC().grow(50, 100), ".growX(50).growY()" );
 		testCC( "grow 50 20", "growx 50,growy 20", new CC().grow(50, 20), ".growX(50).growY(20)" );
+		testCC( "grow 50 50", "growx 50,growy 50", new CC().grow(50, 50), ".growX(50).growY(50)" );
 		testCC( "grow 100 20", "growx,growy 20", new CC().grow(100, 20), ".growX().growY(20)" );
 		testCC( "grow 50 100", "growx 50,growy", new CC().grow(50, 100), ".growX(50).growY()" );
 		testCC( "growx", null, new CC().growX(), ".growX()" );
