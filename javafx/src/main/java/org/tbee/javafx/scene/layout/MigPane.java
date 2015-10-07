@@ -120,6 +120,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	 *
 	 */
 	private void construct() {
+		// When Scene changes the grid needs to be cleared
+		sceneProperty().addListener(e -> invalidateGrid());
+
 		// defaults
 		if (layoutConstraints == null) setLayoutConstraints(new LC());
 		if (rowConstraints == null) setRowConstraints(new AC());
@@ -472,6 +475,9 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		if (layoutInhibits > 0)
 			return;
+
+		if (layoutConstraints.isNoCache())
+			_grid = null;
 
 		biasDirty = true;
 		if (_grid != null)

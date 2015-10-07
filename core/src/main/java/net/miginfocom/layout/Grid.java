@@ -617,7 +617,6 @@ public final class Grid
 			calcGridSizes(refWidth, refHeight);
 
 		if ((refWidth > 0 && refWidth != lastRefWidth) || (refHeight > 0 && refHeight != lastRefHeight)) {
-//			System.out.println("prelayout for w: " + refWidth + ", h: " + refHeight);
 			int[] refBounds = new int[] {0, 0, (refWidth > 0 ? refWidth : width[LayoutUtil.PREF]), (refHeight > 0 ? refHeight : height[LayoutUtil.PREF])};
 			layoutImpl(refBounds, null, null, false, true);
 			calcGridSizes(refWidth, refHeight);
@@ -629,8 +628,6 @@ public final class Grid
 
 	private void calcGridSizes(int refWidth, int refHeight)
 	{
-//		System.out.println("REcalc grid size for w: " + refWidth + ", h: " + refHeight);
-
 		colFlowSpecs = calcRowsOrColsSizes(true, refWidth);
 		rowFlowSpecs = calcRowsOrColsSizes(false, refHeight);
 
