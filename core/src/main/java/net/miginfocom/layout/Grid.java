@@ -234,6 +234,7 @@ public final class Grid
 							cellXY[1] = cx;
 						}
 					}
+					ensureIndexSizes(cx, cy);
 				}
 				cell = getCell(cellXY[1], cellXY[0]);   // Might be null
 			}
@@ -292,9 +293,6 @@ public final class Grid
 						splitExit = true;
 						break;
 					}
-
-//					pos = getPos(compAdd, cc);
-//					cbSz = getCallbackSize(compAdd);
 				}
 
 				CompWrap cw = new CompWrap(compAdd, cc, hideMode, useVisualPadding);
@@ -388,10 +386,7 @@ public final class Grid
 		dockOffY = getDockInsets(rowIndexes);
 
 		// Add synthetic indexes for empty rows and columns so they can get a size
-		for (int i = 0, iSz = rowConstr.getCount(); i < iSz; i++)
-			rowIndexes.add(i);
-		for (int i = 0, iSz = colConstr.getCount(); i < iSz; i++)
-			colIndexes.add(i);
+		ensureIndexSizes(colConstr.getCount(), rowConstr.getCount());
 
 		colGroupLists = divideIntoLinkedGroups(false);
 		rowGroupLists = divideIntoLinkedGroups(true);
@@ -401,6 +396,14 @@ public final class Grid
 
 		if (LayoutUtil.isDesignTime(container))
 			saveGrid(container, grid);
+	}
+
+	private void ensureIndexSizes(int colCount, int rowCount)
+	{
+		for (int i = 0; i < colCount; i++)
+			colIndexes.add(i);
+		for (int i = 0; i < rowCount; i++)
+			rowIndexes.add(i);
 	}
 
 	private static CC getCC(ComponentWrapper comp, Map<? extends ComponentWrapper, CC> ccMap)
