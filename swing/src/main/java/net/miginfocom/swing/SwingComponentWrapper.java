@@ -466,7 +466,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 							break;
 						case TYPE_TEXT_FIELD:
 							border = component.getBorder();
-							if (border != null && border.getClass().getSimpleName().equals("AquaTextFieldBorder")) {
+							if (!component.isOpaque() && border != null && border.getClass().getSimpleName().equals("AquaTextFieldBorder")) {
 								classID = "TextField";
 							} else {
 								classID = "";

@@ -63,6 +63,9 @@ public class VisualPaddingOSX extends JFrame
 		JTextField ta = new JTextField("No Border");
 		ta.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(ta, cc + ", newline");
+		JTextField tfo = new JTextField("Opaque");
+		tfo.setOpaque(true);
+		add(tfo, cc);
 		add(new JTextArea("A text"), cc);
 		add(new JTextField("A text"), cc);
 		add(new JScrollPane(new JTextPane()), cc);
