@@ -93,6 +93,8 @@ public class VisualPaddingOSX extends JFrame
 		add(createToggle("toggle", "small", false, null), cc);
 		add(createToggle("toggle", "mini", false, null), cc);
 
+		add(createTabbedPane(), cc + ", newline, growx");
+
 		pack();
 		setLocationRelativeTo(null);
 	}
@@ -166,6 +168,14 @@ public class VisualPaddingOSX extends JFrame
 		if (key != null)
 			comboBox.putClientProperty(key, Boolean.TRUE);
 		return comboBox;
+	}
+
+	private JTabbedPane createTabbedPane()
+	{
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab("tab1", new JLabel("tab1"));
+		tabbedPane.addTab("tab2", new JLabel("tab2"));
+		return tabbedPane;
 	}
 
 	public static void main(String args[])
