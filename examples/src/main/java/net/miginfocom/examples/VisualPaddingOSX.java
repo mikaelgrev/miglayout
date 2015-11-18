@@ -63,6 +63,9 @@ public class VisualPaddingOSX extends JFrame
 		JTextField ta = new JTextField("No Border");
 		ta.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(ta, cc + ", newline");
+		JTextField tfo = new JTextField("Opaque");
+		tfo.setOpaque(true);
+		add(tfo, cc);
 		add(new JTextArea("A text"), cc);
 		add(new JTextField("A text"), cc);
 		add(new JScrollPane(new JTextPane()), cc);
@@ -89,6 +92,8 @@ public class VisualPaddingOSX extends JFrame
 		add(createToggle("toggle", "regular", false, null), cc);
 		add(createToggle("toggle", "small", false, null), cc);
 		add(createToggle("toggle", "mini", false, null), cc);
+
+		add(createTabbedPane(), cc + ", newline, growx");
 
 		pack();
 		setLocationRelativeTo(null);
@@ -163,6 +168,14 @@ public class VisualPaddingOSX extends JFrame
 		if (key != null)
 			comboBox.putClientProperty(key, Boolean.TRUE);
 		return comboBox;
+	}
+
+	private JTabbedPane createTabbedPane()
+	{
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab("tab1", new JLabel("tab1"));
+		tabbedPane.addTab("tab2", new JLabel("tab2"));
+		return tabbedPane;
 	}
 
 	public static void main(String args[])
