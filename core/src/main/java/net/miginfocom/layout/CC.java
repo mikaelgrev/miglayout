@@ -537,6 +537,19 @@ public final class CC implements Externalizable
 		return this;
 	}
 
+	/** Grow weight for the component vertically.
+	 * <p>
+	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
+	 * @param w The new grow weight.
+	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
+	 */
+	@Deprecated
+	public final CC growY(Float w)
+	{
+		ver.setGrow(w);
+		return this;
+	}
+
 	/** The shrink priority compared to other components in the same cell.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
