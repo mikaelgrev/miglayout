@@ -101,6 +101,7 @@ public final class PlatformDefaults
 	private static BoundSize DEF_VGAP = null, DEF_HGAP = null;
 	static BoundSize RELATED_X = null, RELATED_Y = null, UNRELATED_X = null, UNRELATED_Y = null;
 	private static UnitValue BUTT_WIDTH = null;
+	private static UnitValue BUTT_PADDING = null;
 
 	private static Float horScale = null, verScale = null;
 
@@ -475,6 +476,17 @@ public final class PlatformDefaults
 	public static UnitValue getMinimumButtonWidth()
 	{
 		return BUTT_WIDTH;
+	}
+	
+	public static void setMinimumButtonPadding(UnitValue padding)
+	{
+	    BUTT_PADDING = padding;
+	    MOD_COUNT++;
+	}
+	
+	public static UnitValue getMinimumButtonPadding()
+	{
+	    return BUTT_PADDING;
 	}
 
 	/** Returns the unit value associated with the unit. (E.i. "related" or "indent"). Must be lower case.
