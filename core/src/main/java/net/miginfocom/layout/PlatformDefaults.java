@@ -234,6 +234,7 @@ public final class PlatformDefaults
 				setGridCellGap(LPX7, LPY7);
 
 				setMinimumButtonWidth(new UnitValue(70, UnitValue.LPX, null));
+				setMinimumButtonPadding(new UnitValue(8, UnitValue.LPX, null));
 				setButtonOrder("L_HE+U+NYBXCOA_I_R");
 				setDialogInsets(LPY20, LPX20, LPY20, LPX20);
 				setPanelInsets(LPY16, LPX16, LPY16, LPX16);
