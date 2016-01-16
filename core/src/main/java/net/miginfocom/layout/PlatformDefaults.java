@@ -478,16 +478,16 @@ public final class PlatformDefaults
 	{
 		return BUTT_WIDTH;
 	}
-	
+
 	public static void setMinimumButtonPadding(UnitValue padding)
 	{
-	    BUTT_PADDING = padding;
-	    MOD_COUNT++;
+		BUTT_PADDING = padding;
+		MOD_COUNT++;
 	}
-	
+
 	public static UnitValue getMinimumButtonPadding()
 	{
-	    return BUTT_PADDING;
+		return BUTT_PADDING;
 	}
 
 	/** Returns the unit value associated with the unit. (E.i. "related" or "indent"). Must be lower case.
