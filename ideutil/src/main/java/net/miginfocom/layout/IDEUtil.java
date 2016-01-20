@@ -226,7 +226,7 @@ public class IDEUtil
 
 		if (gp != 100) {
 			if (asAPI) {
-				sb.append(".growPrio(").append(gp).append("\")");
+				sb.append(".growPrio(").append(gp).append(")");
 			} else {
 				sb.append(",growprio ").append(gp);
 			}
@@ -239,7 +239,7 @@ public class IDEUtil
 				if (g.length() == 0) {
 					sb.append(".grow()");
 				} else {
-					sb.append(".grow(\"").append(g).append("\")");
+					sb.append(".grow(").append(g).append(")");
 				}
 			} else {
 				sb.append(",grow").append(g.length() > 0 ? (" " + g) : "");
@@ -249,7 +249,7 @@ public class IDEUtil
 		int sp = dc.getShrinkPriority();
 		if (sp != 100) {
 			if (asAPI) {
-				sb.append(".shrinkPrio(").append(sp).append("\")");
+				sb.append(".shrinkPrio(").append(sp).append(")");
 			} else {
 				sb.append(",shrinkprio ").append(sp);
 			}
@@ -259,7 +259,7 @@ public class IDEUtil
 		if (sw != null && sw.intValue() != 100) {
 			String s = floatToString(sw, asAPI);
 			if (asAPI) {
-				sb.append(".shrink(\"").append(s).append("\")");
+				sb.append(".shrink(").append(s).append(")");
 			} else {
 				sb.append(",shrink ").append(s);
 			}
@@ -280,6 +280,7 @@ public class IDEUtil
 				sb.append(".sizeGroup(\"").append(sg).append("\")");
 			} else {
 				sb.append(",sizegroup ").append(sg);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -378,6 +379,7 @@ public class IDEUtil
 				sb.append(isHor ? ".endGroupX(\"" : ".endGroupY(\"").append(eg).append("\")");
 			} else {
 				sb.append(isHor ? ",endgroupx " : ",endgroupy ").append(eg);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -387,6 +389,7 @@ public class IDEUtil
 				sb.append(isHor ? ".sizeGroupX(\"" : ".sizeGroupY(\"").append(sg).append("\")");
 			} else {
 				sb.append(isHor ? ",sizegroupx " : ",sizegroupy ").append(sg);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -405,7 +408,7 @@ public class IDEUtil
 		BoundSize gapAft= dc.getGapAfter();
 		if (gapBef != null || gapAft != null) {
 			if (asAPI) {
-				sb.append(isHor ? ".gapX(\"" : ".gapY(\"").append(getBS(gapBef)).append("\", \"").append(getBS(gapAft)).append("\")");
+				sb.append(isHor ? ".gapX(" : ".gapY(").append(getBS(gapBef, asAPI)).append(", ").append(getBS(gapAft, asAPI)).append(")");
 			} else {
 				sb.append(isHor ? ",gapx " : ",gapy ").append(getBS(gapBef));
 				if (gapAft != null)
@@ -458,8 +461,15 @@ public class IDEUtil
 	{
 		StringBuffer sb = new StringBuffer(16);
 
-		if (cc.isNewline())
-			sb.append(asAPI ? ".newline()" : ",newline");
+		if (cc.isNewline()) {
+			sb.append(asAPI ? ".newline(" : ",newline");
+
+			BoundSize newlineGapSize = cc.getNewlineGapSize();
+			if (newlineGapSize != null)
+				sb.append(asAPI ? "" : " ").append(getBS(newlineGapSize, asAPI));
+			if (asAPI)
+				sb.append(')');
+		}
 
 		if (cc.isExternal())
 			sb.append(asAPI ? ".external()" : ",external");
@@ -490,18 +500,18 @@ public class IDEUtil
 						if (asAPI) {
 							sb.append('.').append(X_Y_STRINGS[i]).append("(\"").append(getUV(pos[i])).append("\")");
 						} else {
-							sb.append(',').append(X_Y_STRINGS[i]).append(getUV(pos[i]));
+							sb.append(',').append(X_Y_STRINGS[i]).append(' ').append(getUV(pos[i]));
 						}
 					}
 				}
 			} else {
-				sb.append(asAPI ? ".pos(\"" : ",pos ");
+				sb.append(asAPI ? ".pos(" : ",pos ");
 				int iSz = (pos[2] != null || pos[3] != null) ? 4 : 2;  // "pos x y" vs "pos x1 y1 x2 y2".
 				for (int i = 0; i < iSz; i++)
-					sb.append(getUV(pos[i])).append(i < iSz - 1 ? " " : "");
+					sb.append(getUV(pos[i], asAPI)).append(i < iSz - 1 ? (asAPI ? ", " : " ") : "");
 
 				if (asAPI)
-					sb.append("\")");
+					sb.append(")");
 			}
 		}
 
@@ -526,7 +536,7 @@ public class IDEUtil
 		int hideMode = cc.getHideMode();
 		if (hideMode >= 0) {
 			if (asAPI) {
-				sb.append(".hidemode(").append(hideMode).append(')');
+				sb.append(".hideMode(").append(hideMode).append(')');
 			} else {
 				sb.append(",hidemode ").append(hideMode);
 			}
@@ -548,6 +558,7 @@ public class IDEUtil
 				sb.append(".split(").append(s).append(')');
 			} else {
 				sb.append(",split ").append(s);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -576,6 +587,8 @@ public class IDEUtil
 			}
 			if (asAPI)
 				sb.append(')');
+			else
+				removeTrailingSpace(sb);
 		}
 
 		Float pushX = cc.getPushX();
@@ -584,14 +597,16 @@ public class IDEUtil
 			if (pushX != null && pushY != null) {
 				sb.append(asAPI ? ".push(" : ",push ");
 				if (pushX != 100.0 || pushY != 100.0)
-					sb.append(pushX).append(asAPI ? ", " : " ").append(pushY);
+					sb.append(floatObjectToString(pushX, asAPI)).append(asAPI ? ", " : " ").append(floatObjectToString(pushY, asAPI));
 			} else if (pushX != null) {
-				sb.append(asAPI ? ".pushX(" : ",pushx ").append(pushX == 100 ? "" : (String.valueOf(pushX)));
+				sb.append(asAPI ? ".pushX(" : ",pushx ").append(pushX == 100 ? "" : (floatObjectToString(pushX, asAPI)));
 			} else if (pushY != null) {
-				sb.append(asAPI ? ".pushY(" : ",pushy ").append(pushY == 100 ? "" : (String.valueOf(pushY)));
+				sb.append(asAPI ? ".pushY(" : ",pushy ").append(pushY == 100 ? "" : (floatObjectToString(pushY, asAPI)));
 			}
 			if (asAPI)
 				sb.append(')');
+			else
+				removeTrailingSpace(sb);
 		}
 
 		int dock = cc.getDockSide();
@@ -694,6 +709,10 @@ public class IDEUtil
 				} else {
 					sb.append(",insets ").append(cs);
 				}
+			} else if (isDialogInsets(insets)) {
+				sb.append(asAPI ? ".insets(\"dialog\")" : ",insets dialog");
+			} else if (isPanelInsets(insets)) {
+				sb.append(asAPI ? ".insets(\"panel\")" : ",insets panel");
 			} else {
 				sb.append(asAPI ? ".insets(\"" : ",insets ");
 				for (int i = 0; i < insets.length; i++)
@@ -714,7 +733,7 @@ public class IDEUtil
 			if (asAPI) {
 				sb.append(".hideMode(").append(hideMode).append(')');
 			} else {
-				sb.append(",hideMode ").append(hideMode);
+				sb.append(",hidemode ").append(hideMode);
 			}
 		}
 
@@ -725,7 +744,7 @@ public class IDEUtil
 		UnitValue alignY = lc.getAlignY();
 		if (alignX != null || alignY != null) {
 			if (alignX != null && alignY != null) {
-				sb.append(asAPI ? ".align(\"" : ",align ").append(getUV(alignX)).append(' ').append(getUV(alignY));
+				sb.append(asAPI ? ".align(\"" : ",align ").append(getUV(alignX)).append(asAPI ? "\", \"" : " ").append(getUV(alignY));
 			} else if (alignX != null) {
 				sb.append(asAPI ? ".alignX(\"" : ",alignx ").append(getUV(alignX));
 			} else if (alignY != null) {
@@ -739,7 +758,7 @@ public class IDEUtil
 		BoundSize gridGapY = lc.getGridGapY();
 		if (gridGapX != null || gridGapY != null) {
 			if (gridGapX != null && gridGapY != null) {
-				sb.append(asAPI ? ".gridGap(\"" : ",gap ").append(getBS(gridGapX)).append(' ').append(getBS(gridGapY));
+				sb.append(asAPI ? ".gridGap(\"" : ",gap ").append(getBS(gridGapX)).append(asAPI ? "\", \"" : " ").append(getBS(gridGapY));
 			} else if (gridGapX != null) {
 				sb.append(asAPI ? ".gridGapX(\"" : ",gapx ").append(getBS(gridGapX));
 			} else if (gridGapY != null) {
@@ -753,9 +772,13 @@ public class IDEUtil
 		if (wrapAfter != LayoutUtil.INF) {
 			String ws = wrapAfter > 0 ? String.valueOf(wrapAfter) : "";
 			if (asAPI) {
-				sb.append(".wrap(").append(ws).append(')');
+				if (ws.isEmpty())
+					sb.append(".wrap()");
+				else
+					sb.append(".wrapAfter(").append(ws).append(')');
 			} else {
 				sb.append(",wrap ").append(ws);
+				removeTrailingSpace(sb);
 			}
 		}
 
@@ -768,6 +791,9 @@ public class IDEUtil
 			}
 		}
 
+		if (lc.isNoCache())
+			sb.append(asAPI ? ".noCache()" : ",nocache");
+
 		String s = sb.toString();
 		return s.length() == 0 || s.charAt(0) != ',' ? s : s.substring(1);
 	}
@@ -777,9 +803,41 @@ public class IDEUtil
 		return uv != null ? uv.getConstraintString() : "null";
 	}
 
+	private static String getUV(UnitValue uv, boolean asAPI)
+	{
+		return uv != null
+			? (asAPI ? ('"' + uv.getConstraintString() + '"') : uv.getConstraintString())
+			: "null";
+	}
+
 	private static String getBS(BoundSize bs)
 	{
 		return bs != null ? bs.getConstraintString() : "null";
+	}
+
+	private static String getBS(BoundSize bs, boolean asAPI)
+	{
+		return bs != null
+			? (asAPI ? ('"' + bs.getConstraintString() + '"') : bs.getConstraintString())
+			: "null";
+	}
+
+	private static boolean isDialogInsets(UnitValue[] insets)
+	{
+		for (int i = 0; i < 4; i++) {
+			if (PlatformDefaults.getDialogInsets(i) != insets[i])
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean isPanelInsets(UnitValue[] insets)
+	{
+		for (int i = 0; i < 4; i++) {
+			if (PlatformDefaults.getPanelInsets(i) != insets[i])
+				return false;
+		}
+		return true;
 	}
 
 	/** Converts a <code>float</code> to a string and is removing the ".0" if the float is an integer.
@@ -790,5 +848,23 @@ public class IDEUtil
 	{
 		String valS = String.valueOf(f);
 		return valS.endsWith(".0") ? valS.substring(0, valS.length() - 2) : (valS + (asAPI ? "f" : ""));
+	}
+
+	private static String floatObjectToString(float f, boolean asAPI)
+	{
+		String valS = floatToString(f, asAPI);
+
+		// trailing 'f' is required if Java method parameter is of type java.lang.Float
+		if (asAPI && !valS.endsWith("f"))
+			valS = valS.concat("f");
+
+		return valS;
+	}
+
+	private static void removeTrailingSpace(StringBuffer sb)
+	{
+		int length = sb.length();
+		if (length > 0 && sb.charAt(length - 1) == ' ')
+			sb.setLength(length - 1);
 	}
 }

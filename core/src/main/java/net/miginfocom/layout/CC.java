@@ -531,6 +531,19 @@ public final class CC implements Externalizable
 	 * @param w The new grow weight.
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 */
+	public final CC growY(float w)
+	{
+		ver.setGrow(w);
+		return this;
+	}
+
+	/** Grow weight for the component vertically.
+	 * <p>
+	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
+	 * @param w The new grow weight.
+	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
+	 */
+	@Deprecated
 	public final CC growY(Float w)
 	{
 		ver.setGrow(w);
@@ -698,7 +711,7 @@ public final class CC implements Externalizable
 
 	/** Sets the horizontal gap after the component.
 	 * <p>
-	 * Note! This is currently same as gapLeft(). This might change in 4.x.
+	 * Note! This is currently same as gapRight(). This might change in 4.x.
 	 * @param boundsSize The size of the gap expressed as a <code>BoundSize</code>. E.g. "50:100px:200mm" or "100px!".
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
