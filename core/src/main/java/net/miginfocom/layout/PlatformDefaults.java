@@ -489,6 +489,16 @@ public final class PlatformDefaults
 	{
 		return BUTT_PADDING;
 	}
+    
+	public static float getMinimumButtonWidthIncludingPadding(float refValue, ContainerWrapper parent, ComponentWrapper comp)
+	{
+		final int buttonMinWidth = getMinimumButtonWidth().getPixels(refValue, parent, comp);
+		if (getMinimumButtonPadding() != null) {
+			return Math.max(comp.getMinimumWidth(comp.getWidth()) + getMinimumButtonPadding().getPixels(refValue, parent, comp) * 2, buttonMinWidth);
+		} else {
+			return buttonMinWidth;
+		}
+	}
 
 	/** Returns the unit value associated with the unit. (E.i. "related" or "indent"). Must be lower case.
 	 * @param unit The unit string.
