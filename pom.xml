@@ -206,9 +206,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https://code.google.com/p/miglayout</connection>
-		<developerConnection>scm:git:https://code.google.com/p/miglayout</developerConnection>
-		<url>http://code.google.com/p/miglayout/source/browse/</url>
+		<connection>scm:git:https://github.com/mikaelgrev/miglayout.git</connection>
+		<developerConnection>scm:git:https://github.com/mikaelgrev/miglayout.git</developerConnection>
+		<url>https://github.com/mikaelgrev/miglayout</url>
   	</scm>
 
 	<developers>
