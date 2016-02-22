@@ -668,8 +668,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public FX2ComponentWrapper[] getComponents() {
 			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
-//			return wrapperToCCMap.keySet().toArray(new FX2ComponentWrapper[wrapperToCCMap.size()]); // must be in the order of adding!
-			return getManagedChildren().stream().map(node -> new FX2ComponentWrapper(node)).toArray(FX2ComponentWrapper[]::new);
+			return wrapperToCCMap.keySet().toArray(new FX2ComponentWrapper[wrapperToCCMap.size()]); // must be in the order of adding!
+//			return getManagedChildren().stream().map(node -> new FX2ComponentWrapper(node)).toArray(FX2ComponentWrapper[]::new);
 		}
 
 		@Override
