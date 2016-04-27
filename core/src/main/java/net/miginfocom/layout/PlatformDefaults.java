@@ -101,6 +101,7 @@ public final class PlatformDefaults
 	private static BoundSize DEF_VGAP = null, DEF_HGAP = null;
 	static BoundSize RELATED_X = null, RELATED_Y = null, UNRELATED_X = null, UNRELATED_Y = null;
 	private static UnitValue BUTT_WIDTH = null;
+	private static UnitValue BUTT_PADDING = null;
 
 	private static Float horScale = null, verScale = null;
 
@@ -233,6 +234,7 @@ public final class PlatformDefaults
 				setGridCellGap(LPX7, LPY7);
 
 				setMinimumButtonWidth(new UnitValue(70, UnitValue.LPX, null));
+				setMinimumButtonPadding(new UnitValue(8, UnitValue.LPX, null));
 				setButtonOrder("L_HE+U+NYBXCOA_I_R");
 				setDialogInsets(LPY20, LPX20, LPY20, LPX20);
 				setPanelInsets(LPY16, LPX16, LPY16, LPX16);
@@ -475,6 +477,27 @@ public final class PlatformDefaults
 	public static UnitValue getMinimumButtonWidth()
 	{
 		return BUTT_WIDTH;
+	}
+
+	public static void setMinimumButtonPadding(UnitValue padding)
+	{
+		BUTT_PADDING = padding;
+		MOD_COUNT++;
+	}
+
+	public static UnitValue getMinimumButtonPadding()
+	{
+		return BUTT_PADDING;
+	}
+    
+	public static float getMinimumButtonWidthIncludingPadding(float refValue, ContainerWrapper parent, ComponentWrapper comp)
+	{
+		final int buttonMinWidth = getMinimumButtonWidth().getPixels(refValue, parent, comp);
+		if (getMinimumButtonPadding() != null) {
+			return Math.max(comp.getMinimumWidth(comp.getWidth()) + getMinimumButtonPadding().getPixels(refValue, parent, comp) * 2, buttonMinWidth);
+		} else {
+			return buttonMinWidth;
+		}
 	}
 
 	/** Returns the unit value associated with the unit. (E.i. "related" or "indent"). Must be lower case.

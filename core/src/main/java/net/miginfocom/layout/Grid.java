@@ -808,7 +808,7 @@ public final class Grid
 							CompWrap cw = cell.compWraps.get(j);
 							if (tag.equals(cw.cc.getTag())) {
 								if (Character.isUpperCase(order.charAt(i)))
-									cw.adjustMinHorSizeUp(PlatformDefaults.getMinimumButtonWidth().getPixels(0, parent, cw.comp));
+									cw.adjustMinHorSizeUp((int) PlatformDefaults.getMinimumButtonWidthIncludingPadding(0, parent, cw.comp));
 
 								sortedList.add(cw);
 

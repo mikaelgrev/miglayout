@@ -345,7 +345,7 @@ public final class UnitValue implements Serializable
 					return isHor ? comp.getMaximumWidth(comp.getHeight()) : comp.getMaximumHeight(comp.getWidth());
 
 				case BUTTON:
-					return PlatformDefaults.getMinimumButtonWidth().getPixels(refValue, parent, comp);
+					return PlatformDefaults.getMinimumButtonWidthIncludingPadding(refValue, parent, comp);
 
 				case LINK_X:
 				case LINK_Y:
