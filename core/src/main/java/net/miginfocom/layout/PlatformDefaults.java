@@ -493,7 +493,7 @@ public final class PlatformDefaults
 	public static float getMinimumButtonWidthIncludingPadding(float refValue, ContainerWrapper parent, ComponentWrapper comp)
 	{
 		final int buttonMinWidth = getMinimumButtonWidth().getPixels(refValue, parent, comp);
-		if (getMinimumButtonPadding() != null) {
+		if (comp != null && getMinimumButtonPadding() != null) {
 			return Math.max(comp.getMinimumWidth(comp.getWidth()) + getMinimumButtonPadding().getPixels(refValue, parent, comp) * 2, buttonMinWidth);
 		} else {
 			return buttonMinWidth;
