@@ -455,7 +455,7 @@ public final class ConstraintParser
 	}
 
 	/** Parses one component constraint and returns the parsed value.
-	 * @param s The string to parse. Should not be <code>null</code> and <b>must be lower case and trimmed</b>.
+	 * @param s The string to parse. <b>Must be lower case and trimmed</b>.
 	 * @throws RuntimeException if the constraint was not valid.
 	 * @return The parsed constraint. Never <code>null</code>.
 	 */
@@ -463,7 +463,7 @@ public final class ConstraintParser
 	{
 		CC cc = new CC();
 
-		if (s.length() == 0)
+		if (s == null || s.isEmpty())
 			return cc;
 
 		String[] parts = toTrimmedTokens(s, ',');
