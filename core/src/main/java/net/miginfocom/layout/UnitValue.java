@@ -238,7 +238,7 @@ public final class UnitValue implements Serializable
 		this(value, null, unit, true, STATIC, null, null, createString);
 	}
 
-	UnitValue(float value, String unitStr, boolean isHor, int oper, String createString)
+        public UnitValue(float value, String unitStr, boolean isHor, int oper, String createString)
 	{
 		this(value, unitStr, -1, isHor, oper, null, null, createString);
 	}
