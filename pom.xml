@@ -50,6 +50,16 @@
                 </plugins>
             </build>
         </profile>
+
+		<profile>
+			<id>doclint-java8-disable</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<properties>
+				<javadoc.opts>-Xdoclint:none</javadoc.opts>
+			</properties>
+		</profile>
     </profiles>
 	<build>
 		<plugins>
@@ -86,9 +96,9 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
-                        <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                        </configuration>
+						<configuration>
+							<additionalparam>${javadoc.opts}</additionalparam>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -135,7 +145,7 @@
 				</executions>
 			</plugin>
 			 -->
-			 
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
