@@ -1565,7 +1565,7 @@ public final class Grid
 
 	private Cell getCell(int r, int c)
 	{
-		return grid.get(Integer.valueOf((r << 16) + c));
+		return grid.get(Integer.valueOf((r << 16) + (c & 0xffff)));
 	}
 
 	private void setCell(int r, int c, Cell cell)
@@ -1579,7 +1579,7 @@ public final class Grid
 		rowIndexes.add(r);
 		colIndexes.add(c);
 
-		grid.put((r << 16) + c, cell);
+		grid.put((r << 16) + (c & 0xffff), cell);
 	}
 
 	/** Adds a docking cell. That cell is outside the normal cell indexes.
@@ -1614,7 +1614,7 @@ public final class Grid
 		rowIndexes.add(r);
 		colIndexes.add(c);
 
-		grid.put((r << 16) + c, new Cell(cw, spanx, spany, spanx > 1));
+		grid.put((r << 16) + (c & 0xffff), new Cell(cw, spanx, spany, spanx > 1));
 	}
 
 	/** A simple representation of a cell in the grid. Contains a number of component wraps, if they span more than one cell.
@@ -2436,7 +2436,7 @@ public final class Grid
 			Cell cell = e.getValue();
 			Integer xyInt = e.getKey();
 			if (xyInt != null) {
-				int x = xyInt & 0x0000ffff;
+				int x = (xyInt << 16) >> 16;
 				int y = xyInt >> 16;
 
 				for (CompWrap cw : cell.compWraps)
