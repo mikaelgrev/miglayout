@@ -123,6 +123,12 @@ public class MigPane extends javafx.scene.layout.Pane
 		// When Scene changes the grid needs to be cleared
 		sceneProperty().addListener(e -> invalidateGrid());
 
+		// invalidate grid and request layout when node orientation changes
+		nodeOrientationProperty().addListener(observable -> {
+			invalidateGrid();
+			requestLayout();
+		});
+
 		// defaults
 		if (layoutConstraints == null) setLayoutConstraints(new LC());
 		if (rowConstraints == null) setRowConstraints(new AC());
@@ -490,6 +496,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		}
 	}
 
+	@Override
 	protected void setWidth(double newWidth)
 	{
 		if (newWidth != getWidth()) {
@@ -499,6 +506,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		}
 	}
 
+	@Override
 	protected void setHeight(double newHeight)
 	{
 		if (newHeight != getHeight()) {
@@ -602,6 +610,12 @@ public class MigPane extends javafx.scene.layout.Pane
 		retSize = constrain.constrain((int) Math.ceil(retSize), (float) prefSize, parent);
 
 		return constrain.getGapPush() ? Math.max(winSize, retSize) : retSize;
+	}
+
+	@Override
+	public boolean usesMirroring() {
+		// do not use mirroring transformation for right-to-left node orientation
+		return false;
 	}
 
 	// ============================================================================================================
@@ -723,13 +737,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		@Override
 		public boolean isLeftToRight() {
-			NodeOrientation ori = getNodeOrientation();
-			if (ori == NodeOrientation.INHERIT) {
-				ContainerWrapper parent = getParent();
-				if (parent != null)
-					return parent.isLeftToRight();
-			}
-			return ori != NodeOrientation.RIGHT_TO_LEFT;
+			return getEffectiveNodeOrientation() != NodeOrientation.RIGHT_TO_LEFT;
 		}
 
 		@Override
