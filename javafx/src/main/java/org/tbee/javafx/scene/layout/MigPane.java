@@ -32,7 +32,7 @@ import java.util.List;
 public class MigPane extends javafx.scene.layout.Pane
 {
 	static {
-		// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+		// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
 		PlatformDefaults.setDefaultDPI(96);
 	}
 
@@ -890,7 +890,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		public boolean hasBaseline()
 		{
 			// For some reason not resizable just return their height as the baseline, not BASELINE_OFFSET_SAME_AS_HEIGHT as logic would suggest.
-			// For more info : https://javafx-jira.kenai.com/browse/RT-36728
+			// For more info : https://bugs.openjdk.java.net/browse/JDK-8091288
 			return node.isResizable() && node.getBaselineOffset() != BASELINE_OFFSET_SAME_AS_HEIGHT;
 		}
 
@@ -941,7 +941,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getHorizontalScreenDPI()
 		{
-			// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+			// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
 			// todo NOTE Also remove the static block at the top of this file that sets the default DPI on the platform to 96 DPI which makes LP and PX 1:1.
 			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
 			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
@@ -952,7 +952,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getVerticalScreenDPI()
 		{
-			// todo Made static to defeat JavaFX bug: https://javafx-jira.kenai.com/browse/RT-36823?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
+			// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
 			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
 			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
