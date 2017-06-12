@@ -1,7 +1,6 @@
 package net.miginfocom.layout;
 
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 /*
  * License (BSD):
@@ -164,21 +163,6 @@ public final class PlatformDefaults
 		}
 	}
 
-	/** Returns whether running in a Java 9 or later JRE.
-	 * @return {@code true} if running in a Java 9 or later JRE.
-	 */
-	private static boolean isJava9orLater()
-	{
-		try {
-			// Java 9 version-String Scheme: http://openjdk.java.net/jeps/223
-			StringTokenizer st = new StringTokenizer(System.getProperty("java.version"), "._-+");
-			int majorVersion = Integer.parseInt(st.nextToken());
-			return majorVersion >= 9;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
 	private PlatformDefaults()
 	{
 	}
@@ -301,13 +285,6 @@ public final class PlatformDefaults
 		switch (plaf) {
 			case WINDOWS_XP:
 			case GNOME:
-				if (isJava9orLater()) {
-					try {
-						return java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
-					} catch (Throwable t) {
-						// ignore
-					}
-				}
 				return 96;
 			case MAC_OSX:
 				try {
@@ -512,7 +489,7 @@ public final class PlatformDefaults
 	{
 		return BUTT_PADDING;
 	}
-    
+
 	public static float getMinimumButtonWidthIncludingPadding(float refValue, ContainerWrapper parent, ComponentWrapper comp)
 	{
 		final int buttonMinWidth = getMinimumButtonWidth().getPixels(refValue, parent, comp);

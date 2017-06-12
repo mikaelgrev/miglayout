@@ -44,6 +44,7 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.IdentityHashMap;
+import java.util.StringTokenizer;
 
 /**
  */
@@ -114,12 +115,31 @@ public class SwingComponentWrapper implements ComponentWrapper
 			case PlatformDefaults.BASE_SCALE_FACTOR:
 
 				Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
-				if (s == null)
-					s = 1.0f;
-				return s * (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
+				float scaleFactor = (s != null) ? s : 1f;
+
+				// Swing in Java 9 scales automatically using the system scale factor(s) that the
+				// user can change in the system settings (Windows: Control Panel; Mac: System Preferences).
+				// Each connected screen may use its own scale factor
+				// (e.g. 1.5 for primary 4K 40inch screen and 1.0 for secondary HD screen).
+				float screenScale = isJava9orLater
+					? 1f // use system scale factor(s)
+					: (float) (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
+				return scaleFactor * screenScale;
 
 			default:
 				return 1f;
+		}
+	}
+
+	private static boolean isJava9orLater;
+	static {
+		try {
+			// Java 9 version-String Scheme: http://openjdk.java.net/jeps/223
+			StringTokenizer st = new StringTokenizer(System.getProperty("java.version"), "._-+");
+			int majorVersion = Integer.parseInt(st.nextToken());
+			isJava9orLater = majorVersion >= 9;
+		} catch (Exception e) {
+			// Java 8 or older
 		}
 	}
 
