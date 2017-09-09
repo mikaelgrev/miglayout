@@ -143,7 +143,7 @@ public class MigPane extends javafx.scene.layout.Pane
 					animateRemoved(node);
 
 					int sizeBef = wrapperToCCMap.size();
-					wrapperToCCMap.remove(new FX2ComponentWrapper(node));
+					wrapperToCCMap.remove(new FXComponentWrapper(node));
 					if (wrapperToCCMap.size() != sizeBef) // Can't use the return from wrapperToCCMap since it might be null anyway if no CC.
 						invalidateGrid();
 				}
@@ -155,7 +155,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 					// get cc or use default
 					CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
-					FX2ComponentWrapper wrapper = new FX2ComponentWrapper(node);
+					FXComponentWrapper wrapper = new FXComponentWrapper(node);
 
 					// Only put the value if this comes from FXML or from direct list manipulation (not in wrapperToCCMap yet)
 					if (cc != null || !wrapperToCCMap.containsKey(wrapper))
@@ -290,7 +290,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public CC getComponentConstraints(Node node)
 	{
-		return wrapperToCCMap.get(new FX2ComponentWrapper(node));
+		return wrapperToCCMap.get(new FXComponentWrapper(node));
 	}
 
 	/** Sets the constraints for the node
@@ -299,7 +299,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public void setComponentConstraints(Node node, String ccs)
 	{
-		FX2ComponentWrapper wrapper = new FX2ComponentWrapper(node);
+		FXComponentWrapper wrapper = new FXComponentWrapper(node);
 		if (!wrapperToCCMap.containsKey(wrapper))
 			throw new IllegalArgumentException("Node not in pane: " + node);
 
@@ -361,7 +361,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		if (!isVisible())
 			return false;
 
-		CC cc = wrapperToCCMap.get(new FX2ComponentWrapper(node));
+		CC cc = wrapperToCCMap.get(new FXComponentWrapper(node));
 		int compPrio = cc != null ? cc.getAnimSpec().getPriority() : 0;
 
 		return compPrio + (long) animPrio > 0;
@@ -402,7 +402,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	public MigPane add(Node node, CC cc) {
 		if (node.isManaged())
-			wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
+			wrapperToCCMap.put(new FXComponentWrapper(node), cc);
 		getChildren().add(node);
 		return this;
 	}
@@ -431,7 +431,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	public MigPane add(int index, Node node, CC cc) {
 		if (node.isManaged())
-			wrapperToCCMap.put(new FX2ComponentWrapper(node), cc);
+			wrapperToCCMap.put(new FXComponentWrapper(node), cc);
 		getChildren().add(index, node);
 		return this;
 	}
@@ -451,7 +451,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	// LAYOUT
 
 	// Store constraints. Key order important. Can have null values but all components that MigPane handles must be a key.
-	final private LinkedHashMap<FX2ComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<>();
+	final private LinkedHashMap<FXComponentWrapper, CC> wrapperToCCMap = new LinkedHashMap<>();
 
 	private long lastSize = 0;
 
@@ -470,7 +470,7 @@ public class MigPane extends javafx.scene.layout.Pane
 			Grid lGrid = getGrid();
 
 			// here the actual layout happens
-			// this will use FX2ComponentWrapper.setBounds to actually place the components
+			// this will use FXComponentWrapper.setBounds to actually place the components
 
 			Insets ins = getInsets();
 			int[] lBounds = new int[]{(int) ins.getLeft(), (int) ins.getTop(), (int) Math.ceil(getWidth() - getHorIns()), (int) Math.ceil(getHeight() - getVerIns())};
@@ -547,7 +547,7 @@ public class MigPane extends javafx.scene.layout.Pane
 	private Grid getGrid() {
 
 		if (_grid == null)
-			_grid = new Grid(new FX2ContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, callbackList);
+			_grid = new Grid(new FXContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, callbackList);
 
 		return _grid;
 	}
@@ -580,7 +580,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		double prefWidth = root.prefWidth(-1);
 		double prefHeight = root.prefHeight(-1);
-		FX2ContainerWrapper container = new FX2ContainerWrapper(root);
+		FXContainerWrapper container = new FXContainerWrapper(root);
 
 		double horIns = winWidth - scene.getWidth();
 		double verIns = winHeight - scene.getHeight();
@@ -706,27 +706,27 @@ public class MigPane extends javafx.scene.layout.Pane
 	/*
 	 * This class provides the data for MigLayout for the container
 	 */
-	class FX2ContainerWrapper extends FX2ComponentWrapper
+	class FXContainerWrapper extends FXComponentWrapper
 		implements net.miginfocom.layout.ContainerWrapper {
 
-		public FX2ContainerWrapper(Parent node) {
+		public FXContainerWrapper(Parent node) {
 			super(node);
 		}
 
 		@Override
-		public FX2ComponentWrapper[] getComponents() {
-			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
-//			return getManagedChildren().stream().map(node -> new FX2ComponentWrapper(node)).toArray(FX2ComponentWrapper[]::new);
-			List<FX2ComponentWrapper> lFX2ComponentWrappers = new ArrayList<>();
+		public FXComponentWrapper[] getComponents() {
+			// for debugging System.out.println("MigPane.FXContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
+//			return getManagedChildren().stream().map(node -> new FXComponentWrapper(node)).toArray(FXComponentWrapper[]::new);
+			List<FXComponentWrapper> lFXComponentWrappers = new ArrayList<>();
 			for (Node node : getManagedChildren()) {
-				lFX2ComponentWrappers.add(new FX2ComponentWrapper(node));
+				lFXComponentWrappers.add(new FXComponentWrapper(node));
 			}
-			return lFX2ComponentWrappers.toArray(new FX2ComponentWrapper[]{});
+			return lFXComponentWrappers.toArray(new FXComponentWrapper[]{});
 		}
 
 		@Override
 		public int getComponentCount() {
-			// for debugging System.out.println("MigPane.FX2ContainerWrapper.getComponentCount " + MigPane.this.wrapperToCCMap.size());
+			// for debugging System.out.println("MigPane.FXContainerWrapper.getComponentCount " + MigPane.this.wrapperToCCMap.size());
 			return MigPane.this.wrapperToCCMap.size();
 		}
 
@@ -757,13 +757,13 @@ public class MigPane extends javafx.scene.layout.Pane
 	/*
 	 * This class provides the data for MigLayout for a single component
 	 */
-	class FX2ComponentWrapper implements net.miginfocom.layout.ComponentWrapper
+	class FXComponentWrapper implements net.miginfocom.layout.ComponentWrapper
 	{
 
 		final protected Node node;
 
 		// wrap this node
-		public FX2ComponentWrapper(Node node)
+		public FXComponentWrapper(Node node)
 		{
 			this.node = node;
 		}
@@ -780,7 +780,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		public ContainerWrapper getParent()
 		{
 			Parent parent = node.getParent();
-			return parent != null ? new FX2ContainerWrapper(node.getParent()) : null;
+			return parent != null ? new FXContainerWrapper(node.getParent()) : null;
 		}
 
 		// what type are we wrapping
@@ -813,7 +813,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getWidth()
 		{
-			// for debugging if (getComponent() instanceof MigLayoutFX2 == false) System.out.println(getComponent() + " getWidth " + node.getLayoutBounds().getWidth());
+			// for debugging if (getComponent() instanceof MigPane == false) System.out.println(getComponent() + " getWidth " + node.getLayoutBounds().getWidth());
 			int v = (int) Math.ceil(node.getLayoutBounds().getWidth());
 			return v;
 		}
@@ -864,7 +864,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		public int getPreferredHeight(int width)
 		{
 			int v = (int) Math.ceil(this.node.prefHeight(width));
-			// for debugging System.out.println(getComponent() + " FX2ComponentWrapper.getPreferredHeight -> node.prefHeight(" + width + ")=" + this.node.prefHeight(width));
+			// for debugging System.out.println(getComponent() + " FXComponentWrapper.getPreferredHeight -> node.prefHeight(" + width + ")=" + this.node.prefHeight(width));
 			return v;
 		}
 
@@ -1022,16 +1022,16 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public boolean equals(Object o)
 		{
-			if (!(o instanceof FX2ComponentWrapper))
+			if (!(o instanceof FXComponentWrapper))
 				return false;
 
-			return getComponent().equals(((FX2ComponentWrapper) o).getComponent());
+			return getComponent().equals(((FXComponentWrapper) o).getComponent());
 		}
 
 		@Override
 		public void setBounds(int x, int y, int width, int height)
 		{
-			//			System.out.println(getComponent() + " FX2ComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
+			//			System.out.println(getComponent() + " FXComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
 			//			System.out.println("x: " + x + ", y: " + y);
 			//			CC cc = wrapperToCCMap.get(this);
 
