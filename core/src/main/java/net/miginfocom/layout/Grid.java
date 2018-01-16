@@ -643,7 +643,7 @@ public final class Grid
 			// This call makes some components flicker on SWT. They get their bounds changed twice since
 			// the change might affect the absolute size adjustment below. There's no way around this that
 			// I know of.
-			layout(new int[4], null, null, false);
+			layout(new int[]{0, 0, refWidth, refHeight}, null, null, false);
 			resetLinkValues(false, false);
 		}
 
