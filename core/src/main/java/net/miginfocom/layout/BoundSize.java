@@ -239,6 +239,11 @@ public class BoundSize implements Serializable
 		return (min == null || min.isAbsoluteDeep()) && (pref == null || pref.isAbsoluteDeep()) && (max == null || max.isAbsoluteDeep());
 	}
 
+	public String toString()
+	{
+		return "BoundSize{" + "min=" + min + ", pref=" + pref + ", max=" + max + ", gapPush=" + gapPush +'}';
+	}
+
 	static {
         if(LayoutUtil.HAS_BEANS){
             LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate() {

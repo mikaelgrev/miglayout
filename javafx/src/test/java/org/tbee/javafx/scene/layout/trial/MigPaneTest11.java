@@ -9,9 +9,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPaneBuilder;
-import javafx.scene.layout.HBoxBuilder;
-import javafx.scene.layout.VBoxBuilder;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.tbee.javafx.scene.layout.fxml.MigPane;
 
@@ -29,20 +29,21 @@ public class MigPaneTest11 extends Application
 
 		public ListElement(int i, Date date)
 		{
-			LabelBuilder<?> lb = LabelBuilder.create();
-			Label title = lb.text("Element " + i).build();
-			Label info = lb.text("element created at: " + date).build();
+			Label title = new Label("Element " + i);
+			Label info = new Label("element created at: " + date);
 
 			getChildren().
-			add(VBoxBuilder.create().children(title, info).build());
+			add(new VBox(title, info));
 
-			ButtonBuilder<?> bb = ButtonBuilder.create().mnemonicParsing(false);
-			Button b1 = bb.text("button-1").build();
-			Button b2 = bb.text("button-2").build();
-			Button b3 = bb.text("button-3").build();
+			Button b1 = new Button("button-1");
+			Button b2 = new Button("button-2");
+			Button b3 = new Button("button-3");
+			b1.setMnemonicParsing(false);
+			b2.setMnemonicParsing(false);
+			b3.setMnemonicParsing(false);
 
 			getChildren().
-			add(HBoxBuilder.create().children(b1, b2, b3).build());
+			add(new HBox(b1, b2, b3));
 		}
 
 	}
@@ -60,7 +61,8 @@ public class MigPaneTest11 extends Application
 		final ListView<MigPaneTest11.ListElement> listView = new ListView<MigPaneTest11.ListElement>();
 //		listView.setItems(this.items);
 
-		final Button testButton = ButtonBuilder.create().text("Start test").maxWidth(Double.MAX_VALUE).build();
+		Button testButton = new Button("Start test");
+		testButton.maxWidth(Double.MAX_VALUE);
 
 		testButton.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -109,7 +111,10 @@ public class MigPaneTest11 extends Application
 			}
 		});
 
-		return BorderPaneBuilder.create().center(listView).bottom(testButton).build();
+		BorderPane borderPane = new BorderPane();
+		borderPane.setCenter(listView);
+		borderPane.setBottom(testButton);
+		return borderPane;
 	}
 
 	@Override

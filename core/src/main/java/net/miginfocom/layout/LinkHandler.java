@@ -50,7 +50,7 @@ public final class LinkHandler
 	// indices for values of LAYOUTS
 	private static final int VALUES = 0;
 	private static final int VALUES_TEMP = 1;
-	
+
 	private static final WeakHashMap<Object, HashMap<String, int[]>[]> LAYOUTS = new WeakHashMap<Object, HashMap<String, int[]>[]>();
 
 	private LinkHandler()
@@ -152,7 +152,7 @@ public final class LinkHandler
 			values.put(key, bounds);
 
 		LAYOUTS.put(layout, new HashMap[] {values, values_temp});
-		
+
 		return true;
 	}
 

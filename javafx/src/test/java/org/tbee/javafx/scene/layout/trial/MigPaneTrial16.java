@@ -1,6 +1,8 @@
 package org.tbee.javafx.scene.layout.trial;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
@@ -42,16 +44,20 @@ public class MigPaneTrial16 extends Application
 		ImageView mainIcon = new ImageView();
 		Button toggle = new Button("Hello", mainIcon);
 		sizeUpButton(toggle);
-		toggle.setOnAction(actionEvent -> {
-			if (b) {
-				mainIcon.setImage(new Image(PATH_TO_IMAGE));
-//				toggle.getBaselineOffset();
-				System.out.println("baseline img: " + toggle.getBaselineOffset());
-			} else {
-				mainIcon.setImage(null);
-				System.out.println("baseline: " + toggle.getBaselineOffset());
+
+		toggle.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event)
+			{
+				if (b) {
+					mainIcon.setImage(new Image(PATH_TO_IMAGE));
+					//				toggle.getBaselineOffset();
+					System.out.println("baseline img: " + toggle.getBaselineOffset());
+				} else {
+					mainIcon.setImage(null);
+					System.out.println("baseline: " + toggle.getBaselineOffset());
+				}
+				b = !b;
 			}
-			b = !b;
 		});
 		parent.add(toggle, "");
 		parent.add(new Label("<-Click the Button"), new CC().growX().pushX());
