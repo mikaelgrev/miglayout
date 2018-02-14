@@ -631,11 +631,15 @@ public final class Grid
 
 	private void calcGridSizes(int refWidth, int refHeight)
 	{
-		colFlowSpecs = calcRowsOrColsSizes(true, refWidth);
-		rowFlowSpecs = calcRowsOrColsSizes(false, refHeight);
+		// Note, in these calls the grid can be invalidated and specs set to null. Therefore use local versions.
+		FlowSizeSpec colSpecs = calcRowsOrColsSizes(true, refWidth);
+		FlowSizeSpec rowSpecs = calcRowsOrColsSizes(false, refHeight);
 
-		width = getMinPrefMaxSumSize(true);
-		height = getMinPrefMaxSumSize(false);
+		colFlowSpecs = colSpecs;
+		rowFlowSpecs = rowSpecs;
+
+		width = getMinPrefMaxSumSize(true, colSpecs.sizes);
+		height = getMinPrefMaxSumSize(false, rowSpecs.sizes);
 
 		if (linkTargetIDs == null) {
 			resetLinkValues(false, true);
@@ -1235,10 +1239,8 @@ public final class Grid
 		return p != null ? (isHor ? cw.getWidth() : cw.getHeight()) : 0;
 	}
 
-	private int[] getMinPrefMaxSumSize(boolean isHor)
+	private int[] getMinPrefMaxSumSize(boolean isHor, int[][] sizes)
 	{
-		int[][] sizes = isHor ? colFlowSpecs.sizes : rowFlowSpecs.sizes;
-
 		int[] retSizes = new int[3];
 
 		BoundSize sz = isHor ? lc.getWidth() : lc.getHeight();
