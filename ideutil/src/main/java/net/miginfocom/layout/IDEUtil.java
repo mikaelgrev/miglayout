@@ -128,7 +128,7 @@ public class IDEUtil
 	 * <p>
 	 * The returned sizes will be the ones calculated in the last layout cycle.
 	 * @param parentContainer The container to return the row sizes and gaps for. In Swing it will be a {@link java.awt.Container} and
-	 * in SWT it will be a {@link org.eclipse.swt.widgets.Composite}.
+	 * in SWT it will be a org.eclipse.swt.widgets.Composite.
 	 * @return The sizes or <code>null</code> if {@link LayoutUtil#isDesignTime(ContainerWrapper)} is <code>false</code> or
 	 * <code>parentContainer</code> does not have a MigLayout layout manager.
 	 * The returned sizes will be the ones calculated in the last layout cycle.
@@ -151,7 +151,7 @@ public class IDEUtil
 	 * <p>
 	 * The returned sizes will be the ones calculated in the last layout cycle.
 	 * @param parentContainer The container to return the column sizes and gaps for. In Swing it will be a {@link java.awt.Container} and
-	 * in SWT it will be a {@link org.eclipse.swt.widgets.Composite}.
+	 * in SWT it will be a org.eclipse.swt.widgets.Composite.
 	 * @return The sizes and indexes or <code>null</code> if {@link LayoutUtil#isDesignTime(ContainerWrapper)} is <code>false</code> or
 	 * <code>parentContainer</code> does not have a MigLayout layout manager.
 	 * The returned sizes will be the ones calculated in the last layout cycle.

@@ -51,7 +51,7 @@ public class AnimSpec implements Serializable
 	/**
 	 * @param prio The animation priority. When added with the general animation priority of the layout the animation will
 	 * be done if the resulting value is &gt; 0.
-	 * @param durMillis Duration in milliseconds. <=0 means default value should be used and > 0 is the number of millis
+	 * @param durMillis Duration in milliseconds. &lt;=0 means default value should be used and &gt; 0 is the number of millis
 	 * @param easeIn 0 is linear (no ease). 1 is max ease. Always clamped between these values.
 	 * @param easeOut 0 is linear (no ease). 1 is max ease. Always clamped between these values.
 	 */
@@ -74,7 +74,7 @@ public class AnimSpec implements Serializable
 
 	/**
 	 * @param defMillis Default used if the millis in the spec is set to "default".
-	 * @return Duration in milliseconds. <=0 means default value should be used and > 0 is the number of millis
+	 * @return Duration in milliseconds. &lt;=0 means default value should be used and &gt; 0 is the number of millis
 	 */
 	public int getDurationMillis(int defMillis)
 	{
@@ -82,7 +82,7 @@ public class AnimSpec implements Serializable
 	}
 
 	/**
-	 * @return Duration in milliseconds. <= 0 means default value should be used and > 0 is the number of millis
+	 * @return Duration in milliseconds. &lt;= 0 means default value should be used and &gt; 0 is the number of millis
 	 */
 	public int getDurationMillis()
 	{
