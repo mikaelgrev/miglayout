@@ -128,17 +128,17 @@
 			</plugin>
 
 			<!-- autoversion submodules -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
-				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
-					<releaseProfiles>release</releaseProfiles>
-					<goals>deploy</goals>
-				</configuration>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-release-plugin</artifactId>-->
+				<!--<version>2.5.3</version>-->
+				<!--<configuration>-->
+					<!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
+					<!--<useReleaseProfile>false</useReleaseProfile>-->
+					<!--<releaseProfiles>release</releaseProfiles>-->
+					<!--<goals>deploy</goals>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
 
 			<!-- sign the artifacts: this should be done by Sonatype's OSS parent pom during a normal mvn release-->
 			<!--<plugin>-->
