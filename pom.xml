@@ -35,13 +35,13 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>nexus</id>
-			<name>Nexus Staging Repo</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
+	<!--<distributionManagement>-->
+		<!--<repository>-->
+			<!--<id>nexus</id>-->
+			<!--<name>Nexus Staging Repo</name>-->
+			<!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+		<!--</repository>-->
+	<!--</distributionManagement>-->
 
     <profiles>
         <profile>
