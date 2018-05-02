@@ -1717,8 +1717,8 @@ public final class Grid
 					if (linkType == TYPE_PARALLEL) {
 						sizes[sType] = getTotalSizeParallel(_compWraps, sType, isHor);
 					} else if (linkType == TYPE_BASELINE) {
-						int[] aboveBelow = getBaselineAboveBelow(_compWraps, sType, false);
-						sizes[sType] = aboveBelow[0] + aboveBelow[1];
+						AboveBelow aboveBelow = getBaselineAboveBelow(_compWraps, sType, false);
+						sizes[sType] = aboveBelow.sum();
 					} else {
 						sizes[sType] = getTotalSizeSerial(_compWraps, sType, isHor);
 					}
@@ -2035,8 +2035,8 @@ public final class Grid
 
 	private static void layoutBaseline(ContainerWrapper parent, ArrayList<CompWrap> compWraps, DimConstraint dc, int start, int size, int sizeType, int spanCount)
 	{
-		int[] aboveBelow = getBaselineAboveBelow(compWraps, sizeType, true);
-		int blRowSize = aboveBelow[0] + aboveBelow[1];
+		AboveBelow aboveBelow = getBaselineAboveBelow(compWraps, sizeType, true);
+		int blRowSize = aboveBelow.sum();
 
 		CC cc = compWraps.get(0).cc;
 
@@ -2047,7 +2047,7 @@ public final class Grid
 		if (align == UnitValue.BASELINE_IDENTITY)
 			align = UnitValue.CENTER;
 
-		int offset = start + aboveBelow[0] + (align != null ? Math.max(0, align.getPixels(size - blRowSize, parent, null)) : 0);
+		int offset = start + aboveBelow.maxAbove + (align != null ? Math.max(0, align.getPixels(size - blRowSize, parent, null)) : 0);
 		for (CompWrap cw : compWraps) {
 			cw.y += offset;
 			if (cw.y + cw.h > start + size)
@@ -2163,14 +2163,28 @@ public final class Grid
 		return align;
 	}
 
-	private static int[] getBaselineAboveBelow(ArrayList<CompWrap> compWraps, int sType, boolean centerBaseline)
+    private static class AboveBelow {
+	    int maxAbove;
+	    int maxBelow;
+
+	    AboveBelow(int maxAbove, int maxBelow) {
+            this.maxAbove = maxAbove;
+            this.maxBelow = maxBelow;
+        }
+
+        int sum() {
+	        return maxAbove + maxBelow;
+        }
+    }
+
+	private static AboveBelow getBaselineAboveBelow(ArrayList<CompWrap> compWraps, int sType, boolean centerBaseline)
 	{
 		int maxAbove = Integer.MIN_VALUE;
 		int maxBelow = Integer.MIN_VALUE;
 		for (CompWrap cw : compWraps) {
 			int height = cw.getSize(sType, false);
 			if (height >= LayoutUtil.INF)
-				return new int[]{LayoutUtil.INF / 2, LayoutUtil.INF / 2};
+				return new AboveBelow(LayoutUtil.INF / 2, LayoutUtil.INF / 2);
 
 			int baseline = cw.getBaseline(sType);
 			int above = baseline + cw.getGapBefore(sType, false);
@@ -2180,7 +2194,7 @@ public final class Grid
 			if (centerBaseline)
 				cw.setDimBounds(-baseline, height, false);
 		}
-		return new int[] {maxAbove, maxBelow};
+		return new AboveBelow(maxAbove, maxBelow);
 	}
 
 	private static int getTotalSizeParallel(ArrayList<CompWrap> compWraps, int sType, boolean isHor)
