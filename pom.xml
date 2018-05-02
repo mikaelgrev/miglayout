@@ -81,8 +81,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
                     <debug>true</debug>
-                    <debuglevel>none</debuglevel>
-					<compilerArgument>-g:none</compilerArgument>
+                    <debuglevel>lines,vars</debuglevel>
 				</configuration>
 			</plugin>
 
