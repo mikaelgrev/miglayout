@@ -75,15 +75,20 @@ public class SwingComponentWrapper implements ComponentWrapper
 	}
 
 	@Override
-	public final int getBaseline(int width, int height)
-	{
-		int baseLine = c.getBaseline(width < 0 ? c.getWidth() : width, height < 0 ? c.getHeight() : height);
-		if (baseLine != -1) {
-			int[] visPad = getVisualPadding();
-			if (visPad != null)
-				baseLine += (visPad[2] - visPad[0] + 1) / 2;
-		}
-		return baseLine;
+	public final int getBaseline(int width, int height) {
+	    int h = height;
+	    int[] visPad = getVisualPadding();
+	    if (h < 0) {
+		h = c.getHeight();
+	    }
+	    else if (visPad != null) {
+		h = height + visPad[0] + visPad[2];
+	    }
+	    int baseLine = c.getBaseline(width < 0 ? c.getWidth() : width, h);
+	    if (baseLine != -1 && visPad != null) {
+		baseLine -= visPad[0];
+	    }
+	    return baseLine;
 	}
 
 	@Override
