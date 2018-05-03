@@ -212,12 +212,12 @@ public final class Grid
 			}
 			hitEndOfRow = false;
 
-			final boolean rowNoGrid = lc.isNoGrid() || ((DimConstraint) LayoutUtil.getIndexSafe(specs, lc.isFlowX() ? cellXY[1] : cellXY[0])).isNoGrid();
+			final boolean isRowInGridMode = !lc.isNoGrid() && !((DimConstraint) LayoutUtil.getIndexSafe(specs, lc.isFlowX() ? cellXY[1] : cellXY[0])).isNoGrid();
 
 			// Move to a free y, x  if no absolute grid specified
 			int cx = rootCc.getCellX();
 			int cy = rootCc.getCellY();
-			if ((cx < 0 || cy < 0) && !rowNoGrid && rootCc.getSkip() == 0) { // 3.7.2: If skip, don't find an empty cell first.
+			if ((cx < 0 || cy < 0) && isRowInGridMode && rootCc.getSkip() == 0) { // 3.7.2: If skip, don't find an empty cell first.
 				while (!isCellFree(cellXY[1], cellXY[0], spannedRects)) {
 					if (Math.abs(increase(cellXY, 1)) >= wrap)
 						wrap(cellXY, null);
@@ -249,8 +249,8 @@ public final class Grid
 
 			// If cell is not created yet, create it and set it.
 			if (cell == null) {
-				int spanx = Math.min(rowNoGrid && lc.isFlowX() ? LayoutUtil.INF : rootCc.getSpanX(), MAX_GRID - cellXY[0]);
-				int spany = Math.min(rowNoGrid && !lc.isFlowX() ? LayoutUtil.INF : rootCc.getSpanY(), MAX_GRID - cellXY[1]);
+				int spanx = Math.min(!isRowInGridMode && lc.isFlowX() ? LayoutUtil.INF : rootCc.getSpanX(), MAX_GRID - cellXY[0]);
+				int spany = Math.min(!isRowInGridMode && !lc.isFlowX() ? LayoutUtil.INF : rootCc.getSpanY(), MAX_GRID - cellXY[1]);
 
 				cell = new Cell(spanx, spany, cellFlowX != null ? cellFlowX : lc.isFlowX());
 
@@ -263,7 +263,7 @@ public final class Grid
 
 			// Add the one, or all, components that split the grid position to the same Cell.
 			boolean wrapHandled = false;
-			int splitLeft = rowNoGrid ? LayoutUtil.INF : rootCc.getSplit() - 1;
+			int splitLeft = isRowInGridMode ? rootCc.getSplit() - 1 : LayoutUtil.INF;
 			boolean splitExit = false;
 			final boolean spanRestOfRow = (lc.isFlowX() ? rootCc.getSpanX() : rootCc.getSpanY()) == LayoutUtil.INF;
 
@@ -320,7 +320,7 @@ public final class Grid
 				}
 			}
 
-			if (!wrapHandled && !rowNoGrid) {
+			if (!wrapHandled && isRowInGridMode) {
 				int span = lc.isFlowX() ? cell.spanx : cell.spany;
 				if (Math.abs((lc.isFlowX() ? cellXY[0] : cellXY[1])) + span >= wrap) {
 					hitEndOfRow = true;
