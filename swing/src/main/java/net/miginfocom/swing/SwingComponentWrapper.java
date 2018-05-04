@@ -75,20 +75,20 @@ public class SwingComponentWrapper implements ComponentWrapper
 	}
 
 	@Override
-	public final int getBaseline(int width, int height) {
-	    int h = height;
-	    int[] visPad = getVisualPadding();
-	    if (h < 0) {
-		h = c.getHeight();
-	    }
-	    else if (visPad != null) {
-		h = height + visPad[0] + visPad[2];
-	    }
-	    int baseLine = c.getBaseline(width < 0 ? c.getWidth() : width, h);
-	    if (baseLine != -1 && visPad != null) {
-		baseLine -= visPad[0];
-	    }
-	    return baseLine;
+	public final int getBaseline(int width, int height)
+	{
+		int h = height;
+		int[] visPad = getVisualPadding();
+		if (h < 0) {
+			h = c.getHeight();
+		} else if (visPad != null) {
+			h = height + visPad[0] + visPad[2];
+		}
+		int baseLine = c.getBaseline(width < 0 ? c.getWidth() : width, h);
+		if (baseLine != -1 && visPad != null)
+			baseLine -= visPad[0];
+
+		return baseLine;
 	}
 
 	@Override
@@ -327,8 +327,10 @@ public class SwingComponentWrapper implements ComponentWrapper
 //				if (c.getBaselineResizeBehavior() == Component.BaselineResizeBehavior.OTHER) {
 //					bl = Boolean.FALSE;
 //				} else {
-					Dimension d = c.getMinimumSize();
-					bl = getBaseline(d.width, d.height) > -1;
+					// Removed since it made some components layout themselves to the minimum size and that stuck after that. E.g. JLabel with HTML content and white spaces would be very tall.
+//					Dimension d = c.getPreferredSize();
+//					bl = getBaseline(d.width, d.height) > -1;
+					bl = getBaseline(8192, 8192) > -1;  // Use large number but don't risk overflow or exposing size bugs with Integer.MAX_VALUE
 //				}
 			} catch (Throwable ex) {
 				bl = Boolean.FALSE;
