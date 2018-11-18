@@ -31,11 +31,6 @@ import java.util.List;
  */
 public class MigPane extends javafx.scene.layout.Pane
 {
-	static {
-		// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
-		PlatformDefaults.setDefaultDPI(96);
-	}
-
 	protected final static String FXML_CC_KEY = "MigPane.cc";
 
 	// We need to invalidate the grid since we can have a component with hidemode 3
@@ -941,20 +936,15 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getHorizontalScreenDPI()
 		{
-			// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
-			// todo NOTE Also remove the static block at the top of this file that sets the default DPI on the platform to 96 DPI which makes LP and PX 1:1.
 			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
-			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
-
-			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
+			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
 		@Override
 		public int getVerticalScreenDPI()
 		{
-			// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
-			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
-			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
+			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
+			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
 		@Override
