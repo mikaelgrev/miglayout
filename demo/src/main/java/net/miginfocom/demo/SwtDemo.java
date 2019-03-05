@@ -1680,8 +1680,8 @@ public class SwtDemo
 		createTextField(shrinkPanel, "shp 100,shrink 75", "shp 100,shrink 75,w 10:130");
 
 		createTextArea(shrinkSash, "Use the slider to see how the components shrink depending on the constraints set on them.\n\n'shp' means Shrink Priority. " +
-		                           "Lower values will be shrunk before higer ones and the default value is 100.\n\n'shrink' means Shrink Weight. " +
-		                           "Lower values relative to other's means they will shrink less when space is scarse. " +
+		                           "Higher values will be shrunk before lower ones and the default value is 100.\n\n'shrink' means Shrink Weight. " +
+		                           "Lower values relative to other's means they will shrink less when space is scarce. " +
 		                           "Shrink Weight is only relative to components with the same Shrink Priority. Default Shrink Weight is 100.\n\n" +
 		                           "The component's minimum size will always be honored.\n\nFor SWT, which doesn't have a component notion of minimum, " +
 		                           "preferred or maximum size, those sizes are set explicitly to minimum 10 and preferred 130 pixels.", "");

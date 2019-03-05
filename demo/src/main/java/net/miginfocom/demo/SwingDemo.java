@@ -3095,8 +3095,8 @@ public class SwingDemo extends JFrame
 		JPanel sPanel = createTabPanel(slm);
 
 		JScrollPane sDescrText = createTextAreaScroll("Use the slider to see how the components shrink depending on the constraints set on them.\n\n'shp' means Shrink Priority. " +
-		                                              "Lower values will be shrunk before higer ones and the default value is 100.\n\n'shrink' means Shrink Weight. " +
-		                                              "Lower values relative to other's means they will shrink less when space is scarse. " +
+		                                              "Higher values will be shrunk before lower ones and the default value is 100.\n\n'shrink' means Shrink Weight. " +
+		                                              "Lower values relative to other's means they will shrink less when space is scarce. " +
 		                                              "Shrink Weight is only relative to components with the same Shrink Priority. Default Shrink Weight is 100.\n\n" +
 		                                              "The component's minimum size will always be honored.", 0, 0, true);
 
@@ -3167,8 +3167,8 @@ public class SwingDemo extends JFrame
 		          "JPanel sPanel = createTabPanel(slm);\n" +
 		          "\n" +
 		          "JScrollPane sDescrText = createTextAreaScroll(\"Use the slider to see how the components shrink depending on the constraints set on them.\\n\\n'shp' means Shrink Priority. \" +\n" +
-		          "                                              \"Lower values will be shrunk before higer ones and the default value is 100.\\n\\n'shrink' means Shrink Weight. \" +\n" +
-		          "                                              \"Lower values relative to other's means they will shrink less when space is scarse. \" +\n" +
+		          "                                              \"Higher values will be shrunk before lower ones and the default value is 100.\\n\\n'shrink' means Shrink Weight. \" +\n" +
+		          "                                              \"Lower values relative to other's means they will shrink less when space is scarce. \" +\n" +
 		          "                                              \"Shrink Weight is only relative to components with the same Shrink Priority. Default Shrink Weight is 100.\\n\\n\" +\n" +
 		          "                                              \"The component's minimum size will always be honored.\", 0, 0, true);\n" +
 		          "\n" +
