@@ -40,6 +40,7 @@ import net.miginfocom.layout.PlatformDefaults;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -323,6 +324,11 @@ public class SwingComponentWrapper implements ComponentWrapper
 	{
 		if (bl == null) {
 			try {
+				if(c instanceof JLabel && ((JComponent)c).getClientProperty(BasicHTML.propertyKey) != null) {
+					bl = Boolean.FALSE;
+				}else {
+					bl = getBaseline(8192, 8192) > -1;  // Use large number but don't risk overflow or exposing size bugs with Integer.MAX_VALUE
+				}
 				// Removed since OTHER is sometimes returned even though there is a valid baseline (e.g. an empty JComboBox)
 //				if (c.getBaselineResizeBehavior() == Component.BaselineResizeBehavior.OTHER) {
 //					bl = Boolean.FALSE;
@@ -330,7 +336,6 @@ public class SwingComponentWrapper implements ComponentWrapper
 					// Removed since it made some components layout themselves to the minimum size and that stuck after that. E.g. JLabel with HTML content and white spaces would be very tall.
 //					Dimension d = c.getMinimumSize();
 //					bl = getBaseline(d.width, d.height) > -1;
-					bl = getBaseline(8192, 8192) > -1;  // Use large number but don't risk overflow or exposing size bugs with Integer.MAX_VALUE
 //				}
 			} catch (Throwable ex) {
 				bl = Boolean.FALSE;

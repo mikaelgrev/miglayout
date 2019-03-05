@@ -31,11 +31,6 @@ import java.util.List;
  */
 public class MigPane extends javafx.scene.layout.Pane
 {
-	static {
-		// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
-		PlatformDefaults.setDefaultDPI(96);
-	}
-
 	protected final static String FXML_CC_KEY = "MigPane.cc";
 
 	// We need to invalidate the grid since we can have a component with hidemode 3
@@ -144,22 +139,25 @@ public class MigPane extends javafx.scene.layout.Pane
 
 					int sizeBef = wrapperToCCMap.size();
 					wrapperToCCMap.remove(new FXComponentWrapper(node));
-					if (wrapperToCCMap.size() != sizeBef) // Can't use the return from wrapperToCCMap since it might be null anyway if no CC.
+					if (wrapperToCCMap.size() != sizeBef) { // Can't use the return from wrapperToCCMap since it might be null anyway if no CC.
 						invalidateGrid();
+					}
 				}
 
 				for (Node node : c.getAddedSubList()) {
 					// debug rectangles are not handled by miglayout, neither are not managed ones
-					if (!node.isManaged())
+					if (!node.isManaged()) {
 						continue;
-
+					}
+						
 					// get cc or use default
 					CC cc = (CC) node.getProperties().remove(FXML_CC_KEY);
 					FXComponentWrapper wrapper = new FXComponentWrapper(node);
 
 					// Only put the value if this comes from FXML or from direct list manipulation (not in wrapperToCCMap yet)
-					if (cc != null || !wrapperToCCMap.containsKey(wrapper))
+					if (cc != null || !wrapperToCCMap.containsKey(wrapper)) {
 						wrapperToCCMap.put(wrapper, cc);
+					}
 
 					animateAdded(node);
 
@@ -244,8 +242,9 @@ public class MigPane extends javafx.scene.layout.Pane
 					bias = Orientation.HORIZONTAL;
 					break;
 				}
-				if (ori != null)
+				if (ori != null) {
 					bias = ori;
+				}
 			}
 			biasDirty = false;
 		}
@@ -295,15 +294,25 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	/** Sets the constraints for the node
 	 * @param node The node. Must already be in the pane.
-	 * @param ccs The component constraints. Can be null.
+	 * @param ccs The component constraints. 
 	 */
 	public void setComponentConstraints(Node node, String ccs)
 	{
-		FXComponentWrapper wrapper = new FXComponentWrapper(node);
-		if (!wrapperToCCMap.containsKey(wrapper))
-			throw new IllegalArgumentException("Node not in pane: " + node);
-
 		CC cc = ConstraintParser.parseComponentConstraint(ConstraintParser.prepare(ccs));
+		setComponentConstraints(node, cc);
+	}
+
+	/** Sets the constraints for the node
+	 * @param node The node. Must already be in the pane.
+	 * @param cc The component constraints. Can be null.
+	 */
+	public void setComponentConstraints(Node node, CC cc)
+	{
+		FXComponentWrapper wrapper = new FXComponentWrapper(node);
+		if (!wrapperToCCMap.containsKey(wrapper)) {
+			throw new IllegalArgumentException("Node not in pane: " + node);
+		}
+		
 		wrapperToCCMap.put(wrapper, cc);
 
 		invalidateGrid();
@@ -322,8 +331,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private LayoutAnimator getAnimator()
 	{
-		if (anim == null)
+		if (anim == null) {
 			anim = new LayoutAnimator(this);
+		}
 		return anim;
 	}
 
@@ -331,26 +341,30 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private void startQueuedAnimations()
 	{
-		if (anim != null)
+		if (anim != null) {
 			anim.start();
+		}
 	}
 
 	public void animateAdded(Node node)
 	{
-		if (isNodeAnimated(node))
+		if (isNodeAnimated(node)) {
 			getAnimator().nodeAdded(node);
+		}
 	}
 
 	public void animateRemoved(Node node)
 	{
-		if (isNodeAnimated(node))
+		if (isNodeAnimated(node)) {
 			getAnimator().nodeRemoved(node);
+		}
 	}
 
 	public boolean animateBoundsChange(Node node, int x, int y, int width, int height)
 	{
-		if (!isNodeAnimated(node))
+		if (!isNodeAnimated(node)) {
 			return false;
+		}
 
 		getAnimator().animate(node, new Rectangle2D(x, y, width, height));
 		return true;
@@ -358,8 +372,9 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	private boolean isNodeAnimated(Node node)
 	{
-		if (!isVisible())
+		if (!isVisible()) {
 			return false;
+		}
 
 		CC cc = wrapperToCCMap.get(new FXComponentWrapper(node));
 		int compPrio = cc != null ? cc.getAnimSpec().getPriority() : 0;
@@ -377,12 +392,14 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public void addLayoutCallback(LayoutCallback callback)
 	{
-		if (callback == null)
+		if (callback == null) {
 			throw new NullPointerException();
+		}
 
-		if (callbackList == null)
+		if (callbackList == null) {
 			callbackList = new ArrayList<>(1);
-
+		}
+		
 		callbackList.add(callback);
 
 		invalidateGrid();
@@ -393,16 +410,18 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	public void removeLayoutCallback(LayoutCallback callback)
 	{
-		if (callbackList != null)
+		if (callbackList != null) {
 			callbackList.remove(callback);
+		}
 	}
 
 	// ============================================================================================================
 	// SCENE
 
 	public MigPane add(Node node, CC cc) {
-		if (node.isManaged())
+		if (node.isManaged()) {
 			wrapperToCCMap.put(new FXComponentWrapper(node), cc);
+		}
 		getChildren().add(node);
 		return this;
 	}
@@ -430,8 +449,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	}
 
 	public MigPane add(int index, Node node, CC cc) {
-		if (node.isManaged())
+		if (node.isManaged()) {
 			wrapperToCCMap.put(new FXComponentWrapper(node), cc);
+		}
 		getChildren().add(index, node);
 		return this;
 	}
@@ -463,8 +483,9 @@ public class MigPane extends javafx.scene.layout.Pane
 		incLayoutInhibit();
 
 		try {
-			if (layoutConstraints.isNoCache())
+			if (layoutConstraints.isNoCache()) {
 				_grid = null;
+			}
 
 			// for debugging System.out.println("MigPane.layoutChildren");
 			Grid lGrid = getGrid();
@@ -501,8 +522,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	{
 		if (newWidth != getWidth()) {
 			super.setWidth(newWidth);
-			if (_grid != null)
+			if (_grid != null) {
 				_grid.invalidateContainerSize();
+			}
 		}
 	}
 
@@ -511,19 +533,22 @@ public class MigPane extends javafx.scene.layout.Pane
 	{
 		if (newHeight != getHeight()) {
 			super.setHeight(newHeight);
-			if (_grid != null)
+			if (_grid != null) {
 				_grid.invalidateContainerSize();
+			}
 		}
 	}
 
 	@Override
 	public void requestLayout() {
-		if (layoutInhibits > 0)
+		if (layoutInhibits > 0) {
 			return;
+		}
 
 		biasDirty = true;
-		if (_grid != null)
+		if (_grid != null) {
 			_grid.invalidateContainerSize();
+		}
 
 		super.requestLayout();
 	}
@@ -546,9 +571,9 @@ public class MigPane extends javafx.scene.layout.Pane
 	 */
 	private Grid getGrid() {
 
-		if (_grid == null)
+		if (_grid == null) {
 			_grid = new Grid(new FXContainerWrapper(this), getLayoutConstraints(), getRowConstraints(), getColumnConstraints(), wrapperToCCMap, callbackList);
-
+		}	
 		return _grid;
 	}
 
@@ -570,8 +595,9 @@ public class MigPane extends javafx.scene.layout.Pane
 		Scene scene = getScene();
 		Window window = scene != null ? scene.getWindow() : null;
 
-		if (window == null || wBounds == BoundSize.NULL_SIZE && hBounds == BoundSize.NULL_SIZE)
+		if (window == null || wBounds == BoundSize.NULL_SIZE && hBounds == BoundSize.NULL_SIZE) {
 			return;
+		}
 
 		Parent root = scene.getRoot();
 
@@ -599,13 +625,15 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	private double constrain(ContainerWrapper parent, double winSize, double prefSize, BoundSize constrain)
 	{
-		if (constrain == null)
+		if (constrain == null) {
 			return winSize;
+		}
 
 		double retSize = winSize;
 		UnitValue wUV = constrain.getPreferred();
-		if (wUV != null)
+		if (wUV != null) {
 			retSize = wUV.getPixels((float) prefSize, parent, parent);
+		}
 
 		retSize = constrain.constrain((int) Math.ceil(retSize), (float) prefSize, parent);
 
@@ -840,8 +868,9 @@ public class MigPane extends javafx.scene.layout.Pane
 			// backwards compatibility with JavaFX2 (control does not extend Region there)
 			if (node instanceof Region || node instanceof Control) {
 				double prefWidth = node instanceof Region ? ((Region) node).getMaxWidth() : ((Control) node).getMaxWidth();
-				if (prefWidth == USE_COMPUTED_SIZE || prefWidth == USE_PREF_SIZE)
+				if (prefWidth == USE_COMPUTED_SIZE || prefWidth == USE_PREF_SIZE) {
 					return LayoutUtil.INF;
+				}
 			}
 			return (int) Math.ceil(node.maxWidth(height));
 		}
@@ -874,8 +903,9 @@ public class MigPane extends javafx.scene.layout.Pane
 			// backwards compatibility with JavaFX2 (control does not extend Region there)
 			if (node instanceof Region || node instanceof Control) {
 				double prefWidth = node instanceof Region ? ((Region) node).getMaxHeight() : ((Control) node).getMaxHeight();
-				if (prefWidth == USE_COMPUTED_SIZE || prefWidth == USE_PREF_SIZE)
+				if (prefWidth == USE_COMPUTED_SIZE || prefWidth == USE_PREF_SIZE) {
 					return LayoutUtil.INF;
+				}
 			}
 			return (int) Math.ceil(node.maxHeight(width));
 		}
@@ -941,20 +971,15 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getHorizontalScreenDPI()
 		{
-			// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
-			// todo NOTE Also remove the static block at the top of this file that sets the default DPI on the platform to 96 DPI which makes LP and PX 1:1.
 			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
-			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
-
-			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
+			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
 		@Override
 		public int getVerticalScreenDPI()
 		{
-			// todo Made static to defeat JavaFX bug: https://bugs.openjdk.java.net/browse/JDK-8095013
-			return 96; // E.g. 101 on a 30" and 109 on 27" Apple Cinema Display.
-			//			return (int) Math.ceil(Screen.getPrimary().getDpi());
+			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
+			return (int) Math.ceil(Screen.getPrimary().getDpi());
 		}
 
 		@Override
@@ -966,8 +991,9 @@ public class MigPane extends javafx.scene.layout.Pane
 
 				case PlatformDefaults.BASE_SCALE_FACTOR:
 					Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
-					if (s == null)
+					if (s == null) {
 						s = 1.0f;
+					}
 
 					return s * (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
 
@@ -1022,8 +1048,9 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public boolean equals(Object o)
 		{
-			if (!(o instanceof FXComponentWrapper))
+			if (!(o instanceof FXComponentWrapper)) {
 				return false;
+			}
 
 			return getComponent().equals(((FXComponentWrapper) o).getComponent());
 		}
@@ -1035,8 +1062,9 @@ public class MigPane extends javafx.scene.layout.Pane
 			//			System.out.println("x: " + x + ", y: " + y);
 			//			CC cc = wrapperToCCMap.get(this);
 
-			if (!animateBoundsChange(node, x, y, width, height))
+			if (!animateBoundsChange(node, x, y, width, height)) {
 				node.resizeRelocate((double) x, (double) y, (double) width, (double) height);
+			}
 		}
 	}
 }
