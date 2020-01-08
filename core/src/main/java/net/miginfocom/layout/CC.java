@@ -1370,7 +1370,7 @@ public final class CC implements Externalizable
 	 * @param b <code>true</code> for bounds taken from the grid position. <code>false</code> is default.
 	 * @see #setPos(UnitValue[])
 	 */
-	void setBoundsInGrid(boolean b)
+	public void setBoundsInGrid(boolean b)
 	{
 		this.boundsInGrid = b;
 	}
@@ -1416,7 +1416,7 @@ public final class CC implements Externalizable
 	{
 		if (y < 0)
 			cellX = -1;
-		cellY = y < 0 ? 0 : y;
+		cellY = Math.max(y, 0);
 	}
 
 	/** Sets the docking side. -1 means no docking.<br>
