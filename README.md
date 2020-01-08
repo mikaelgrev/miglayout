@@ -5,4 +5,4 @@ For Java developers writing GUI layouts by hand that wants simplicity, power and
 
 MigLayout is a superbly versatile JavaFX/SWT/Swing layout manager that makes layout problems trivial. It is using String or API type-checked constraints to format the layout. MigLayout can produce flowing, grid based, absolute (with links), grouped and docking layouts. You will never have to switch to another layout manager ever again! MigLayout is created to be to manually coded layouts what Matisse/GroupLayout is to IDE supported visual layouts.
 
-For documentation see miglayout.com
+For documentation see http://miglayout.com
