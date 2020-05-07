@@ -123,6 +123,14 @@ public class SwingComponentWrapper implements ComponentWrapper
 				Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 				float scaleFactor = (s != null) ? s : 1f;
 
+				// If the current look and feel is able to scale and provides
+				// an scale factor, then use it.
+				Object lafScaleFactorObj = UIManager.get( "laf.scaleFactor" );
+				if( lafScaleFactorObj instanceof Number ) {
+					float lafScaleFactor = ((Number)lafScaleFactorObj).floatValue();
+					return scaleFactor * lafScaleFactor;
+				}
+
 				// Swing in Java 9 scales automatically using the system scale factor(s) that the
 				// user can change in the system settings (Windows: Control Panel; Mac: System Preferences).
 				// Each connected screen may use its own scale factor
