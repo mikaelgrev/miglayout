@@ -4,11 +4,9 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>5.3-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>11.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>miglayout-demo</artifactId>
-	<packaging>jar</packaging>
     <name>MiGLayout Demo</name>
     <description>MiGLayout - Demo's for Swing and SWT</description>
 
@@ -16,22 +14,34 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-swing</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-swt</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-javafx</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-ideutil</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.java.net.substance</groupId>

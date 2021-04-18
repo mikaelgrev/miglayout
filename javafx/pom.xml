@@ -4,79 +4,82 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>5.3-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>11.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>miglayout-javafx</artifactId>
-	<packaging>jar</packaging>
     <name>MiGLayout JavaFX</name>
     <description>MiGLayout - Layout Manager for JavaFX</description>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.testfx</groupId>
+				<artifactId>testfx-core</artifactId>
+				<version>4.0.15-alpha</version>
+			</dependency>
+			<dependency>
+				<groupId>org.testfx</groupId>
+				<artifactId>testfx-junit</artifactId>
+				<version>4.0.15-alpha</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
-        
+
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<scope>test</scope>
+		</dependency>
         <dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-core</artifactId>
-			<version>4.0.15-alpha</version>
         	<scope>test</scope>
         </dependency>
         <dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-junit</artifactId>
-			<version>4.0.15-alpha</version>
         	<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
         </dependency>
         <dependency>
 		    <groupId>org.jfxtras</groupId>
 		    <artifactId>jfxtras-test-support</artifactId>
-        	<version>8.0-r6</version>
+        	<version>11-r1</version>
         	<scope>test</scope>
         </dependency>
         <dependency>
 		    <groupId>org.jfxtras</groupId>
 		    <artifactId>jfxtras-font-roboto</artifactId>
-        	<version>8.0-r6</version>
+        	<version>11-r1</version>
         	<scope>test</scope>
         </dependency>
         <dependency>
 		    <groupId>org.jfxtras</groupId>
 		    <artifactId>jfxtras-common</artifactId>
-        	<version>8.0-r6</version>
+        	<version>11-r1</version>
         	<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.testfx</groupId>
-					<artifactId>testfx-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.testfx</groupId>
-					<artifactId>testfx-junit</artifactId>
-				</exclusion>
-			</exclusions>
         </dependency>
     </dependencies>
 
-	<developers>
-		<developer>
-			<id>tbee</id>
-			<name>Tom Eugelink</name>
-			<email>tbee@tbee.org</email>
-			<roles>
-				<role>Developer</role>
-			</roles>
-			<timezone>+1</timezone>
-			<url>http://www.tbee.org/</url>
-		</developer>
-	</developers>
 </project>

@@ -5,8 +5,7 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>5.3-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>11.0-SNAPSHOT</version>
 	</parent>
 
     <artifactId>lib-miglayout-NB90</artifactId>
