@@ -33,4 +33,4 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build
-        run: .mvn --no-transfer-progress -B --file pom.xml verify
+        run: mvn --no-transfer-progress -B --file pom.xml verify
