@@ -39,3 +39,7 @@
 **/.project
 **/.classpath
 **/.settings
+*.versionsBackup
+*.cmd
+.mvn
+mvnw
