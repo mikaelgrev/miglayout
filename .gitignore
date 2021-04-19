@@ -6,3 +6,8 @@ target/
 
 .idea
 *.iml
+
+*.versionsBackup
+*.cmd
+.mvn
+mvnw

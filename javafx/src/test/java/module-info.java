@@ -44,4 +44,5 @@ open module com.miglayout.javafx {
     requires static javafx.controls;
 
     requires junit;
+    requires javafx.fxml;
 }

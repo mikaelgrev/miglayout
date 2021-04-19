@@ -43,6 +43,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-graphics</artifactId>
 			<scope>provided</scope>
 		</dependency>
@@ -62,24 +67,5 @@
 			<artifactId>testfx-junit</artifactId>
         	<scope>test</scope>
         </dependency>
-        <dependency>
-		    <groupId>org.jfxtras</groupId>
-		    <artifactId>jfxtras-test-support</artifactId>
-        	<version>11-r1</version>
-        	<scope>test</scope>
-        </dependency>
-        <dependency>
-		    <groupId>org.jfxtras</groupId>
-		    <artifactId>jfxtras-font-roboto</artifactId>
-        	<version>11-r1</version>
-        	<scope>test</scope>
-        </dependency>
-        <dependency>
-		    <groupId>org.jfxtras</groupId>
-		    <artifactId>jfxtras-common</artifactId>
-        	<version>11-r1</version>
-        	<scope>test</scope>
-        </dependency>
     </dependencies>
-
 </project>
