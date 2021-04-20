@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>5.3-SNAPSHOT</version>
+	<version>5.3</version>
 	<packaging>pom</packaging>
 	<name>MiGLayout</name>
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
@@ -35,13 +35,18 @@
 		</dependency>
 	</dependencies>
 
-	<!--<distributionManagement>-->
-		<!--<repository>-->
-			<!--<id>nexus</id>-->
-			<!--<name>Nexus Staging Repo</name>-->
-			<!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-		<!--</repository>-->
-	<!--</distributionManagement>-->
+	<!-- https://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/ -->
+	<!-- https://central.sonatype.org/pages/apache-maven.html -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
     <profiles>
         <profile>
@@ -92,69 +97,18 @@
 				<version>2.8.1</version>
 			</plugin>
 
-			<!-- include a javadoc jar -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<!--<configuration>-->
-							<!--<additionalparam>${javadoc.opts}</additionalparam>-->
-						<!--</configuration>-->
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- include a sourcecode jar -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<!--<phase>verify</phase>-->
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 			<!-- autoversion submodules -->
-			<!--<plugin>-->
-				<!--<groupId>org.apache.maven.plugins</groupId>-->
-				<!--<artifactId>maven-release-plugin</artifactId>-->
-				<!--<version>2.5.3</version>-->
-				<!--<configuration>-->
-					<!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
-					<!--<useReleaseProfile>false</useReleaseProfile>-->
-					<!--<releaseProfiles>release</releaseProfiles>-->
-					<!--<goals>deploy</goals>-->
-				<!--</configuration>-->
-			<!--</plugin>-->
-
-			<!-- sign the artifacts: this should be done by Sonatype's OSS parent pom during a normal mvn release-->
-			<!--<plugin>-->
-				<!--<groupId>org.apache.maven.plugins</groupId>-->
-				<!--<artifactId>maven-gpg-plugin</artifactId>-->
-				<!--<version>1.6</version>-->
-				<!--<executions>-->
-					<!--<execution>-->
-						<!--<id>sign-artifacts</id>-->
-						<!--<phase>verify</phase>-->
-						<!--<goals>-->
-							<!--<goal>sign</goal>-->
-						<!--</goals>-->
-					<!--</execution>-->
-				<!--</executions>-->
-			<!--</plugin>-->
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -214,6 +168,70 @@
                     </execution>
                 </executions>
             </plugin>
+			
+			<!-- attach source -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- attach javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<additionalJOption>-Xdoclint:none</additionalJOption>
+				</configuration>
+			</plugin>
+
+			<!-- sign the jars files; the credentials are in .m2/settings.xml, the 
+				key itself is shown by the gpg list-keys command -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- deploy using the special nexus-staging deploy plugin -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+<!-- in case of release problems without reason 					
+					<keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
+					<keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+ -->					
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
