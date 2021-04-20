@@ -34,7 +34,6 @@ import org.tbee.javafx.scene.layout.MigPane;
  * @author Tom Eugelink
  *
  */
-@Ignore
 public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.ApplicationTest {
 	
 	@Override
