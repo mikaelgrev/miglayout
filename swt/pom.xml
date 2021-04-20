@@ -4,12 +4,7 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-<<<<<<< HEAD
-		<version>5.3</version>
-		<relativePath>../pom.xml</relativePath>
-=======
 		<version>11.0-SNAPSHOT</version>
->>>>>>> pr/82
 	</parent>
 	<artifactId>miglayout-swt</artifactId>
 	<name>MiGLayout SWT</name>
