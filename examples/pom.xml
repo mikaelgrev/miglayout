@@ -4,11 +4,9 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>5.3</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>11.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>miglayout-examples</artifactId>
-	<packaging>jar</packaging>
     <name>MiGLayout Examples</name>
     <description>MiGLayout - Examples for Swing and SWT</description>
 
@@ -16,12 +14,10 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-swing</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-swt</artifactId>
-            <version>${project.version}</version>
         </dependency>
 	</dependencies>
 </project>

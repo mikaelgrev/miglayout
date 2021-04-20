@@ -4,11 +4,14 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
+<<<<<<< HEAD
 		<version>5.3</version>
 		<relativePath>../pom.xml</relativePath>
+=======
+		<version>11.0-SNAPSHOT</version>
+>>>>>>> pr/82
 	</parent>
 	<artifactId>miglayout-swt</artifactId>
-	<packaging>jar</packaging>
 	<name>MiGLayout SWT</name>
     <description>MiGLayout - Java Layout Manager for SWT</description>
 
@@ -16,7 +19,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>miglayout-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
 	</dependencies>
 

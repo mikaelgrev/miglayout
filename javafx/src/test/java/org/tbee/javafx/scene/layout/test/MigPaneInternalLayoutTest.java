@@ -13,10 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import jfxtras.resources.JFXtrasFontRoboto;
-import jfxtras.test.AssertNode;
-import jfxtras.test.TestUtil;
-import jfxtras.util.PlatformUtil;
+//import jfxtras.resources.JFXtrasFontRoboto;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
@@ -24,6 +21,7 @@ import net.miginfocom.layout.PlatformDefaults;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.tbee.javafx.scene.layout.MigPane;
 
@@ -40,7 +38,7 @@ public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.Applic
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		JFXtrasFontRoboto.loadAll();
+//		JFXtrasFontRoboto.loadAll();
 		
 		this.stage = stage;
 		Scene scene = new Scene(getRootNode());
@@ -335,7 +333,7 @@ public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.Applic
 	}
 
 	private void setLabel(String s) {
-		PlatformUtil.runAndWait( () -> {
+		TestUtil.runAndWait( () -> {
 			label.setText(s);
 		});
 	}

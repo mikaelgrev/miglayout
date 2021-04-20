@@ -1,0 +1,302 @@
+package org.tbee.javafx.scene.layout.test;
+
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
+import javafx.scene.layout.Pane;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+public class TestUtil {
+
+    /**
+     *
+     * @param s
+     */
+    static public void printHierarchy(Stage s) {
+        StringBuilder lStringBuilder = new StringBuilder();
+        lStringBuilder.append("Stage\n|   Scene (window=" + s.getScene().getWindow() + ")");
+        printHierarchy(lStringBuilder, s.getScene().getRoot(), 2);
+        if (lStringBuilder.length() > 0) {
+            lStringBuilder.append("\n");
+        }
+        System.out.println(lStringBuilder.toString());
+    }
+
+    /**
+     *
+     * @param s
+     */
+    static public void printHierarchy(Scene s) {
+        StringBuilder lStringBuilder = new StringBuilder();
+        lStringBuilder.append("Scene (window=" + s.getWindow() + ")");
+        printHierarchy(lStringBuilder, s.getRoot(), 1);
+        if (lStringBuilder.length() > 0) {
+            lStringBuilder.append("\n");
+        }
+        System.out.println(lStringBuilder.toString());
+    }
+
+    /**
+     *
+     * @param p
+     */
+    static public void printHierarchy(Popup p) {
+        StringBuilder lStringBuilder = new StringBuilder();
+        lStringBuilder.append("Popup (owner=" + p.getOwnerNode() + ")");
+        for (Object lChild : p.getContent()) {
+            printHierarchy(lStringBuilder, (Node)lChild, 1);
+        }
+        if (lStringBuilder.length() > 0) {
+            lStringBuilder.append("\n");
+        }
+        System.out.println(lStringBuilder.toString());
+    }
+
+    /**
+     *
+     * @param n
+     */
+    static public void printHierarchy(Node n) {
+        StringBuilder lStringBuilder = new StringBuilder();
+        printHierarchy(lStringBuilder, n, 0);
+        if (lStringBuilder.length() > 0) {
+            lStringBuilder.append("\n");
+        }
+        System.out.println(lStringBuilder.toString());
+    }
+
+    /**
+     *
+     * @param stringBuilder
+     * @param n
+     * @param offset
+     */
+    static private void printHierarchy(StringBuilder stringBuilder, Node n, int offset) {
+        if (stringBuilder.length() > 0) {
+            stringBuilder.append("\n");
+        }
+        for (int i = 0; i < offset; i++) stringBuilder.append("|   ");
+        stringBuilder.append(n.getClass().getSimpleName());
+        if (n.getId() != null) {
+            stringBuilder.append(" id='" + n.getId() + "'");
+        }
+        if (n.getStyle() != null && n.getStyle().length() > 0) {
+            stringBuilder.append(" style='" + n.getStyle() + "'");
+        }
+        if (n.getStyleClass() != null && n.getStyleClass().size() > 0) {
+            stringBuilder.append(" styleClass='" + n.getStyleClass() + "'");
+        }
+
+        // scan children
+        if (n instanceof Control) {
+            Control lControl = (Control)n;
+            Skin lSkin = lControl.getSkin();
+            stringBuilder.append(" skin=" + (lSkin == null ? "null" : lSkin.getClass().getSimpleName()) );
+            if (lSkin instanceof SkinBase) {
+                SkinBase lSkinBase = (SkinBase)lSkin;
+                for (Object lChild : lSkinBase.getChildren()) {
+                    printHierarchy(stringBuilder, (Node)lChild, offset + 1);
+                }
+            }
+            if (lControl instanceof Label) {
+                Label lLabel = (Label)lControl;
+                stringBuilder.append(" text=" + lLabel.getText() );
+            }
+        }
+        else if (n instanceof Pane) {
+            Pane lPane = (Pane)n;
+            for (Node lChild : lPane.getChildren()) {
+                printHierarchy(stringBuilder, lChild, offset + 1);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    static public String quickFormatCalendarAsDate(Calendar value) {
+        if (value == null) return "null";
+        SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return value == null ? "null" : lSimpleDateFormat.format(value.getTime());
+    }
+
+    static public String quickFormatLocalDateAsDate(LocalDate value) {
+        if (value == null) return "null";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return value == null ? "null" : value.format(formatter);
+    }
+
+    static public String quickFormatLocalDateTimeAsDate(LocalDateTime value) {
+        if (value == null) return "null";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return value == null ? "null" : value.format(formatter);
+    }
+
+    /**
+     *
+     */
+    static public String quickFormatCalendarAsTime(Calendar value) {
+        if (value == null) return "null";
+        SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        return value == null ? "null" : lSimpleDateFormat.format(value.getTime());
+    }
+
+    /**
+     *
+     */
+    static public String quickFormatCalendarAsDateTime(Calendar value) {
+        if (value == null) return "null";
+        SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        return value == null ? "null" : lSimpleDateFormat.format(value.getTime());
+    }
+
+    /**
+     *
+     */
+    static public Calendar quickParseCalendarFromDateTime(String value) {
+        try {
+            if (value == null) return null;
+            SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            Calendar c = Calendar.getInstance();
+            c.setTime( lSimpleDateFormat.parse(value) );
+            return c;
+        }
+        catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    public static LocalDateTime quickParseLocalDateTimeYMDhm(String value) {
+        if (value == null) return null;
+        DateTimeFormatter lDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime dt = LocalDateTime.parse(value, lDateTimeFormatter);
+        return dt;
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    static public String quickFormatCalendarsAsDate(List<Calendar> value) {
+        if (value == null) return "null";
+        String s = "[";
+        for (Calendar lCalendar : value)
+        {
+            if (s.length() > 1) s += ", ";
+            s += quickFormatCalendarAsDate(lCalendar);
+        }
+        s += "]";
+        return s;
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    static public String quickFormatCalendarsAsDateTime(List<Calendar> value) {
+        if (value == null) return "null";
+        String s = "[";
+        for (Calendar lCalendar : value)
+        {
+            if (s.length() > 1) s += ", ";
+            s += quickFormatCalendarAsDateTime(lCalendar);
+        }
+        s += "]";
+        return s;
+    }
+
+
+    /**
+     *
+     * @param ms
+     */
+    static public void sleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * This method also exist in PlatformUtil in commons, but we can't use that here
+     */
+    static public void runAndWait(final Runnable runnable) {
+        try {
+            FutureTask future = new FutureTask(runnable, null);
+            Platform.runLater(future);
+            future.get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This method also exist in PlatformUtil in commons, but we can't use that here
+     */
+    static public <V> V runAndWait(final Callable<V> callable) throws InterruptedException, ExecutionException {
+        FutureTask<V> future = new FutureTask<>(callable);
+        Platform.runLater(future);
+        return future.get();
+    }
+
+    /**
+     * This method also exist in PlatformUtil in commons, but we can't use that here
+     */
+    static public void waitForPaintPulse() {
+        Platform.requestNextPulse();
+        sleep(50);
+        runAndWait(() -> {});
+    }
+
+    /**
+     *
+     * @param r
+     */
+    static public void runThenWaitForPaintPulse(Runnable r) {
+        runAndWait(r);
+        waitForPaintPulse();
+    }
+
+    /**
+     *
+     * @param r
+     * @return
+     */
+    static public <T> T runThenWaitForPaintPulse(Callable<T> r)  {
+        try {
+            T t = runAndWait(r);
+            waitForPaintPulse();
+            return t;
+        }
+        catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
