@@ -39,9 +39,9 @@ open module com.miglayout.javafx {
     exports org.tbee.javafx.scene.layout.fxml;
 
     requires com.miglayout.core;
-    requires static javafx.base;
-    requires static javafx.graphics;
-    requires static javafx.controls;
+    requires javafx.base;
+    requires javafx.graphics;
+    requires javafx.controls;
 
     requires junit;
     requires javafx.fxml;

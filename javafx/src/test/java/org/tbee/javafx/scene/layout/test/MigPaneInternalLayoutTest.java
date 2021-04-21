@@ -13,19 +13,19 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-//import jfxtras.resources.JFXtrasFontRoboto;
 import net.miginfocom.layout.AC;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.PlatformDefaults;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.tbee.javafx.scene.layout.MigPane;
 
 /**
+ * THESE TESTS ONLY RUN ON WINDOWS
+ * ===============================
+ * 
  * TestFX is able to layout a single node per class.
  * Because we would be creating MigPane only once, this would result in one class with one test method per to-be-tested layout, and thus is a LOT of classes.
  * By placing MigPane in a presized Pane, it is possible to test different layouts each in a separate method, all in a single class.
@@ -38,7 +38,7 @@ public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.Applic
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-//		JFXtrasFontRoboto.loadAll();
+		javafx.scene.text.Font.loadFont(this.getClass().getResource("/" + "Roboto-Medium.ttf").toExternalForm(), 12);
 		
 		this.stage = stage;
 		Scene scene = new Scene(getRootNode());

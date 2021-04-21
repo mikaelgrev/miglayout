@@ -10,10 +10,6 @@
     <name>MiGLayout JavaFX</name>
     <description>MiGLayout - Layout Manager for JavaFX</description>
 
-	<properties>
-		<skipTests>true</skipTests> <!-- TODO: this needs to be removed and the tests made running! -->
-	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -67,4 +63,25 @@
         	<scope>test</scope>
         </dependency>
     </dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>7.2</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<argLine>
+						--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED,org.testfx
+					</argLine>
+				</configuration>
+			</plugin>				
+		</plugins>
+	</build>
 </project>
