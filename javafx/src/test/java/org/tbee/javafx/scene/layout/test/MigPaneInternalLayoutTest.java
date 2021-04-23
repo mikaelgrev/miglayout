@@ -25,7 +25,7 @@ import org.tbee.javafx.scene.layout.MigPane;
 /**
  * THESE TESTS ONLY RUN ON WINDOWS
  * ===============================
- * 
+ *
  * TestFX is able to layout a single node per class.
  * Because we would be creating MigPane only once, this would result in one class with one test method per to-be-tested layout, and thus is a LOT of classes.
  * By placing MigPane in a presized Pane, it is possible to test different layouts each in a separate method, all in a single class.
