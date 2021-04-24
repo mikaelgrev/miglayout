@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -109,21 +111,21 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-    <profiles>
-        <profile>
-            <id>intellij-javadoc-fix</id>
-            <build>
-                <plugins>
-                    <plugin>
+	<profiles>
+		<profile>
+			<id>intellij-javadoc-fix</id>
+			<build>
+				<plugins>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <javadocExecutable>/usr/bin/javadoc</javadocExecutable>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<javadocExecutable>/usr/bin/javadoc</javadocExecutable>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
 		<profile>
 			<id>doclint-java8-disable</id>
@@ -181,16 +183,11 @@
 						<artifactId>maven-gpg-plugin</artifactId>
 						<executions>
 							<execution>
+								<id>sign-artifacts</id>
+								<phase>deploy</phase>
 								<goals>
 									<goal>sign</goal>
 								</goals>
-								<phase>verify</phase>
-								<configuration>
-									<gpgArguments>
-										<arg>--pinentry-mode</arg>
-										<arg>loopback</arg>
-									</gpgArguments>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -200,7 +197,7 @@
 						<artifactId>nexus-staging-maven-plugin</artifactId>
 						<extensions>true</extensions>
 						<configuration>
-							<serverId>central</serverId>
+							<serverId>ossrh</serverId>
 							<nexusUrl>https://oss.sonatype.org</nexusUrl>
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
@@ -208,7 +205,7 @@
 				</plugins>
 			</build>
 		</profile>
-    </profiles>
+	</profiles>
 
 	<build>
 		<pluginManagement>
@@ -223,7 +220,8 @@
 					</configuration>
 				</plugin>
 
-			    <!-- surefire 2.7+ runs test classes by annotation instead of classname pattern -->
+				<!-- surefire 2.7+ runs test classes by annotation instead of classname 
+					pattern -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -322,15 +320,15 @@
 				<artifactId>maven-jar-plugin</artifactId>
 			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -353,11 +351,9 @@
 								<requireJavaVersion>
 									<version>${java.version}</version>
 								</requireJavaVersion>
-								<!--enforceBytecodeVersion>
-									<maxJdkVersion>${java.version}</maxJdkVersion>
-								</enforceBytecodeVersion>
-								<dependencyConvergence />
-								<requireUpperBoundDeps /-->
+								<!--enforceBytecodeVersion> <maxJdkVersion>${java.version}</maxJdkVersion> 
+									</enforceBytecodeVersion> <dependencyConvergence /> <requireUpperBoundDeps 
+									/ -->
 							</rules>
 						</configuration>
 					</execution>
@@ -410,7 +406,7 @@
 		<connection>scm:git:https://github.com/mikaelgrev/miglayout.git</connection>
 		<developerConnection>scm:git:https://github.com/mikaelgrev/miglayout.git</developerConnection>
 		<url>https://github.com/mikaelgrev/miglayout</url>
-  	</scm>
+	</scm>
 
 	<developers>
 		<developer>
