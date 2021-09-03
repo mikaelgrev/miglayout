@@ -38,7 +38,6 @@ import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.LayoutUtil;
 import net.miginfocom.layout.PlatformDefaults;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 
@@ -46,6 +45,15 @@ import org.eclipse.swt.widgets.*;
  */
 public class SwtComponentWrapper implements ComponentWrapper
 {
+	private static Class<?> styledTextClz;
+
+	static {
+		try {
+			// Dynamically load StyledText because the RAP/RWT version of SWT doesn't have this class, so it may not exist
+			styledTextClz = Class.forName("org.eclipse.swt.custom.StyledText");
+		} catch (ClassNotFoundException ignored) {}
+	}
+
 	/** Debug color for component bounds outline.
 	 */
 	private static Color DB_COMP_OUTLINE = new Color(Display.getCurrent(), 0, 0, 200);
@@ -344,11 +352,16 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return compType;
 	}
 
+	private static boolean isText(Control c)
+	{
+		return c instanceof Text || (styledTextClz != null && styledTextClz.isInstance(c));
+	}
+
 	private int checkType()
 	{
 		int s = c.getStyle();
 
-		if (c instanceof Text || c instanceof StyledText) {
+		if (isText(c)) {
 			return (s & SWT.MULTI) > 0 ? TYPE_TEXT_AREA : TYPE_TEXT_FIELD;
 		} else if (c instanceof Label) {
 			return (s & SWT.SEPARATOR) > 0 ? TYPE_SEPARATOR : TYPE_LABEL;
@@ -398,6 +411,6 @@ public class SwtComponentWrapper implements ComponentWrapper
 	@Override
 	public int getContentBias()
 	{
-		return (c instanceof Text || c instanceof StyledText) && (c.getStyle() & SWT.MULTI) > 0 ? LayoutUtil.HORIZONTAL : -1;
+		return (isText(c)) && (c.getStyle() & SWT.MULTI) > 0 ? LayoutUtil.HORIZONTAL : -1;
 	}
 }
