@@ -8,6 +8,7 @@ import javafx.scene.transform.Transform;
 import org.junit.Assert;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AssertNode {
@@ -21,10 +22,16 @@ public class AssertNode {
 
 
     public AssertNode assertXYWH(double x, double y, double w, double h, double accuracy) {
-        Assert.assertEquals(description + ", X", x, node.getLayoutX(), accuracy);
-        Assert.assertEquals(description + ", Y", y, node.getLayoutY(), accuracy);
-        Assert.assertEquals(description + ", W", w, width(node), accuracy);
-        Assert.assertEquals(description + ", H", h, height(node), accuracy);
+        try {
+            Assert.assertEquals(description + ", X", x, node.getLayoutX(), accuracy);
+            Assert.assertEquals(description + ", Y", y, node.getLayoutY(), accuracy);
+            Assert.assertEquals(description + ", W", w, width(node), accuracy);
+            Assert.assertEquals(description + ", H", h, height(node), accuracy);
+        }
+        catch (java.lang.AssertionError e) {
+            AssertNode.generateSource("migPane", node, Collections.emptyList(), false, AssertNode.A.XYWH);
+            throw e;
+        }
         return this;
     }
 
