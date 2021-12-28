@@ -223,7 +223,7 @@ public final class Grid
 						wrap(cellXY, null);
 				}
 			} else {
-				if (cx >= 0 && cy >= 0) {
+				if (cx >= 0 || cy >= 0) {
 					if (cy >= 0) {
 						cellXY[0] = cx;
 						cellXY[1] = cy;
