@@ -8,6 +8,4 @@ target/
 *.iml
 
 *.versionsBackup
-*.cmd
-.mvn
-mvnw
+
