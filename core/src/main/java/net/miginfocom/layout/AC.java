@@ -66,7 +66,10 @@ public final class AC implements Externalizable
 	 * Yes, we are embarrassingly aware that the method is misspelled.
 	 * @return The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of. A new list and
 	 * never <code>null</code>.
+	 *
+	 * Deprecated, use getConstraints
 	 */
+	@Deprecated
 	public final DimConstraint[] getConstaints()
 	{
 		return cList.toArray(new DimConstraint[cList.size()]);
@@ -78,8 +81,41 @@ public final class AC implements Externalizable
 	 * @param constr The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of. The list
 	 * will be copied for storage. <code>null</code> or and empty array will reset the constraints to one <code>DimConstraint</code>
 	 * with default values.
+	 *
+	 * Deprecated, use setConstraints
 	 */
+	@Deprecated
 	public final void setConstaints(DimConstraint[] constr)
+	{
+		if (constr == null || constr.length < 1 )
+			constr = new DimConstraint[] {new DimConstraint()};
+
+		cList.clear();
+		cList.ensureCapacity(constr.length);
+		for (DimConstraint c : constr)
+			cList.add(c);
+	}
+
+	/** Property. The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of.
+	 * These <code>DimConstraints</code> contains all information in this class.
+	 * <p>
+	 * Yes, we are embarrassingly aware that the method is misspelled.
+	 * @return The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of. A new list and
+	 * never <code>null</code>.
+	 */
+	public final DimConstraint[] getConstraints()
+	{
+		return cList.toArray(new DimConstraint[cList.size()]);
+	}
+
+	/** Sets the different {@link net.miginfocom.layout.DimConstraint}s that this object should consists of.
+	 * <p>
+	 * Yes, we are embarrassingly aware that the method is misspelled.
+	 * @param constr The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of. The list
+	 * will be copied for storage. <code>null</code> or and empty array will reset the constraints to one <code>DimConstraint</code>
+	 * with default values.
+	 */
+	public final void setConstraints(DimConstraint[] constr)
 	{
 		if (constr == null || constr.length < 1 )
 			constr = new DimConstraint[] {new DimConstraint()};
