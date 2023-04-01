@@ -186,10 +186,12 @@
 									<active>ALWAYS</active>
 									<armored>true</armored>
 								</signing>
-								<deploy>
+								<release>
 									<github>
 										<overwrite>true</overwrite>
 									</github>
+								</release>
+								<deploy>
 									<maven>
 										<nexus2>
 											<maven-central>
