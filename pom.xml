@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -10,7 +8,7 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>11.1-SNAPSHOT</version>
+	<version>11.1</version>
 	<packaging>pom</packaging>
 	<name>MiGLayout</name>
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
@@ -352,8 +350,7 @@
 									<version>${java.version}</version>
 								</requireJavaVersion>
 								<!--enforceBytecodeVersion> <maxJdkVersion>${java.version}</maxJdkVersion> 
-									</enforceBytecodeVersion> <dependencyConvergence /> <requireUpperBoundDeps 
-									/ -->
+									</enforceBytecodeVersion> <dependencyConvergence /> <requireUpperBoundDeps / -->
 							</rules>
 						</configuration>
 					</execution>
