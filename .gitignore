@@ -9,3 +9,4 @@ target/
 
 *.versionsBackup
 
+pom.xml.releaseBackup
