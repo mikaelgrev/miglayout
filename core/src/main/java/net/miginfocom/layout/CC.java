@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 /** A simple value holder for one component's constraint.
  */
-public final class CC implements Externalizable
+public class CC implements Externalizable
 {
 	private static final BoundSize DEF_GAP = BoundSize.NULL_SIZE;    // Only used to denote default wrap/newline gap.
 
@@ -227,6 +227,18 @@ public final class CC implements Externalizable
 	{
 		hor.setAlign(ConstraintParser.parseUnitValueOrAlign(align, true, null));
 		return this;
+	}
+
+	/**
+	 * Strongly typed API for most common usages
+	 *
+	 * @see #alignX(String)
+	 *
+	 * @param align
+	 * @return <code>this</code> so it is possible to chain calls.
+	 */
+	public final CC alignX(AlignX align) {
+		return alignX(align == null ? null : align.toString().toLowerCase());
 	}
 
 	/** The grow priority compared to other components in the same cell.
@@ -499,6 +511,19 @@ public final class CC implements Externalizable
 	{
 		ver.setAlign(ConstraintParser.parseUnitValueOrAlign(align, false, null));
 		return this;
+	}
+
+	/**
+	 * Strongly typed API for most common usages
+	 *
+	 * @see #alignY(String)
+	 *
+	 * @param align
+	 * @return <code>this</code> so it is possible to chain calls.
+	 */
+	public final CC alignY(AlignY align)
+	{
+		return alignY(align == null ? null : align.toString().toLowerCase());
 	}
 
 	/** The grow priority compared to other components in the same cell.

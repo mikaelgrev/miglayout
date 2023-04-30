@@ -46,7 +46,7 @@ import java.util.ArrayList;
  * Note that there are two way to build this constraint. Through String (e.g. <code>"[100]3[200,fill]"</code> or through API (E.g.
  * <code>new AC().size("100").gap("3").size("200").fill()</code>.
  */
-public final class AC implements Externalizable
+public class AC implements Externalizable
 {
 	private final ArrayList<DimConstraint> cList = new ArrayList<DimConstraint>(1);
 

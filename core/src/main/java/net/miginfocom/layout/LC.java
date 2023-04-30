@@ -37,7 +37,7 @@ import java.io.*;
 
 /** Contains the constraints for an instance of the {@link LC} layout manager.
  */
-public final class LC implements Externalizable
+public class LC implements Externalizable
 {
 	// See the corresponding set/get method for documentation of the property!
 
@@ -259,7 +259,7 @@ public final class LC implements Externalizable
 	 * 0 == Normal. Bounds will be calculated as if the component was visible.<br>
 	 * 1 == If hidden the size will be 0, 0 but the gaps remain.<br>
 	 * 2 == If hidden the size will be 0, 0 and gaps set to zero.<br>
-	 * 3 == If hidden the component will be disregarded completely and not take up a cell in the grid..
+	 * 3 == If hidden the component will be disregarded completely and not take up a cell in the grid.
 	 */
 	public final void setHideMode(int mode)
 	{
@@ -267,6 +267,19 @@ public final class LC implements Externalizable
 			throw new IllegalArgumentException("Wrong hideMode: " + mode);
 
 		this.hideMode = mode;
+	}
+
+	/**
+	 * Strongly typed API for most common usages
+	 *
+	 * @see #setHideMode(int)
+	 *
+	 * @param mode
+	 * @return <code>this</code> so it is possible to chain calls.
+	 */
+	public final LC hideMode(HideMode mode) {
+		setHideMode(mode.getCode());
+		return this;
 	}
 
 	/** The insets for the layed out panel. The insets will be an empty space around the components in the panel. <code>null</code> values
@@ -821,6 +834,18 @@ public final class LC implements Externalizable
 		return this;
 	}
 
+	/**
+	 * Strongly typed API for most common usages
+	 *
+	 * @see #alignX(String)
+	 *
+	 * @param align
+	 * @return <code>this</code> so it is possible to chain calls.
+	 */
+	public final LC alignX(AlignX align) {
+		return alignX(align == null ? null : align.toString().toLowerCase());
+	}
+
 	/** Same functionality as <code>setAlignY(ConstraintParser.parseUnitValueOrAlign(align, false))</code> only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -832,6 +857,19 @@ public final class LC implements Externalizable
 	{
 		setAlignY(ConstraintParser.parseUnitValueOrAlign(align, false, null));
 		return this;
+	}
+
+	/**
+	 * Strongly typed API for most common usages
+	 *
+	 * @see #alignY(String)
+	 *
+	 * @param align
+	 * @return <code>this</code> so it is possible to chain calls.
+	 */
+	public final LC alignY(AlignY align)
+	{
+		return alignY(align == null ? null : align.toString().toLowerCase());
 	}
 
 	/** Sets both the alignX and alignY as the same time.
