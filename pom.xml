@@ -32,6 +32,7 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<error-prone.version>2.19.1</error-prone.version>
 	</properties>
 
 	<dependencyManagement>
@@ -119,6 +120,23 @@
 				<configuration>
 					<debug>true</debug>
 					<debuglevel>lines,vars</debuglevel>
+					<compilerArgs>
+						<arg>-XDcompilePolicy=simple</arg>
+						<arg>-Xplugin:ErrorProne \
+							 -Xep:StringCaseLocaleUsage:ERROR
+						</arg>
+					</compilerArgs>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.google.errorprone</groupId>
+							<artifactId>error_prone_core</artifactId>
+							<version>${error-prone.version}</version>
+						</path>
+						<!-- Other annotation processors go here.
+                        If 'annotationProcessorPaths' is set, processors will no longer be
+                        discovered on the regular -classpath; see also 'Using Error Prone
+                        together with other annotation processors' below. -->
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 
