@@ -1,6 +1,7 @@
 package net.miginfocom.layout;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 /*
  * License (BSD):
@@ -529,7 +530,7 @@ public final class PlatformDefaults
 	public static void setUnitValue(String[] unitStrings, UnitValue x, UnitValue y)
 	{
 		for (String unitString : unitStrings) {
-			String s = unitString.toLowerCase().trim();
+			String s = unitString.toLowerCase(Locale.ROOT).trim();
 			if (x != null)
 				HOR_DEFS.put(s, x);
 			if (y != null)

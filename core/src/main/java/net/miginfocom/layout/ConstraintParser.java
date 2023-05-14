@@ -3,6 +3,7 @@ package net.miginfocom.layout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 /*
  * License (BSD):
@@ -315,7 +316,7 @@ public final class ConstraintParser
 		if (s.length() == 0)
 			return new AC();    // Short circuit for performance.
 
-		s = s.toLowerCase();
+		s = s.toLowerCase(Locale.ROOT);
 
 		ArrayList<String> parts = getRowColAndGapsTrimmed(s);
 
@@ -1441,7 +1442,7 @@ public final class ConstraintParser
 	 */
 	public static String prepare(String s)
 	{
-		return s != null ? s.trim().toLowerCase() : "";
+		return s != null ? s.trim().toLowerCase(Locale.ROOT) : "";
 	}
 
 //	/** Tests to serialize and deserialize the object with both XMLEncoder/Decoder and through Serializable

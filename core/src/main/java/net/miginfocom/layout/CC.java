@@ -238,7 +238,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls.
 	 */
 	public final CC alignX(AlignX align) {
-		return alignX(align == null ? null : align.toString().toLowerCase());
+		return alignX(align == null ? null : align.code());
 	}
 
 	/** The grow priority compared to other components in the same cell.
@@ -523,7 +523,7 @@ public class CC implements Externalizable
 	 */
 	public final CC alignY(AlignY align)
 	{
-		return alignY(align == null ? null : align.toString().toLowerCase());
+		return alignY(align == null ? null : align.code());
 	}
 
 	/** The grow priority compared to other components in the same cell.

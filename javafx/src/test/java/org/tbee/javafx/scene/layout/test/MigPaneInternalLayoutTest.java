@@ -1,6 +1,7 @@
 package org.tbee.javafx.scene.layout.test;
 
 import java.util.List;
+import java.util.Locale;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -75,7 +76,7 @@ public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.Applic
 	}
 
 	private boolean isUnix() {
-		String OS = System.getProperty("os.name").toLowerCase();
+		String OS = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 		return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix"));
 	}
 

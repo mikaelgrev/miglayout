@@ -843,7 +843,7 @@ public class LC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls.
 	 */
 	public final LC alignX(AlignX align) {
-		return alignX(align == null ? null : align.toString().toLowerCase());
+		return alignX(align == null ? null : align.code());
 	}
 
 	/** Same functionality as <code>setAlignY(ConstraintParser.parseUnitValueOrAlign(align, false))</code> only this method returns <code>this</code> for chaining multiple calls.
@@ -869,7 +869,7 @@ public class LC implements Externalizable
 	 */
 	public final LC alignY(AlignY align)
 	{
-		return alignY(align == null ? null : align.toString().toLowerCase());
+		return alignY(align == null ? null : align.code());
 	}
 
 	/** Sets both the alignX and alignY as the same time.

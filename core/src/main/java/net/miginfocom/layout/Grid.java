@@ -780,7 +780,7 @@ public final class Grid
 	private static void sortCellsByPlatform(Collection<Cell> cells, ContainerWrapper parent)
 	{
 		String order = PlatformDefaults.getButtonOrder();
-		String orderLo = order.toLowerCase();
+		String orderLo = order.toLowerCase(Locale.ROOT);
 
 		int unrelSize = PlatformDefaults.convertToPixels(1, "u", true, 0, parent, null);
 
