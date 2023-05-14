@@ -138,7 +138,7 @@ public final class Grid
 		this.container = container;
 		this.callbackList = callbackList;
 
-		int wrap = lc.getWrapAfter() != 0 ? lc.getWrapAfter() : (lc.isFlowX() ? colConstr : rowConstr).getConstaints().length;
+		int wrap = lc.getWrapAfter() != 0 ? lc.getWrapAfter() : (lc.isFlowX() ? colConstr : rowConstr).getConstraints().length;
 		boolean useVisualPadding = lc.isVisualPadding();
 
 		final ComponentWrapper[] comps = container.getComponents();
@@ -149,7 +149,7 @@ public final class Grid
 		final int[] cellXY = new int[2];
 		final ArrayList<int[]> spannedRects = new ArrayList<int[]>(2);
 
-		final DimConstraint[] specs = (lc.isFlowX() ? rowConstr : colConstr).getConstaints();
+		final DimConstraint[] specs = (lc.isFlowX() ? rowConstr : colConstr).getConstraints();
 
 		int sizeGroupsX = 0, sizeGroupsY = 0;
 		int[] dockInsets = null;    // top, left, bottom, right insets for docks.
@@ -1065,7 +1065,7 @@ public final class Grid
 	private void layoutInOneDim(int refSize, UnitValue align, boolean isRows, Float[] defaultPushWeights)
 	{
 		boolean fromEnd = !(isRows ? lc.isTopToBottom() : LayoutUtil.isLeftToRight(lc, container));
-		DimConstraint[] primDCs = (isRows ? rowConstr : colConstr).getConstaints();
+		DimConstraint[] primDCs = (isRows ? rowConstr : colConstr).getConstraints();
 		FlowSizeSpec fss = isRows ? rowFlowSpecs : colFlowSpecs;
 		ArrayList<LinkedDimGroup>[] rowCols = isRows ? rowGroupLists : colGroupLists;
 
@@ -1153,7 +1153,7 @@ public final class Grid
 		if (!cSz.isUnset())
 			containerSize = cSz.constrain(containerSize, getParentSize(container, isHor), container);
 
-		DimConstraint[] primDCs = (isHor? colConstr : rowConstr).getConstaints();
+		DimConstraint[] primDCs = (isHor? colConstr : rowConstr).getConstraints();
 		TreeSet<Integer> primIndexes = isHor ? colIndexes : rowIndexes;
 
 		int[][] rowColBoundSizes = new int[primIndexes.size()][];
@@ -1460,7 +1460,7 @@ public final class Grid
 		boolean fromEnd = !(isRows ? lc.isTopToBottom() : LayoutUtil.isLeftToRight(lc, container));
 		TreeSet<Integer> primIndexes = isRows ? rowIndexes : colIndexes;
 		TreeSet<Integer> secIndexes = isRows ? colIndexes : rowIndexes;
-		DimConstraint[] primDCs = (isRows ? rowConstr : colConstr).getConstaints();
+		DimConstraint[] primDCs = (isRows ? rowConstr : colConstr).getConstraints();
 
 		@SuppressWarnings("unchecked")
 		ArrayList<LinkedDimGroup>[] groupLists = new ArrayList[primIndexes.size()];
