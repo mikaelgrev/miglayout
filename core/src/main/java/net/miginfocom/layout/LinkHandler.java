@@ -88,6 +88,7 @@ public final class LinkHandler
 		return setBounds(layout, key, x, y, width, height, false, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	synchronized static boolean setBounds(Object layout, String key, int x, int y, int width, int height, boolean temporary, boolean incCur)
 	{
 		HashMap<String, int[]>[] layoutValues = LAYOUTS.get(layout);
@@ -151,6 +152,7 @@ public final class LinkHandler
 		if (temporary == false)
 			values.put(key, bounds);
 
+		// TODO: generic array creation is not supported, so array should be migrated to List or a class
 		LAYOUTS.put(layout, new HashMap[] {values, values_temp});
 
 		return true;
