@@ -87,13 +87,7 @@ public class AC implements Externalizable
 	@Deprecated
 	public final void setConstaints(DimConstraint[] constr)
 	{
-		if (constr == null || constr.length < 1 )
-			constr = new DimConstraint[] {new DimConstraint()};
-
-		cList.clear();
-		cList.ensureCapacity(constr.length);
-		for (DimConstraint c : constr)
-			cList.add(c);
+		setConstraints(constr);
 	}
 
 	/** Property. The different {@link net.miginfocom.layout.DimConstraint}s that this object consists of.

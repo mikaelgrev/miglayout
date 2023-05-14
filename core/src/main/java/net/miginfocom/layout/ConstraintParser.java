@@ -333,7 +333,7 @@ public final class ConstraintParser
 		}
 
 		AC ac = new AC();
-		ac.setConstaints(colSpecs);
+		ac.setConstraints(colSpecs);
 
 //		ac = (AC) serializeTest(ac);
 
