@@ -122,6 +122,8 @@
 					<debuglevel>lines,vars</debuglevel>
 					<compilerArgs>
 						<arg>-XDcompilePolicy=simple</arg>
+						<arg>-Werror</arg>
+						<arg>-Xlint:all</arg>
 						<arg>-Xplugin:ErrorProne \
 							 -Xep:StringCaseLocaleUsage:ERROR
 						</arg>
