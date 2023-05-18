@@ -219,13 +219,13 @@ public class MigPane extends javafx.scene.layout.Pane
 	private int getHorIns()
 	{
 		Insets insets = getInsets();
-		return (int) Math.ceil(snapSpace(insets.getLeft()) + snapSpace(insets.getRight()));
+		return (int) Math.ceil(snapSpaceX(insets.getLeft()) + snapSpaceX(insets.getRight()));
 	}
 
 	private int getVerIns()
 	{
 		Insets insets = getInsets();
-		return (int) Math.ceil(snapSpace(insets.getTop()) + snapSpace(insets.getBottom()));
+		return (int) Math.ceil(snapSpaceY(insets.getTop()) + snapSpaceY(insets.getBottom()));
 	}
 
 	private Orientation bias = null;

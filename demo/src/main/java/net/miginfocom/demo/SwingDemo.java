@@ -103,7 +103,7 @@ public class SwingDemo extends JFrame
 	private JPanel contentPanel = DEBUG ? new JPanel(new BorderLayout()) : new JPanel(new MigLayout("wrap", "[]unrel[grow]", "[grow][pref]"));
 
 	private JTabbedPane layoutPickerTabPane = new JTabbedPane();
-		private JList pickerList = new JList(new DefaultListModel());
+		private JList<Object> pickerList = new JList<>(new DefaultListModel<Object>());
 
 	private JTabbedPane southTabPane = new JTabbedPane();
 		private JScrollPane descrTextAreaScroll = createTextAreaScroll("", 5, 80, true);
@@ -279,7 +279,7 @@ public class SwingDemo extends JFrame
 		}
 
 		for (int i = 0; i < panels.length; i++)
-			((DefaultListModel) pickerList.getModel()).addElement(panels[i][0]);
+			((DefaultListModel<Object>) pickerList.getModel()).addElement(panels[i][0]);
 
 		try {
 			if (UIManager.getLookAndFeel().getID().equals("Aqua")) {
@@ -505,7 +505,7 @@ public class SwingDemo extends JFrame
 
 		// References to text fields not stored to reduce code clutter.
 
-		JScrollPane list2 = new JScrollPane(new JList(new String[] {"Mouse, Mickey"}));
+		JScrollPane list2 = new JScrollPane(new JList<String>(new String[] {"Mouse, Mickey"}));
 		panel.add(list2,                     new CC().spanY().growY().minWidth("150").gapX(null, "10"));
 
 		panel.add(new JLabel("Last Name"));
@@ -671,7 +671,7 @@ public class SwingDemo extends JFrame
 
 		JPanel p = createTabPanel(new MigLayout("", "[]15[][grow,fill]15[grow]"));
 
-		JScrollPane list1 = new JScrollPane(new JList(new String[] {"Mouse, Mickey"}));
+		JScrollPane list1 = new JScrollPane(new JList<>(new String[] {"Mouse, Mickey"}));
 
 		p.add(list1,                     "spany, growy, wmin 150");
 		p.add(new JLabel("Last Name"));
@@ -710,7 +710,7 @@ public class SwingDemo extends JFrame
 
 		// References to text fields not stored to reduce code clutter.
 
-		JScrollPane list2 = new JScrollPane(new JList(new String[] {"Mouse, Mickey"}));
+		JScrollPane list2 = new JScrollPane(new JList<>(new String[] {"Mouse, Mickey"}));
 		p2.add(list2,                     "spany, growy, wmin 150");
 		p2.add(new JLabel("Last Name"));
 		p2.add(new JTextField());
@@ -3291,9 +3291,9 @@ public class SwingDemo extends JFrame
 		return b;
 	}
 
-	public JComboBox createCombo(String[] items)
+	public JComboBox<String> createCombo(String[] items)
 	{
-		JComboBox combo = new JComboBox(items);
+		JComboBox<String> combo = new JComboBox<>(items);
 
 		if (PlatformDefaults.getCurrentPlatform() == PlatformDefaults.MAC_OSX)
 			combo.setOpaque(false);

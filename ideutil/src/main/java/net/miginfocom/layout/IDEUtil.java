@@ -173,7 +173,7 @@ public class IDEUtil
 	{
 		StringBuffer sb = new StringBuffer(32);
 
-		DimConstraint[] dims = ac.getConstaints();
+		DimConstraint[] dims = ac.getConstraints();
 		BoundSize defGap = isCols ? PlatformDefaults.getGridGapX() : PlatformDefaults.getGridGapY();
 
 		for (int i = 0; i < dims.length; i++) {

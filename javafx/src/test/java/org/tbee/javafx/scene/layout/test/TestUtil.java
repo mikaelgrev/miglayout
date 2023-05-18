@@ -248,7 +248,7 @@ public class TestUtil {
      */
     static public void runAndWait(final Runnable runnable) {
         try {
-            FutureTask future = new FutureTask(runnable, null);
+            FutureTask<Void> future = new FutureTask<>(runnable, null);
             Platform.runLater(future);
             future.get();
         }

@@ -639,7 +639,9 @@ public class MigLayout implements LayoutManager2, Externalizable
 		while (comp != null && !clazz.isInstance(comp))
 			comp = comp.getParent();
 
-		return (E) comp;
+		@SuppressWarnings("unchecked")
+		E compCasted = (E) comp;
+		return compCasted;
 	}
 
 

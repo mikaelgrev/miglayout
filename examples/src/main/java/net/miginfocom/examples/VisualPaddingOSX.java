@@ -70,7 +70,7 @@ public class VisualPaddingOSX extends JFrame
 		add(new JTextField("A text"), cc);
 		add(new JScrollPane(new JTextPane()), cc);
 		add(new JScrollPane(new JTextArea("A text", 1, 20)), cc);
-		JList list = new JList(new Object[] {"A text"});
+		JList<Object> list = new JList<>(new Object[] {"A text"});
 		list.setVisibleRowCount(1);
 		add(new JScrollPane(list), cc);
 
@@ -160,9 +160,9 @@ public class VisualPaddingOSX extends JFrame
 		return button;
 	}
 
-	private JComboBox createCombo(String key, boolean editable)
+	private JComboBox<Object> createCombo(String key, boolean editable)
 	{
-		JComboBox comboBox = new JComboBox(new Object[]{ String.valueOf(key)});
+		JComboBox<Object> comboBox = new JComboBox<>(new Object[]{ String.valueOf(key)});
 		comboBox.setFocusable(editable);
 		comboBox.setEditable(editable);
 		if (key != null)
