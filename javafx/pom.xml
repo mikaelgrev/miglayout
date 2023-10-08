@@ -4,11 +4,12 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.2-SNAPSHOT</version>
+		<version>11.2</version>
 	</parent>
 	<artifactId>miglayout-javafx</artifactId>
     <name>MiGLayout JavaFX</name>
     <description>MiGLayout - Layout Manager for JavaFX</description>
+	<url>http://www.miglayout.com/</url>
 
 	<properties>
 		<maven.compiler.target>11</maven.compiler.target>

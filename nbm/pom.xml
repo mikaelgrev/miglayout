@@ -5,13 +5,15 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.2-SNAPSHOT</version>
+		<version>11.2</version>
 	</parent>
 
     <artifactId>lib-miglayout-NB90</artifactId>
     <packaging>nbm</packaging>
 
     <name>MiGLayout NetBeans platform library wrapper</name>
+    <description>MiGLayout NetBeans platform library wrapper</description>
+    <url>http://www.miglayout.com/</url>
 
     <dependencies>
         <dependency>

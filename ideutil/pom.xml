@@ -4,11 +4,12 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.2-SNAPSHOT</version>
+		<version>11.2</version>
 	</parent>
 	<artifactId>miglayout-ideutil</artifactId>
 	<name>MiGLayout IDEUtil</name>
     <description>MiGLayout - IDEUtil class for EDI integration</description>
+	<url>http://www.miglayout.com/</url>
 
 	<dependencies>
         <dependency>

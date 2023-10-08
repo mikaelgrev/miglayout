@@ -1,1 +1,8 @@
-mvnw clean deploy jreleaser:full-release -DaltDeploymentRepository=local::file:./target/staging-deploy
+JRelease does not work in Maven multimodule project: it creates many repo's (one for each module).
+
+Releasing:
+- mvnw clean deploy jreleaser:full-release -DaltDeploymentRepository=local::file:./target/staging-deploy
+  requires certificates in ~/.jreleaser/config.toml
+- goto https://oss.sonatype.org
+- find the latest repo, check the contents, close and release manually
+- drop the other repos

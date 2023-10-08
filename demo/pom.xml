@@ -4,11 +4,12 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.2-SNAPSHOT</version>
+		<version>11.2</version>
 	</parent>
 	<artifactId>miglayout-demo</artifactId>
     <name>MiGLayout Demo</name>
     <description>MiGLayout - Demo's for Swing and SWT</description>
+    <url>http://www.miglayout.com/</url>
 
     <dependencies>
         <dependency>

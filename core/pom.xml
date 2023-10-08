@@ -4,10 +4,10 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.2-SNAPSHOT</version>
+		<version>11.2</version>
 	</parent>
 	<artifactId>miglayout-core</artifactId>
     <name>MiGLayout Core</name>
     <description>MiGLayout - core layout logic</description>
-
+	<url>http://www.miglayout.com/</url>
 </project>

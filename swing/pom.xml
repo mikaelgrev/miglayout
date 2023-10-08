@@ -4,11 +4,12 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.2-SNAPSHOT</version>
+		<version>11.2</version>
 	</parent>
 	<artifactId>miglayout-swing</artifactId>
     <name>MiGLayout Swing</name>
     <description>MiGLayout - Java Layout Manager for Swing</description>
+    <url>http://www.miglayout.com/</url>
 
     <dependencies>
         <dependency>
