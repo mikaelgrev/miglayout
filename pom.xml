@@ -20,7 +20,6 @@
 		<module>swing</module>
 		<module>swt</module>
 		<module>javafx</module>
-		<module>ideutil</module>
 		<module>demo</module>
 		<module>examples</module>
 		<module>nbm</module>
