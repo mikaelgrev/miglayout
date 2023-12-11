@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>11.2</version>
+	<version>11.3</version>
 	<packaging>pom</packaging>
 	<name>MiGLayout</name>
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
@@ -32,7 +32,7 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<error-prone.version>2.19.1</error-prone.version>
-<!--		<altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>-->
+		<altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
 	</properties>
 
 	<dependencyManagement>
@@ -275,7 +275,6 @@
 				<groupId>org.jreleaser</groupId>
 				<artifactId>jreleaser-maven-plugin</artifactId>
 				<version>1.8.0</version>
-<!--				<inherited>false</inherited>-->
 				<configuration>
 					<jreleaser>
 						<signing>
@@ -294,8 +293,8 @@
 										<active>ALWAYS</active>
 										<snapshotUrl>https://oss.sonatype.org/content/repositories/snapshots</snapshotUrl>
 										<url>https://oss.sonatype.org/service/local</url>
-										<closeRepository>false</closeRepository> <!-- false, see release.txt -->
-										<releaseRepository>false</releaseRepository> <!-- false, see release.txt -->
+										<closeRepository>true</closeRepository> <!-- false, see release.txt -->
+										<releaseRepository>true</releaseRepository> <!-- false, see release.txt -->
 										<stagingRepositories>target/staging-deploy</stagingRepositories>
 									</maven-central>
 								</nexus2>
