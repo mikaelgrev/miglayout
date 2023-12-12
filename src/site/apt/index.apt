@@ -12,7 +12,6 @@ Each environment in which MigLayout is used has its own artifact:
 * <artifactId>miglayout-javafx</artifactId>
 
 And there also are supporting artifacts like:
-* <artifactId>miglayout-ideutil</artifactId>
 * <artifactId>miglayout-demo</artifactId>
 * <artifactId>miglayout-examples</artifactId>
 
