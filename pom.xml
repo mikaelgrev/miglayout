@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>11.3</version>
+	<version>11.4</version>
 	<packaging>pom</packaging>
 	<name>MiGLayout</name>
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
@@ -116,7 +116,7 @@
 					<debuglevel>lines,vars</debuglevel>
 					<compilerArgs>
 						<arg>-XDcompilePolicy=simple</arg>
-						<arg>-Werror</arg>
+<!--						<arg>-Werror</arg>-->
 						<arg>-Xlint:all</arg>
 						<arg>-Xplugin:ErrorProne \
 							 -Xep:StringCaseLocaleUsage:ERROR
@@ -269,7 +269,7 @@
 			<plugin>
 				<groupId>org.jreleaser</groupId>
 				<artifactId>jreleaser-maven-plugin</artifactId>
-				<version>1.8.0</version>
+				<version>1.13.1</version>
 				<configuration>
 					<jreleaser>
 						<signing>

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.miglayout</groupId>
 		<artifactId>miglayout-parent</artifactId>
-		<version>11.3</version>
+		<version>11.4</version>
 	</parent>
 	<artifactId>miglayout-javafx</artifactId>
     <name>MiGLayout JavaFX</name>
@@ -15,22 +15,8 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.release>11</maven.compiler.release>
+		<testfx.version>4.0.18</testfx.version>
 	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.testfx</groupId>
-				<artifactId>testfx-core</artifactId>
-				<version>4.0.15-alpha</version>
-			</dependency>
-			<dependency>
-				<groupId>org.testfx</groupId>
-				<artifactId>testfx-junit</artifactId>
-				<version>4.0.15-alpha</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -59,16 +45,18 @@
 			<scope>provided</scope>
 		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-core</artifactId>
-        	<scope>test</scope>
-        </dependency>
-        <dependency>
+			<version>${testfx.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-junit</artifactId>
-        	<scope>test</scope>
-        </dependency>
+			<version>${testfx.version}</version>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 	
 	<build>
