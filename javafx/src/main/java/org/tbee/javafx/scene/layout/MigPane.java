@@ -523,7 +523,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		if (newWidth != getWidth()) {
 			super.setWidth(newWidth);
 			if (_grid != null) {
-				_grid.invalidateContainerSize();
+				invalidateGrid();
 			}
 		}
 	}
@@ -534,7 +534,7 @@ public class MigPane extends javafx.scene.layout.Pane
 		if (newHeight != getHeight()) {
 			super.setHeight(newHeight);
 			if (_grid != null) {
-				_grid.invalidateContainerSize();
+				invalidateGrid();
 			}
 		}
 	}
@@ -547,7 +547,7 @@ public class MigPane extends javafx.scene.layout.Pane
 
 		biasDirty = true;
 		if (_grid != null) {
-			_grid.invalidateContainerSize();
+			invalidateGrid();
 		}
 
 		super.requestLayout();
