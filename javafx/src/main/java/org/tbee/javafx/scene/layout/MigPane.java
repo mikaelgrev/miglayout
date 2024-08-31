@@ -972,14 +972,22 @@ public class MigPane extends javafx.scene.layout.Pane
 		public int getHorizontalScreenDPI()
 		{
 			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
-			return (int) Math.ceil(Screen.getPrimary().getDpi());
+			double dpi = Screen.getPrimary().getDpi();
+			if (dpi < 1.0) {
+				dpi = 96.0;
+			}
+			return (int) Math.ceil(dpi);
 		}
 
 		@Override
 		public int getVerticalScreenDPI()
 		{
 			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
-			return (int) Math.ceil(Screen.getPrimary().getDpi());
+			double dpi = Screen.getPrimary().getDpi();
+			if (dpi < 1.0) {
+				dpi = 96.0;
+			}
+			return (int) Math.ceil(dpi);
 		}
 
 		@Override
@@ -1058,9 +1066,10 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public void setBounds(int x, int y, int width, int height)
 		{
-			//			System.out.println(getComponent() + " FXComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
-			//			System.out.println("x: " + x + ", y: " + y);
-			//			CC cc = wrapperToCCMap.get(this);
+// TBEERNOT
+System.out.println(getComponent() + " FXComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
+//System.out.println("x: " + x + ", y: " + y);
+//CC cc = wrapperToCCMap.get(this);
 
 			if (!animateBoundsChange(node, x, y, width, height)) {
 				node.resizeRelocate((double) x, (double) y, (double) width, (double) height);
