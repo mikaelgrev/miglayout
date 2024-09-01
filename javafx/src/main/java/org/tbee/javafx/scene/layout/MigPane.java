@@ -15,12 +15,14 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import net.miginfocom.layout.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -971,8 +973,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getHorizontalScreenDPI()
 		{
-			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
-			double dpi = Screen.getPrimary().getDpi();
+			double dpi = getScreen().getDpi();
+			// If the dpi value is unreasonable, use a somewhat sensible default
 			if (dpi < 1.0) {
 				dpi = 96.0;
 			}
@@ -982,12 +984,16 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public int getVerticalScreenDPI()
 		{
-			// todo All references to Screen.getPrimary() should be replaced with getting the actual screen the Node is on.
-			double dpi = Screen.getPrimary().getDpi();
-			if (dpi < 1.0) {
-				dpi = 96.0;
+			// JavaFX only has one DPI factor.
+			return getHorizontalScreenDPI();
+		}
+
+		private Screen getScreen() {
+			Window window = node.getScene().getWindow();
+			for (Screen screen : Screen.getScreensForRectangle(window.getX(), window.getY(), 1., 1.)) {
+				return screen;
 			}
-			return (int) Math.ceil(dpi);
+			return Screen.getPrimary();
 		}
 
 		@Override
