@@ -490,23 +490,23 @@ public class MigPane extends javafx.scene.layout.Pane
 			}
 
 			// for debugging System.out.println("MigPane.layoutChildren");
-			Grid lGrid = getGrid();
+			Grid grid = getGrid();
 
 			// here the actual layout happens
 			// this will use FXComponentWrapper.setBounds to actually place the components
 
 			Insets ins = getInsets();
-			int[] lBounds = new int[]{(int) ins.getLeft(), (int) ins.getTop(), (int) Math.ceil(getWidth() - getHorIns()), (int) Math.ceil(getHeight() - getVerIns())};
-			lGrid.layout(lBounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug);
+			int[] bounds = new int[]{(int) ins.getLeft(), (int) ins.getTop(), (int) Math.ceil(getWidth() - getHorIns()), (int) Math.ceil(getHeight() - getVerIns())};
+			grid.layout(bounds, getLayoutConstraints().getAlignX(), getLayoutConstraints().getAlignY(), debug);
 
 			// paint debug
 			if (debug) {
 				clearDebug();
-				lGrid.paintDebug();
+				grid.paintDebug();
 			}
 
 			// Handle the "pack" keyword
-			long newSize = lGrid.getHeight()[1] + (((long) lGrid.getWidth()[1]) << 32);
+			long newSize = grid.getHeight()[1] + (((long) grid.getWidth()[1]) << 32);
 			if (lastSize != newSize) {
 				lastSize = newSize;
 				Platform.runLater(this::adjustWindowSize);
@@ -660,39 +660,39 @@ public class MigPane extends javafx.scene.layout.Pane
 
 	private void addDebugRectangle(double x, double y, double w, double h, DebugRectangleType type)
 	{
-		DebugRectangle lRectangle = new DebugRectangle( snap(x), snap(y), snap(x + w - 1) - snap(x), snap(y + h - 1) - snap(y) );
+		DebugRectangle debugRectangle = new DebugRectangle( snap(x), snap(y), snap(x + w - 1) - snap(x), snap(y + h - 1) - snap(y) );
 
 		if (type == DebugRectangleType.CELL) {
 			//System.out.print(getId() + ": " + "paintDebugCell ");
-			lRectangle.setStroke(getDebugCellColor());
-			lRectangle.getStrokeDashArray().addAll(3d,3d);
+			debugRectangle.setStroke(getDebugCellColor());
+			debugRectangle.getStrokeDashArray().addAll(3d,3d);
 		}
 		else if (type == DebugRectangleType.EXTERNAL) {
 			//System.out.print(getId() + ": " + "paintDebugExternal ");
-			lRectangle.setStroke(getDebugExternalColor());
-			lRectangle.getStrokeDashArray().addAll(5d,5d);
+			debugRectangle.setStroke(getDebugExternalColor());
+			debugRectangle.getStrokeDashArray().addAll(5d,5d);
 		}
 		else if (type == DebugRectangleType.OUTLINE) {
 			//System.out.print(getId() + ": " + "paintDebugOutline ");
-			lRectangle.setStroke(getDebugOutlineColor());
-			lRectangle.getStrokeDashArray().addAll(4d,4d);
+			debugRectangle.setStroke(getDebugOutlineColor());
+			debugRectangle.getStrokeDashArray().addAll(4d,4d);
 		}
 		else if (type == DebugRectangleType.CONTAINER_OUTLINE) {
 			//System.out.print(getId() + ": " + "paintDebugContainerOutline ");
-			lRectangle.setStroke(getDebugContainerOutlineColor());
-			lRectangle.getStrokeDashArray().addAll(7d,7d);
+			debugRectangle.setStroke(getDebugContainerOutlineColor());
+			debugRectangle.getStrokeDashArray().addAll(7d,7d);
 		}
 		else {
 			throw new IllegalStateException("Unknown debug rectangle type");
 		}
-		// for debugging System.out.println(lRectangle.getX() + "," + lRectangle.getY() + "/" + lRectangle.getWidth() + "x" + lRectangle.getHeight());
-		//lRectangle.setStrokeWidth(0.5f);
-		lRectangle.setFill(null);
-		lRectangle.mouseTransparentProperty().set(true); // just to be sure
+		// for debugging System.out.println(debugRectangle.getX() + "," + debugRectangle.getY() + "/" + debugRectangle.getWidth() + "x" + debugRectangle.getHeight());
+		//debugRectangle.setStrokeWidth(0.5f);
+		debugRectangle.setFill(null);
+		debugRectangle.mouseTransparentProperty().set(true); // just to be sure
 
 		// add as child
-		MigPane.this.getChildren().add(lRectangle);
-		this.debugRectangles.add(lRectangle);
+		MigPane.this.getChildren().add(debugRectangle);
+		this.debugRectangles.add(debugRectangle);
 	}
 	private enum DebugRectangleType { CELL, OUTLINE, CONTAINER_OUTLINE, EXTERNAL }
 
@@ -747,11 +747,11 @@ public class MigPane extends javafx.scene.layout.Pane
 		public FXComponentWrapper[] getComponents() {
 			// for debugging System.out.println("MigPane.FXContainerWrapper.getComponents " + MigPane.this.componentWrapperList.size());
 //			return getManagedChildren().stream().map(node -> new FXComponentWrapper(node)).toArray(FXComponentWrapper[]::new);
-			List<FXComponentWrapper> lFXComponentWrappers = new ArrayList<>();
+			List<FXComponentWrapper> fxComponentWrappers = new ArrayList<>();
 			for (Node node : getManagedChildren()) {
-				lFXComponentWrappers.add(new FXComponentWrapper(node));
+				fxComponentWrappers.add(new FXComponentWrapper(node));
 			}
-			return lFXComponentWrappers.toArray(new FXComponentWrapper[]{});
+			return fxComponentWrappers.toArray(new FXComponentWrapper[]{});
 		}
 
 		@Override
@@ -930,8 +930,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		public int getScreenLocationX()
 		{
 			// this code is called when absolute layout is used
-			Bounds lBoundsInSceneNode = node.localToScene(node.getBoundsInLocal());
-			int v = (int) (node.getScene().getX() + node.getScene().getX() + lBoundsInSceneNode.getMinX());
+			Bounds boundsInSceneNode = node.localToScene(node.getBoundsInLocal());
+			int v = (int) (node.getScene().getX() + node.getScene().getX() + boundsInSceneNode.getMinX());
 			// for debugging System.out.println(getComponent() + " getScreenLocationX =" + v);
 			return v;
 		}
@@ -940,8 +940,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		public int getScreenLocationY()
 		{
 			// this code is called when absolute layout is used
-			Bounds lBoundsInSceneNode = node.localToScene(node.getBoundsInLocal());
-			int v = (int) (node.getScene().getY() + node.getScene().getY() + lBoundsInSceneNode.getMinY());
+			Bounds boundsInSceneNode = node.localToScene(node.getBoundsInLocal());
+			int v = (int) (node.getScene().getY() + node.getScene().getY() + boundsInSceneNode.getMinY());
 			// for debugging System.out.println(getComponent() + " getScreenLocationX =" + v);
 			return v;
 		}
@@ -1044,8 +1044,8 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public void paintDebugOutline(boolean useVisualPadding)
 		{
-			CC lCC = wrapperToCCMap.get(this);
-			DebugRectangleType type = lCC != null && lCC.isExternal() ? DebugRectangleType.EXTERNAL : DebugRectangleType.OUTLINE;
+			CC cc = wrapperToCCMap.get(this);
+			DebugRectangleType type = cc != null && cc.isExternal() ? DebugRectangleType.EXTERNAL : DebugRectangleType.OUTLINE;
 			addDebugRectangle(this.node.getLayoutX() + this.node.getLayoutBounds().getMinX(), (double) this.node.getLayoutY() + this.node.getLayoutBounds().getMinY(), getWidth(), getHeight(), type); // always draws node size, even if less is used
 		}
 
@@ -1072,13 +1072,12 @@ public class MigPane extends javafx.scene.layout.Pane
 		@Override
 		public void setBounds(int x, int y, int width, int height)
 		{
-// TBEERNOT
-System.out.println(getComponent() + " FXComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
-//System.out.println("x: " + x + ", y: " + y);
-//CC cc = wrapperToCCMap.get(this);
+			// System.out.println(getComponent() + " FXComponentWrapper.setBound x="  + x + ",y=" + y + " / w=" + width + ",h=" + height + " / resizable=" + this.node.isResizable());
+			// System.out.println("x: " + x + ", y: " + y);
+			// CC cc = wrapperToCCMap.get(this);
 
 			if (!animateBoundsChange(node, x, y, width, height)) {
-				node.resizeRelocate((double) x, (double) y, (double) width, (double) height);
+				node.resizeRelocate(x, y, width, height);
 			}
 		}
 	}
