@@ -3,6 +3,7 @@ package org.tbee.javafx.scene.layout;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -15,14 +16,12 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import net.miginfocom.layout.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 /**
@@ -1007,11 +1006,18 @@ public class MigPane extends javafx.scene.layout.Pane {
 
         private Screen getScreen() {
             Window window = node.getScene().getWindow();
-            for (Screen screen : Screen.getScreensForRectangle(window.getX(), window.getY(), 1., 1.)) {
-                return screen;
-            }
-            return Screen.getPrimary();
+
+			// Cache of one
+			int screenCacheKey = (window.getX() + "/" + window.getY()).hashCode();
+			if (screenCacheKey != this.screenCacheKey) {
+				List<Screen> screens = Screen.getScreensForRectangle(window.getX(), window.getY(), 1., 1.);
+				screen = (screens.isEmpty() ? Screen.getPrimary() : screens.get(0));
+				this.screenCacheKey = screenCacheKey;
+			}
+			return screen;
         }
+		private int screenCacheKey = 0;
+		private Screen screen = null;
 
         @Override
         public float getPixelUnitFactor(boolean isHor) {
