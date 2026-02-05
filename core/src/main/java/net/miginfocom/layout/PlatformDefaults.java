@@ -56,29 +56,29 @@ public final class PlatformDefaults
 	private static volatile int MOD_COUNT = 0;
 
 //	private static final UnitValue LPX1 = new UnitValue(1, UnitValue.LPX, null);
-//	private static final UnitValue LPX4 = new UnitValue(4, UnitValue.LPX, null);
+	private static final UnitValue LPX4 = new UnitValue(4, UnitValue.LPX, null);
 	private static final UnitValue LPX6 = new UnitValue(6, UnitValue.LPX, null);
 	private static final UnitValue LPX7 = new UnitValue(7, UnitValue.LPX, null);
 //	private static final UnitValue LPX8 = new UnitValue(8, UnitValue.LPX, null);
-//	private static final UnitValue LPX9 = new UnitValue(9, UnitValue.LPX, null);
+	private static final UnitValue LPX9 = new UnitValue(9, UnitValue.LPX, null);
 //	private static final UnitValue LPX10 = new UnitValue(10, UnitValue.LPX, null);
 	private static final UnitValue LPX11 = new UnitValue(11, UnitValue.LPX, null);
 	private static final UnitValue LPX12 = new UnitValue(12, UnitValue.LPX, null);
-//	private static final UnitValue LPX14 = new UnitValue(14, UnitValue.LPX, null);
+	private static final UnitValue LPX14 = new UnitValue(14, UnitValue.LPX, null);
 	private static final UnitValue LPX16 = new UnitValue(16, UnitValue.LPX, null);
 	private static final UnitValue LPX18 = new UnitValue(18, UnitValue.LPX, null);
 	private static final UnitValue LPX20 = new UnitValue(20, UnitValue.LPX, null);
 
 //	private static final UnitValue LPY1 = new UnitValue(1, UnitValue.LPY, null);
-//	private static final UnitValue LPY4 = new UnitValue(4, UnitValue.LPY, null);
+	private static final UnitValue LPY4 = new UnitValue(4, UnitValue.LPY, null);
 	private static final UnitValue LPY6 = new UnitValue(6, UnitValue.LPY, null);
 	private static final UnitValue LPY7 = new UnitValue(7, UnitValue.LPY, null);
 //	private static final UnitValue LPY8 = new UnitValue(8, UnitValue.LPY, null);
-//	private static final UnitValue LPY9 = new UnitValue(9, UnitValue.LPY, null);
+	private static final UnitValue LPY9 = new UnitValue(9, UnitValue.LPY, null);
 //	private static final UnitValue LPY10 = new UnitValue(10, UnitValue.LPY, null);
 	private static final UnitValue LPY11 = new UnitValue(11, UnitValue.LPY, null);
 	private static final UnitValue LPY12 = new UnitValue(12, UnitValue.LPY, null);
-//	private static final UnitValue LPY14 = new UnitValue(14, UnitValue.LPY, null);
+	private static final UnitValue LPY14 = new UnitValue(14, UnitValue.LPY, null);
 	private static final UnitValue LPY16 = new UnitValue(16, UnitValue.LPY, null);
 	private static final UnitValue LPY18 = new UnitValue(18, UnitValue.LPY, null);
 	private static final UnitValue LPY20 = new UnitValue(20, UnitValue.LPY, null);
@@ -177,11 +177,11 @@ public final class PlatformDefaults
 		switch (plaf) {
 			case WINDOWS_XP:
 				setDefaultVisualPadding("TabbedPane." + VISUAL_PADDING_PROPERTY, new int[]{1, 0, 1, 2});
-				setRelatedGap(LPX7, LPY7);
-				setUnrelatedGap(LPX11, LPY11);
-				setParagraphGap(LPX20, LPY20);
-				setIndentGap(LPX11, LPY11);
-				setGridCellGap(LPX7, LPY7);
+                setRelatedGap(LPX4, LPY4);
+                setUnrelatedGap(LPX7, LPY9);
+                setParagraphGap(LPX14, LPY14);
+                setIndentGap(LPX9, LPY9);
+                setGridCellGap(LPX4, LPY4);
 
 				setMinimumButtonWidth(new UnitValue(75, UnitValue.LPX, null));
 				setButtonOrder("L_E+U+YNBXOCAH_I_R");
