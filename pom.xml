@@ -86,7 +86,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
                     <debug>true</debug>
-                    <debuglevel>lines,vars</debuglevel>
+                    <debuglevel>lines,vars,source</debuglevel>
 				</configuration>
 			</plugin>
 
@@ -168,7 +168,7 @@
                     </execution>
                 </executions>
             </plugin>
-			
+
 			<!-- attach source -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -201,7 +201,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- sign the jars files; the credentials are in .m2/settings.xml, the 
+			<!-- sign the jars files; the credentials are in .m2/settings.xml, the
 				key itself is shown by the gpg list-keys command -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -226,10 +226,10 @@
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-<!-- in case of release problems without reason 					
+<!-- in case of release problems without reason
 					<keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
 					<keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
- -->					
+ -->
 				</configuration>
 			</plugin>
 		</plugins>

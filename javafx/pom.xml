@@ -18,7 +18,7 @@
             <artifactId>miglayout-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+
         <dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-core</artifactId>
@@ -78,7 +78,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
                     <debug>true</debug>
-                    <debuglevel>lines,vars</debuglevel>
+                    <debuglevel>lines,vars,source</debuglevel>
 				</configuration>
 			</plugin>
 			<!-- backport Java 8 features -->
