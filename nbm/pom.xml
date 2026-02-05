@@ -26,12 +26,9 @@
         To create your own repository, use: nbm:populate-repository
         -->
         <repository>
-            <id>netbeans</id>
-            <name>NetBeans</name>
-            <url>https://bits.netbeans.org/maven2/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>jenkinsci</id>
+            <name>Jenkins CI</name>
+            <url>https://repo.jenkins-ci.org/public/</url>
         </repository>
     </repositories>
 
