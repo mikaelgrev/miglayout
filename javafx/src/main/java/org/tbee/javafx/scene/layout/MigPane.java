@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class MigPane extends javafx.scene.layout.Pane {
     protected final static String FXML_CC_KEY = "MigPane.cc";
+    public static final int SENSIBLE_DPI = 96;
 
     // We need to invalidate the grid since we can have a component with hidemode 3
     // We need to request layout since JavaFX doesn't do this.
@@ -990,10 +991,15 @@ public class MigPane extends javafx.scene.layout.Pane {
 
         @Override
         public int getHorizontalScreenDPI() {
-            double dpi = getScreen().getDpi();
+            Screen screen = getScreen();
+            // This happens when the pane is used in scenebuilder
+            if (screen == null) {
+                return SENSIBLE_DPI;
+            }
+            double dpi = screen.getDpi();
             // If the dpi value is unreasonable, use a somewhat sensible default
             if (dpi < 1.0) {
-                dpi = 96.0;
+                return SENSIBLE_DPI;
             }
             return (int) Math.ceil(dpi);
         }
@@ -1005,6 +1011,9 @@ public class MigPane extends javafx.scene.layout.Pane {
         }
 
         private Screen getScreen() {
+            if (node.getScene() == null) {
+                return null; // node is not yet part of a scene.
+            }
             Window window = node.getScene().getWindow();
 
 			// Cache of one

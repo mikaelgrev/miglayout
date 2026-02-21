@@ -7,8 +7,6 @@ import net.miginfocom.layout.ConstraintParser;
 
 /**
  * This class provides some API enhancements to implement FXML (and this keep the original's API clean)
- * @author User
- *
  */
 @DefaultProperty(value = "children") // for FXML integration
 public class MigPane extends org.tbee.javafx.scene.layout.MigPane

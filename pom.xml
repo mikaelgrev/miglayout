@@ -114,25 +114,36 @@
 				<configuration>
 					<debug>true</debug>
 					<debuglevel>lines,vars</debuglevel>
-					<compilerArgs>
-						<arg>-XDcompilePolicy=simple</arg>
-<!--						<arg>-Werror</arg>-->
-						<arg>-Xlint:all</arg>
-						<arg>-Xplugin:ErrorProne \
-							 -Xep:StringCaseLocaleUsage:ERROR
-						</arg>
-					</compilerArgs>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>com.google.errorprone</groupId>
-							<artifactId>error_prone_core</artifactId>
-							<version>${error-prone.version}</version>
-						</path>
-						<!-- Other annotation processors go here.
-                        If 'annotationProcessorPaths' is set, processors will no longer be
-                        discovered on the regular -classpath; see also 'Using Error Prone
-                        together with other annotation processors' below. -->
-					</annotationProcessorPaths>
+<!-- causes java.lang.IllegalAccessError: class com.google.errorprone.BaseErrorProneJavaCompiler (in unnamed module @0x3cc548f6) cannot access class com.sun.tools.javac.api.BasicJavacTask (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.api to unnamed module @0x3cc548f6 -->
+<!--					<compilerArgs>-->
+<!--						<arg>-XDcompilePolicy=simple</arg>-->
+<!--&lt;!&ndash;						<arg>-Werror</arg>&ndash;&gt;-->
+<!--						<arg>-Xlint:all</arg>-->
+<!--						<arg>-Xplugin:ErrorProne \-->
+<!--							 -Xep:StringCaseLocaleUsage:ERROR-->
+<!--						</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-opens jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>-->
+<!--						<arg>-J&#45;&#45;add-opens jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>-->
+<!--					</compilerArgs>-->
+<!--					<annotationProcessorPaths>-->
+<!--						<path>-->
+<!--							<groupId>com.google.errorprone</groupId>-->
+<!--							<artifactId>error_prone_core</artifactId>-->
+<!--							<version>${error-prone.version}</version>-->
+<!--						</path>-->
+<!--						&lt;!&ndash; Other annotation processors go here.-->
+<!--                        If 'annotationProcessorPaths' is set, processors will no longer be-->
+<!--                        discovered on the regular -classpath; see also 'Using Error Prone-->
+<!--                        together with other annotation processors' below. &ndash;&gt;-->
+<!--					</annotationProcessorPaths>-->
 				</configuration>
 			</plugin>
 
