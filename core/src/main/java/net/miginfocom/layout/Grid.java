@@ -529,7 +529,7 @@ public final class Grid
 								cw.y += bounds[1];
 
 								if (!trialRun)
-									cw.transferBounds(addVisualPadding);
+									cw.transferBounds(bounds, addVisualPadding);
 
 								if (callbackList != null) {
 									for (LayoutCallback callback : callbackList)
@@ -1904,7 +1904,7 @@ public final class Grid
 
 		/** Transfers the bounds to the component
 		 */
-		private void transferBounds(boolean addVisualPadding)
+		private void transferBounds(int[] bounds, boolean addVisualPadding)
 		{
 			if (cc.isExternal())
 				return;
@@ -1923,6 +1923,21 @@ public final class Grid
 					compY -= visualPadding[0];
 					compW += (visualPadding[1] + visualPadding[3]);
 					compH += (visualPadding[0] + visualPadding[2]);
+
+					if (compX < 0) {
+						compW -= -compX;
+						compX = 0;
+					}
+					if (compY < 0) {
+						compH -= -compY;
+						compY = 0;
+					}
+					if (compX + compW > bounds[2]) {
+						compW = bounds[2] - compX;
+					}
+					if (compY + compH > bounds[3]) {
+						compH = bounds[3] - compY;
+					}
 				}
 			}
 
