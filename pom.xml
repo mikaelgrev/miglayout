@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.miglayout</groupId>
 	<artifactId>miglayout-parent</artifactId>
-	<version>11.4.2</version>
+	<version>11.4.3</version>
 	<packaging>pom</packaging>
 	<name>MiGLayout</name>
 	<description>MiGLayout - Java Layout Manager for Swing, SWT and JavaFX</description>
@@ -275,40 +275,6 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
-
-			<!-- https://jreleaser.org/guide/latest/examples/maven/maven-central.html#_maven_example -->
-			<plugin>
-				<groupId>org.jreleaser</groupId>
-				<artifactId>jreleaser-maven-plugin</artifactId>
-				<version>1.13.1</version>
-				<configuration>
-					<jreleaser>
-						<signing>
-							<active>ALWAYS</active>
-							<armored>true</armored>
-						</signing>
-						<release>
-							<github>
-								<overwrite>true</overwrite>
-							</github>
-						</release>
-						<deploy>
-							<maven>
-								<nexus2>
-									<maven-central>
-										<active>ALWAYS</active>
-										<snapshotUrl>https://oss.sonatype.org/content/repositories/snapshots</snapshotUrl>
-										<url>https://oss.sonatype.org/service/local</url>
-										<closeRepository>true</closeRepository> <!-- false, see release.txt -->
-										<releaseRepository>true</releaseRepository> <!-- false, see release.txt -->
-										<stagingRepositories>target/staging-deploy</stagingRepositories>
-									</maven-central>
-								</nexus2>
-							</maven>
-						</deploy>
-					</jreleaser>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -439,6 +405,98 @@
 			<properties>
 				<javadoc.opts>-Xdoclint:none</javadoc.opts>
 			</properties>
+		</profile>
+
+		<profile>
+			<id>jreleaser</id>
+			<build>
+				<plugins>
+
+					<!-- https://jreleaser.org/guide/latest/examples/maven/maven-central.html#_maven_example -->
+					<plugin>
+						<groupId>org.jreleaser</groupId>
+						<artifactId>jreleaser-maven-plugin</artifactId>
+						<version>1.22.0</version>
+						<inherited>false</inherited>
+						<configuration>
+							<jreleaser>
+								<signing>
+									<active>ALWAYS</active>
+									<armored>true</armored>
+								</signing>
+								<release>
+									<github>
+										<overwrite>true</overwrite>
+									</github>
+								</release>
+								<deploy>
+									<maven>
+										<mavenCentral>
+											<release-deploy>
+												<active>RELEASE</active>
+												<url>https://central.sonatype.com/api/v1/publisher</url>
+												<stagingRepositories>target/staging-deploy</stagingRepositories>
+											</release-deploy>
+										</mavenCentral>
+										<nexus2>
+											<snapshot-deploy>
+												<active>SNAPSHOT</active>
+												<snapshotUrl>https://central.sonatype.com/repository/maven-snapshots/</snapshotUrl>
+												<applyMavenCentralRules>true</applyMavenCentralRules>
+												<snapshotSupported>true</snapshotSupported>
+												<closeRepository>true</closeRepository>
+												<releaseRepository>true</releaseRepository>
+												<stagingRepositories>target/staging-deploy</stagingRepositories>
+											</snapshot-deploy>
+										</nexus2>
+									</maven>
+								</deploy>
+							</jreleaser>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<!-- https://central.sonatype.org/publish/requirements/gpg/#distributing-your-public-key -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.2.8</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<!-- If you have multiple keys and want to be explicit -->
+									<!-- <keyname>tbee@tbee.org</keyname> -->
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- https://central.sonatype.org/publish/publish-portal-maven/#automatic-publishing -->
+					<!-- mvn deploy -->
+					<!-- check on: https://central.sonatype.com/publishing/deployments -->
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>0.10.0</version>
+						<extensions>true</extensions>
+						<configuration>
+							<publishingServerId>central</publishingServerId>
+							<autoPublish>true</autoPublish>
+							<waitUntil>published</waitUntil>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>

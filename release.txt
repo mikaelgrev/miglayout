@@ -1,8 +1,7 @@
-JRelease does not work in Maven multimodule project: it creates many repo's (one for each module).
-
 Releasing:
-- mvnw clean deploy
-  requires certificates in ~/.jreleaser/config.toml
-- mvnw -N jreleaser:full-release
+- make sure gpg is installed on the OS
+- make sure a gpg key is loaded for signing
+- mvnw versions:set
+- mvnw clean deploy -Prelease -D skipTests
 
-Visit https://oss.sonatype.org to see the deployment repository
+Visit https://central.sonatype.com/publishing/deployments to see the deployment repository
