@@ -27,7 +27,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
@@ -132,38 +132,42 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.15.0</version>
 				<configuration>
+					<fork>true</fork>
 					<debug>true</debug>
 					<debuglevel>lines,vars</debuglevel>
-<!-- causes java.lang.IllegalAccessError: class com.google.errorprone.BaseErrorProneJavaCompiler (in unnamed module @0x3cc548f6) cannot access class com.sun.tools.javac.api.BasicJavacTask (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.api to unnamed module @0x3cc548f6 -->
-<!--					<compilerArgs>-->
-<!--						<arg>-XDcompilePolicy=simple</arg>-->
-<!--&lt;!&ndash;						<arg>-Werror</arg>&ndash;&gt;-->
-<!--						<arg>-Xlint:all</arg>-->
-<!--						<arg>-Xplugin:ErrorProne \-->
-<!--							 -Xep:StringCaseLocaleUsage:ERROR-->
-<!--						</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-exports jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-opens jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>-->
-<!--						<arg>-J&#45;&#45;add-opens jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>-->
-<!--					</compilerArgs>-->
-<!--					<annotationProcessorPaths>-->
-<!--						<path>-->
-<!--							<groupId>com.google.errorprone</groupId>-->
-<!--							<artifactId>error_prone_core</artifactId>-->
-<!--							<version>${error-prone.version}</version>-->
-<!--						</path>-->
-<!--						&lt;!&ndash; Other annotation processors go here.-->
-<!--                        If 'annotationProcessorPaths' is set, processors will no longer be-->
-<!--                        discovered on the regular -classpath; see also 'Using Error Prone-->
-<!--                        together with other annotation processors' below. &ndash;&gt;-->
-<!--					</annotationProcessorPaths>-->
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+						<arg>-Xplugin:ErrorProne -XepDisableAllWarnings -Xep:StringCaseLocaleUsage:ERROR</arg>
+						<arg>-XDcompilePolicy=simple</arg>
+						<arg>--should-stop=ifError=FLOW</arg>
+						<arg>-XDaddTypeAnnotationsToSymbol=true</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+					</compilerArgs>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.google.errorprone</groupId>
+							<artifactId>error_prone_core</artifactId>
+							<version>2.47.0</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 
@@ -192,24 +196,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.13</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.9.1</version>
 			</plugin>
 
 			<plugin>
@@ -248,53 +234,6 @@
 				</executions>
 			</plugin>
 
-			<!-- include a javadoc jar -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.4.1</version>
-				<configuration>
-					<doclint>all,-missing</doclint>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<attach>true</attach>
-							<sourceFileExcludes>
-								<exclude>module-info.java</exclude>
-							</sourceFileExcludes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- include a sourcecode jar -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<attach>true</attach>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>3.0.0</version>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -428,60 +367,69 @@
 		</profile>
 
 		<profile>
-			<id>jreleaser</id>
-			<build>
-				<plugins>
-
-					<!-- https://jreleaser.org/guide/latest/examples/maven/maven-central.html#_maven_example -->
-					<plugin>
-						<groupId>org.jreleaser</groupId>
-						<artifactId>jreleaser-maven-plugin</artifactId>
-						<version>1.22.0</version>
-						<inherited>false</inherited>
-						<configuration>
-							<jreleaser>
-								<signing>
-									<active>ALWAYS</active>
-									<armored>true</armored>
-								</signing>
-								<release>
-									<github>
-										<overwrite>true</overwrite>
-									</github>
-								</release>
-								<deploy>
-									<maven>
-										<mavenCentral>
-											<release-deploy>
-												<active>RELEASE</active>
-												<url>https://central.sonatype.com/api/v1/publisher</url>
-												<stagingRepositories>target/staging-deploy</stagingRepositories>
-											</release-deploy>
-										</mavenCentral>
-										<nexus2>
-											<snapshot-deploy>
-												<active>SNAPSHOT</active>
-												<snapshotUrl>https://central.sonatype.com/repository/maven-snapshots/</snapshotUrl>
-												<applyMavenCentralRules>true</applyMavenCentralRules>
-												<snapshotSupported>true</snapshotSupported>
-												<closeRepository>true</closeRepository>
-												<releaseRepository>true</releaseRepository>
-												<stagingRepositories>target/staging-deploy</stagingRepositories>
-											</snapshot-deploy>
-										</nexus2>
-									</maven>
-								</deploy>
-							</jreleaser>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
+<!--					<plugin>-->
+<!--						<groupId>org.sonatype.plugins</groupId>-->
+<!--						<artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--						<version>1.6.13</version>-->
+<!--					</plugin>-->
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-site-plugin</artifactId>
+						<version>3.9.1</version>
+					</plugin>
+
+					<!-- include a javadoc jar -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.4.1</version>
+						<configuration>
+							<doclint>all,-missing</doclint>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<attach>true</attach>
+									<sourceFileExcludes>
+										<exclude>module-info.java</exclude>
+									</sourceFileExcludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- include a sourcecode jar -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.2.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<attach>true</attach>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+<!--					<plugin>-->
+<!--						<groupId>org.apache.maven.plugins</groupId>-->
+<!--						<artifactId>maven-deploy-plugin</artifactId>-->
+<!--						<version>3.0.0</version>-->
+<!--					</plugin>-->
+
 					<!-- https://central.sonatype.org/publish/requirements/gpg/#distributing-your-public-key -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>

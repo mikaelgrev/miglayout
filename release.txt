@@ -1,6 +1,7 @@
 Releasing:
 - make sure gpg is installed on the OS
 - make sure a gpg key is loaded for signing
+- make sure the server for <id>central</id> is present in .m2/settings.xml
 - mvnw versions:set
 - mvnw clean deploy -Prelease -D skipTests
 
