@@ -1748,6 +1748,10 @@ public final class Grid
 		private final int[] horSizes = new int[3];
 		private final int[] verSizes = new int[3];
 
+		// The width, height and baseline of the last answer given by getBaseline(int), three ints per size type.
+		// A width of LayoutUtil.NOT_SET marks a size type that has not been asked for yet.
+		private int[] baselines = null;
+
 		private int x = LayoutUtil.NOT_SET, y = LayoutUtil.NOT_SET, w = LayoutUtil.NOT_SET, h = LayoutUtil.NOT_SET;
 
 		private int forcedPushGaps = 0;   // 1 == before, 2 = after. Bitwise.
@@ -2017,7 +2021,19 @@ public final class Grid
 
 		private int getBaseline(int sizeType)
 		{
-			return comp.getBaseline(getSize(sizeType, true), getSize(sizeType, false));
+			int width = getSize(sizeType, true);
+			int height = getSize(sizeType, false);
+
+			if (baselines == null)
+				baselines = new int[] {LayoutUtil.NOT_SET, 0, 0, LayoutUtil.NOT_SET, 0, 0, LayoutUtil.NOT_SET, 0, 0};
+
+			int ix = sizeType * 3;
+			if (baselines[ix] != width || baselines[ix + 1] != height) {
+				baselines[ix] = width;
+				baselines[ix + 1] = height;
+				baselines[ix + 2] = comp.getBaseline(width, height);
+			}
+			return baselines[ix + 2];
 		}
 
 		void adjustMinHorSizeUp(int minSize)
