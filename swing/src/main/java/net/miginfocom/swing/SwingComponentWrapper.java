@@ -139,6 +139,10 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 			case PlatformDefaults.BASE_SCALE_FACTOR:
 
+				float rememberedFactor = isHor ? lastPixelUnitFactorHor : lastPixelUnitFactorVer;
+				if (!Float.isNaN(rememberedFactor))
+					return rememberedFactor;
+
 				Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 				float scaleFactor = (s != null) ? s : 1f;
 
@@ -147,7 +151,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 				Object lafScaleFactorObj = UIManager.get( "laf.scaleFactor" );
 				if( lafScaleFactorObj instanceof Number ) {
 					float lafScaleFactor = ((Number)lafScaleFactorObj).floatValue();
-					return scaleFactor * lafScaleFactor;
+					return rememberPixelUnitFactor(isHor, scaleFactor * lafScaleFactor);
 				}
 
 				// Swing in Java 9 scales automatically using the system scale factor(s) that the
@@ -157,11 +161,35 @@ public class SwingComponentWrapper implements ComponentWrapper
 				float screenScale = isJava9orLater
 					? 1f // use system scale factor(s)
 					: (float) (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
-				return scaleFactor * screenScale;
+				return rememberPixelUnitFactor(isHor, scaleFactor * screenScale);
 
 			default:
 				return 1f;
 		}
+	}
+
+	// The pixel unit factor of the BASE_SCALE_FACTOR branch above, remembered until MigLayout is asked something
+	// again. NaN means it has not been read since. MigLayout clears it every time Swing calls into it.
+	private float lastPixelUnitFactorHor = Float.NaN;
+	private float lastPixelUnitFactorVer = Float.NaN;
+
+	private float rememberPixelUnitFactor(boolean isHor, float pixelUnitFactor)
+	{
+		if (isHor) {
+			lastPixelUnitFactorHor = pixelUnitFactor;
+		} else {
+			lastPixelUnitFactorVer = pixelUnitFactor;
+		}
+		return pixelUnitFactor;
+	}
+
+	/** Forgets the pixel unit factors remembered by {@link #getPixelUnitFactor(boolean)}, so that the next call
+	 * reads them again. MigLayout calls this every time Swing calls into it.
+	 */
+	void invalidatePixelUnitFactor()
+	{
+		lastPixelUnitFactorHor = Float.NaN;
+		lastPixelUnitFactorVer = Float.NaN;
 	}
 
 	private static boolean isJava9orLater;
