@@ -45,6 +45,8 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.IdentityHashMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -64,6 +66,23 @@ public class SwingComponentWrapper implements ComponentWrapper
 	 * <p>
 	 */
 	private static final String VISUAL_PADDING_PROPERTY = net.miginfocom.layout.PlatformDefaults.VISUAL_PADDING_PROPERTY;
+
+	/** The key of the default visual padding for a class ID, such as "ComboBox.visualPadding" for "ComboBox".
+	 * Kept because a layout pass asks for the visual padding of every component several times, and building
+	 * the key anew each time was a measurable part of the pass.
+	 * <p>
+	 * This cannot leak: the map is filled once below with the fixed class IDs of {@link #getVisualPadding()} and
+	 * never written to again. The class IDs built from client properties on macOS get their key built per call.
+	 */
+	private static final Map<String, String> VISUAL_PADDING_KEYS = new HashMap<String, String>();
+	static {
+		String[] fixedClassIDs = {"", "Button", "Button.bevel", "RadioButton", "CheckBox", "ToggleButton",
+				"ComboBox", "ComboBox.editable", "ComboBox.editable.isSquare", "ComboBox.isSquare", "ComboBox.isPopDown",
+				"Container", "Image", "Label", "List", "Panel", "ProgressBar", "ScrollBar", "ScrollPane", "Separator",
+				"Slider", "Spinner", "Table", "TabbedPane", "TextArea", "TextField", "Tree", "Other"};
+		for (String classID : fixedClassIDs)
+			VISUAL_PADDING_KEYS.put(classID, classID + "." + VISUAL_PADDING_PROPERTY);
+	}
 
 	private final Component c;
 	private int compType = TYPE_UNSET;
@@ -524,7 +543,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 							break;
 					}
 
-					padValue = PlatformDefaults.getDefaultVisualPadding(classID + "." + VISUAL_PADDING_PROPERTY);
+					padValue = PlatformDefaults.getDefaultVisualPadding(visualPaddingKeyOf(classID));
 					if (padValue instanceof int[]) {
 						//client property value could be an int[]
 						padding = (int[]) padValue;
@@ -537,6 +556,12 @@ public class SwingComponentWrapper implements ComponentWrapper
 			}
 		}
 		return padding;
+	}
+
+	private static String visualPaddingKeyOf(String classID)
+	{
+		String key = VISUAL_PADDING_KEYS.get(classID);
+		return key != null ? key : classID + "." + VISUAL_PADDING_PROPERTY;
 	}
 
 	/**
