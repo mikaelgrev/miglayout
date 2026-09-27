@@ -48,4 +48,18 @@ public class LafScaleFactorTest
 		panel.invalidate();
 		assertEquals(150, panel.getMinimumSize().width);
 	}
+
+	@Test
+	public void aWrapperMadeOutsideMigLayoutReadsTheScaleFactorOnEveryCall()
+	{
+		SwingContainerWrapper wrapper = new SwingContainerWrapper(new JPanel());
+
+		UIManager.put("laf.scaleFactor", 1f);
+		assertEquals(1f, wrapper.getPixelUnitFactor(true), 0f);
+		assertEquals(1f, wrapper.getPixelUnitFactor(false), 0f);
+
+		UIManager.put("laf.scaleFactor", 2f);
+		assertEquals(2f, wrapper.getPixelUnitFactor(true), 0f);
+		assertEquals(2f, wrapper.getPixelUnitFactor(false), 0f);
+	}
 }
