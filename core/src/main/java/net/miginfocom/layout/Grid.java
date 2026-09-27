@@ -1751,7 +1751,6 @@ public final class Grid
 		// The width, height and baseline of the last answer given by getBaseline(int), three ints per size type.
 		// An answer is given again to any size type that asks with the same width and height.
 		// A width of LayoutUtil.NOT_SET marks a size type that has not been asked for yet.
-		// Forgotten together with the sizes in invalidateSizes().
 		private int[] baselines = null;
 
 		private int x = LayoutUtil.NOT_SET, y = LayoutUtil.NOT_SET, w = LayoutUtil.NOT_SET, h = LayoutUtil.NOT_SET;
@@ -1896,7 +1895,6 @@ public final class Grid
 		void invalidateSizes()
 		{
 			sizesOk = false;
-			baselines = null;
 		}
 
 		private boolean isPushGap(boolean isHor, boolean isBefore)
