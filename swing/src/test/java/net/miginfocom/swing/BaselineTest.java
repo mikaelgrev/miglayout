@@ -1,5 +1,10 @@
 package net.miginfocom.swing;
 
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.ComponentWrapper;
+import net.miginfocom.layout.ConstraintParser;
+import net.miginfocom.layout.Grid;
+import net.miginfocom.layout.LC;
 import org.junit.Test;
 
 import javax.swing.JComponent;
@@ -9,7 +14,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -48,6 +55,31 @@ public class BaselineTest
 		assertEquals(new HashSet<String>(probe.questions).size(), probe.questions.size());
 	}
 
+	@Test
+	public void aGridAsksForTheBaselineAgainAfterItsComponentSizesWereInvalidated()
+	{
+		JLabel label = sized(new JLabel("label"), 50, 20, 50, 20);
+		Probe probe = sized(new Probe(), 60, 40, 60, 40);
+		JPanel panel = new JPanel(null);
+		panel.add(label);
+		panel.add(probe);
+
+		Map<ComponentWrapper, CC> constraints = new LinkedHashMap<ComponentWrapper, CC>();
+		constraints.put(new SwingComponentWrapper(label), new CC());
+		constraints.put(new SwingComponentWrapper(probe), new CC());
+		Grid grid = new Grid(new SwingContainerWrapper(panel), new LC(), ConstraintParser.parseRowConstraints("[baseline]"),
+				ConstraintParser.parseColumnConstraints("[][]"), constraints, null);
+		int[] bounds = {0, 0, 300, 200};
+
+		grid.layout(bounds, null, null, false);
+		assertEquals(baselineInPanel(label), baselineInPanel(probe));
+
+		probe.lift = 7;
+		grid.invalidateContainerSize();
+		grid.layout(bounds, null, null, false);
+		assertEquals(baselineInPanel(label), baselineInPanel(probe));
+	}
+
 	private static void layOut(JPanel panel, int width, int height)
 	{
 		panel.setSize(width, height);
@@ -69,12 +101,13 @@ public class BaselineTest
 	private static class Probe extends JComponent
 	{
 		final List<String> questions = new ArrayList<String>();
+		int lift = 0;
 
 		@Override
 		public int getBaseline(int width, int height)
 		{
 			questions.add(width + "x" + height);
-			return (height * 2) / 3 + (width % 5);
+			return (height * 2) / 3 + (width % 5) + lift;
 		}
 
 		@Override
