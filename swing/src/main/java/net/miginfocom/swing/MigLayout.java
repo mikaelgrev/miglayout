@@ -516,7 +516,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 			return null;
 
 		if (cacheParentW == null || cacheParentW.getComponent() != parent)
-			cacheParentW = new SwingContainerWrapper(parent);
+			cacheParentW = new SwingContainerWrapper(parent, true);
 		else
 			cacheParentW.invalidatePixelUnitFactor();   // Read once per call from Swing instead of once per unit value.
 

@@ -88,10 +88,20 @@ public class SwingComponentWrapper implements ComponentWrapper
 	private int compType = TYPE_UNSET;
 	private Boolean bl = null;
 	private boolean prefCalled = false;
+	private final boolean remembersPixelUnitFactor;
 
 	public SwingComponentWrapper(Component c)
 	{
+		this(c, false);
+	}
+
+	/** @param remembersPixelUnitFactor if the pixel unit factor is read once and then remembered until
+	 * {@link #invalidatePixelUnitFactor()}, which only MigLayout calls. Every other wrapper reads it on each call.
+	 */
+	SwingComponentWrapper(Component c, boolean remembersPixelUnitFactor)
+	{
 		this.c = c;
+		this.remembersPixelUnitFactor = remembersPixelUnitFactor;
 	}
 
 	@Override
@@ -170,11 +180,15 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	// The pixel unit factor of the BASE_SCALE_FACTOR branch above, remembered until MigLayout is asked something
 	// again. NaN means it has not been read since. MigLayout clears it every time Swing calls into it.
+	// Only the wrapper MigLayout keeps remembers it, all others stay NaN.
 	private float lastPixelUnitFactorHor = Float.NaN;
 	private float lastPixelUnitFactorVer = Float.NaN;
 
 	private float rememberPixelUnitFactor(boolean isHor, float pixelUnitFactor)
 	{
+		if (!remembersPixelUnitFactor) {
+			return pixelUnitFactor;
+		}
 		if (isHor) {
 			lastPixelUnitFactorHor = pixelUnitFactor;
 		} else {
