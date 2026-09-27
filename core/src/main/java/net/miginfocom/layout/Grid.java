@@ -1749,7 +1749,6 @@ public final class Grid
 		private final int[] verSizes = new int[3];
 
 		// The width, height and baseline of the last answer given by getBaseline(int), three ints per size type.
-		// An answer is given again to any size type that asks with the same width and height.
 		// A width of LayoutUtil.NOT_SET marks a size type that has not been asked for yet.
 		private int[] baselines = null;
 
@@ -2028,15 +2027,12 @@ public final class Grid
 			if (baselines == null)
 				baselines = new int[] {LayoutUtil.NOT_SET, 0, 0, LayoutUtil.NOT_SET, 0, 0, LayoutUtil.NOT_SET, 0, 0};
 
-			for (int ix = 0; ix < baselines.length; ix += 3) {
-				if (baselines[ix] == width && baselines[ix + 1] == height)
-					return baselines[ix + 2];
-			}
-
 			int ix = sizeType * 3;
-			baselines[ix] = width;
-			baselines[ix + 1] = height;
-			baselines[ix + 2] = comp.getBaseline(width, height);
+			if (baselines[ix] != width || baselines[ix + 1] != height) {
+				baselines[ix] = width;
+				baselines[ix + 1] = height;
+				baselines[ix + 2] = comp.getBaseline(width, height);
+			}
 			return baselines[ix + 2];
 		}
 
