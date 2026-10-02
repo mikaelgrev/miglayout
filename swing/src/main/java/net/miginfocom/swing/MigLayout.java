@@ -61,7 +61,7 @@ public class MigLayout implements LayoutManager2, Externalizable
 
 	// ******** Transient part ********
 
-	private transient ContainerWrapper cacheParentW = null;
+	private transient SwingContainerWrapper cacheParentW = null;
 
 	private transient final Map<ComponentWrapper, CC> ccMap = new HashMap<ComponentWrapper, CC>(8);
 	private transient javax.swing.Timer debugTimer = null;
@@ -516,7 +516,9 @@ public class MigLayout implements LayoutManager2, Externalizable
 			return null;
 
 		if (cacheParentW == null || cacheParentW.getComponent() != parent)
-			cacheParentW = new SwingContainerWrapper(parent);
+			cacheParentW = new SwingContainerWrapper(parent, true);
+		else
+			cacheParentW.invalidatePixelUnitFactor();   // Read once per call from Swing instead of once per unit value.
 
 		return cacheParentW;
 	}

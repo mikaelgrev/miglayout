@@ -55,6 +55,11 @@ public final class SwingContainerWrapper extends SwingComponentWrapper implement
 		super(c);
 	}
 
+	SwingContainerWrapper(Container c, boolean remembersPixelUnitFactor)
+	{
+		super(c, remembersPixelUnitFactor);
+	}
+
 	@Override
 	public ComponentWrapper[] getComponents()
 	{

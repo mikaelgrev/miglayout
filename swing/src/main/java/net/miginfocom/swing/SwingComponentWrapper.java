@@ -45,6 +45,8 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.IdentityHashMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -65,14 +67,41 @@ public class SwingComponentWrapper implements ComponentWrapper
 	 */
 	private static final String VISUAL_PADDING_PROPERTY = net.miginfocom.layout.PlatformDefaults.VISUAL_PADDING_PROPERTY;
 
+	/** The key of the default visual padding for a class ID, such as "ComboBox.visualPadding" for "ComboBox".
+	 * Kept because a layout pass asks for the visual padding of every component several times, and building
+	 * the key anew each time was a measurable part of the pass.
+	 * <p>
+	 * This cannot leak: the map is filled once below with the fixed class IDs of {@link #getVisualPadding()} and
+	 * never written to again. The class IDs built from client properties on macOS get their key built per call.
+	 */
+	private static final Map<String, String> VISUAL_PADDING_KEYS = new HashMap<String, String>();
+	static {
+		String[] fixedClassIDs = {"", "Button", "Button.bevel", "RadioButton", "CheckBox", "ToggleButton",
+				"ComboBox", "ComboBox.editable", "ComboBox.editable.isSquare", "ComboBox.isSquare", "ComboBox.isPopDown",
+				"Container", "Image", "Label", "List", "Panel", "ProgressBar", "ScrollBar", "ScrollPane", "Separator",
+				"Slider", "Spinner", "Table", "TabbedPane", "TextArea", "TextField", "Tree", "Other"};
+		for (String classID : fixedClassIDs)
+			VISUAL_PADDING_KEYS.put(classID, classID + "." + VISUAL_PADDING_PROPERTY);
+	}
+
 	private final Component c;
 	private int compType = TYPE_UNSET;
 	private Boolean bl = null;
 	private boolean prefCalled = false;
+	private final boolean remembersPixelUnitFactor;
 
 	public SwingComponentWrapper(Component c)
 	{
+		this(c, false);
+	}
+
+	/** @param remembersPixelUnitFactor if the pixel unit factor is read once and then remembered until
+	 * {@link #invalidatePixelUnitFactor()}, which only MigLayout calls. Every other wrapper reads it on each call.
+	 */
+	SwingComponentWrapper(Component c, boolean remembersPixelUnitFactor)
+	{
 		this.c = c;
+		this.remembersPixelUnitFactor = remembersPixelUnitFactor;
 	}
 
 	@Override
@@ -120,6 +149,10 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 			case PlatformDefaults.BASE_SCALE_FACTOR:
 
+				float rememberedFactor = isHor ? lastPixelUnitFactorHor : lastPixelUnitFactorVer;
+				if (!Float.isNaN(rememberedFactor))
+					return rememberedFactor;
+
 				Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 				float scaleFactor = (s != null) ? s : 1f;
 
@@ -128,7 +161,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 				Object lafScaleFactorObj = UIManager.get( "laf.scaleFactor" );
 				if( lafScaleFactorObj instanceof Number ) {
 					float lafScaleFactor = ((Number)lafScaleFactorObj).floatValue();
-					return scaleFactor * lafScaleFactor;
+					return rememberPixelUnitFactor(isHor, scaleFactor * lafScaleFactor);
 				}
 
 				// Swing in Java 9 scales automatically using the system scale factor(s) that the
@@ -138,11 +171,39 @@ public class SwingComponentWrapper implements ComponentWrapper
 				float screenScale = isJava9orLater
 					? 1f // use system scale factor(s)
 					: (float) (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
-				return scaleFactor * screenScale;
+				return rememberPixelUnitFactor(isHor, scaleFactor * screenScale);
 
 			default:
 				return 1f;
 		}
+	}
+
+	// The pixel unit factor of the BASE_SCALE_FACTOR branch above, remembered until MigLayout is asked something
+	// again. NaN means it has not been read since. MigLayout clears it every time Swing calls into it.
+	// Only the wrapper MigLayout keeps remembers it, all others stay NaN.
+	private float lastPixelUnitFactorHor = Float.NaN;
+	private float lastPixelUnitFactorVer = Float.NaN;
+
+	private float rememberPixelUnitFactor(boolean isHor, float pixelUnitFactor)
+	{
+		if (!remembersPixelUnitFactor) {
+			return pixelUnitFactor;
+		}
+		if (isHor) {
+			lastPixelUnitFactorHor = pixelUnitFactor;
+		} else {
+			lastPixelUnitFactorVer = pixelUnitFactor;
+		}
+		return pixelUnitFactor;
+	}
+
+	/** Forgets the pixel unit factors remembered by {@link #getPixelUnitFactor(boolean)}, so that the next call
+	 * reads them again. MigLayout calls this every time Swing calls into it.
+	 */
+	void invalidatePixelUnitFactor()
+	{
+		lastPixelUnitFactorHor = Float.NaN;
+		lastPixelUnitFactorVer = Float.NaN;
 	}
 
 	private static boolean isJava9orLater;
@@ -524,7 +585,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 							break;
 					}
 
-					padValue = PlatformDefaults.getDefaultVisualPadding(classID + "." + VISUAL_PADDING_PROPERTY);
+					padValue = PlatformDefaults.getDefaultVisualPadding(visualPaddingKeyOf(classID));
 					if (padValue instanceof int[]) {
 						//client property value could be an int[]
 						padding = (int[]) padValue;
@@ -537,6 +598,12 @@ public class SwingComponentWrapper implements ComponentWrapper
 			}
 		}
 		return padding;
+	}
+
+	private static String visualPaddingKeyOf(String classID)
+	{
+		String key = VISUAL_PADDING_KEYS.get(classID);
+		return key != null ? key : classID + "." + VISUAL_PADDING_PROPERTY;
 	}
 
 	/**
