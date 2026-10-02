@@ -85,7 +85,13 @@ public class SwingComponentWrapper implements ComponentWrapper
 		} else if (visPad != null) {
 			h = height + visPad[0] + visPad[2];
 		}
-		int baseLine = c.getBaseline(Math.max(0, width < 0 ? c.getWidth() : width), Math.max(0, h));
+		int w = width;
+		if (w < 0) {
+			w = c.getWidth();
+		} else if (visPad != null) {
+			w = width + visPad[1] + visPad[3];
+		}
+		int baseLine = c.getBaseline(Math.max(0, w), Math.max(0, h));
 		if (baseLine != -1 && visPad != null)
 			baseLine -= visPad[0];
 
