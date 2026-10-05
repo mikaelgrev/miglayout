@@ -77,7 +77,11 @@
 					</dependency>
 				</dependencies>
 				<configuration>
+					<!-- TestFX uses reflection on JavaFX internals; IntelliJ picks this argLine up for its JUnit runs too -->
 					<argLine>
+						--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+						--add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+						--enable-native-access=javafx.graphics
 					</argLine>
 				</configuration>
 			</plugin>				
