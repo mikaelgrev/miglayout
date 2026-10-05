@@ -18,4 +18,20 @@
         </dependency>
     </dependencies>
 
+	<!-- IntelliJ runs JUnit 5 as named modules (Maven puts it on the classpath), so the patched-in tests must read JUnit
+	     and their packages must be opened to it. IntelliJ activates this profile on import (idea.version) and uses the argLine. -->
+	<profiles>
+		<profile>
+			<id>intellij</id>
+			<activation>
+				<property>
+					<name>idea.version</name>
+				</property>
+			</activation>
+			<properties>
+				<test.ideArgs>--add-reads com.miglayout.swing=org.junit.jupiter.api,org.opentest4j --add-opens com.miglayout.swing/net.miginfocom.swing=org.junit.platform.commons --add-opens com.miglayout.swing/net.miginfocom.swing.layout.snapshot=org.junit.platform.commons</test.ideArgs>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>

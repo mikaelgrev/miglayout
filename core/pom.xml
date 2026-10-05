@@ -10,4 +10,20 @@
     <name>MiGLayout Core</name>
     <description>MiGLayout - core layout logic</description>
 	<url>http://www.miglayout.com/</url>
+
+	<!-- IntelliJ runs JUnit 5 as named modules (Maven puts it on the classpath), so the patched-in tests must read JUnit
+	     and their packages must be opened to it. IntelliJ activates this profile on import (idea.version) and uses the argLine. -->
+	<profiles>
+		<profile>
+			<id>intellij</id>
+			<activation>
+				<property>
+					<name>idea.version</name>
+				</property>
+			</activation>
+			<properties>
+				<test.ideArgs>--add-reads com.miglayout.core=org.junit.jupiter.api,org.opentest4j --add-opens com.miglayout.core/net.miginfocom.layout=org.junit.platform.commons</test.ideArgs>
+			</properties>
+		</profile>
+	</profiles>
 </project>

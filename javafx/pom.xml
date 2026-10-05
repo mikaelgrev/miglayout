@@ -72,7 +72,7 @@
 				<configuration>
 					<!-- TestFX uses reflection on JavaFX internals; IntelliJ picks this argLine up for its JUnit runs too -->
 					<argLine>
-						${test.uiScaleArgs}
+						${test.uiScaleArgs} ${test.ideArgs}
 						--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
 						--add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
 						--enable-native-access=javafx.graphics
@@ -81,4 +81,20 @@
 			</plugin>				
 		</plugins>
 	</build>
+
+	<!-- IntelliJ runs JUnit 5 as named modules (Maven puts it on the classpath), so the patched-in tests must read JUnit
+	     and their packages must be opened to it. IntelliJ activates this profile on import (idea.version) and uses the argLine. -->
+	<profiles>
+		<profile>
+			<id>intellij</id>
+			<activation>
+				<property>
+					<name>idea.version</name>
+				</property>
+			</activation>
+			<properties>
+				<test.ideArgs>--add-reads com.miglayout.javafx=org.junit.jupiter.api,org.opentest4j --add-opens com.miglayout.javafx/org.tbee.javafx.scene.layout.test=org.junit.platform.commons --add-opens com.miglayout.javafx/org.tbee.javafx.scene.layout.test.snapshot=org.junit.platform.commons</test.ideArgs>
+			</properties>
+		</profile>
+	</profiles>
 </project>

@@ -32,6 +32,8 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<error-prone.version>2.19.1</error-prone.version>
+		<!-- extra test JVM options for IntelliJ, set by the 'intellij' profile of a module -->
+		<test.ideArgs></test.ideArgs>
 		<test.uiScaleArgs>-Dsun.java2d.uiScale=1 -Dglass.win.uiScale=1 -Dglass.gtk.uiScale=1</test.uiScaleArgs>
 		<altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
 	</properties>
@@ -207,7 +209,7 @@
 				<version>3.5.3</version>
 				<configuration>
 					<!-- layout tests compare pixel positions, so force 100% UI scaling (local machines often use 125%/150%) -->
-					<argLine>${test.uiScaleArgs}</argLine>
+					<argLine>${test.uiScaleArgs} ${test.ideArgs}</argLine>
 				</configuration>
 			</plugin>
 
