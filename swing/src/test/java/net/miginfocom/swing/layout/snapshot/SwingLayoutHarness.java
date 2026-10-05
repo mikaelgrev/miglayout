@@ -71,7 +71,7 @@ public final class SwingLayoutHarness
 	/** Lays out the container and compares it with the golden snapshot, see {@link SnapshotAssert}. */
 	public static void assertLayout(Class<?> testClass, String caseName, Supplier<? extends JComponent> content, Dimension size)
 	{
-		Result result = layout(content, size);
+		Result result = layout(testClass.getSimpleName() + " - " + caseName, content, size);
 		SnapshotAssert.assertMatches(testClass, caseName, result.snapshot(), result.screenshot());
 	}
 
@@ -81,32 +81,58 @@ public final class SwingLayoutHarness
 	 */
 	public static Result layout(Supplier<? extends JComponent> content, Dimension size)
 	{
+		return layout("layout snapshot", content, size);
+	}
+
+	/**
+	 * @param title The window title, shown when observing layouts ({@link ShowLayouts}).
+	 * @param content Creates the container to lay out; called on the event dispatch thread.
+	 * @param size The size of the container, or null to use its preferred size (like {@link JFrame#pack()}).
+	 */
+	public static Result layout(String title, Supplier<? extends JComponent> content, Dimension size)
+	{
 		if (GraphicsEnvironment.isHeadless())
 			throw new IllegalStateException("Layout snapshot tests need a display (on Linux CI use xvfb)");
-		return onEdt(() -> {
-			resetDefaults();
 
-			JComponent root = content.get();
-			JFrame frame = new JFrame("layout snapshot");
-			try {
-				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		JFrame[] frame = new JFrame[1];
+		JComponent[] root = new JComponent[1];
+		try {
+			onEdt(() -> {
+				resetDefaults();
+
+				root[0] = content.get();
+				frame[0] = new JFrame(title);
+				frame[0].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				// The root is placed in a holder that gives it exactly the requested (or preferred) size. Otherwise the
 				// OS would stretch it, e.g. a packed JFrame on Windows is at least ~176px wide because of the title bar.
 				JPanel holder = new JPanel(new FixedSizeLayout(size));
-				holder.add(root);
-				frame.setContentPane(holder);
-				frame.pack();
-				frame.validate();
+				holder.add(root[0]);
+				frame[0].setContentPane(holder);
+				frame[0].pack();
+				if (ShowLayouts.enabled()) {
+					frame[0].setLocationRelativeTo(null);
+					frame[0].setVisible(true);
+				}
+				frame[0].validate();
+				return null;
+			});
 
-				GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+			// wait outside the EDT, so the window is painted and can be looked at
+			ShowLayouts.pause(title);
+
+			return onEdt(() -> {
+				GraphicsConfiguration gc = frame[0].getGraphicsConfiguration();
 				double scale = gc.getDefaultTransform().getScaleX();
 				TestPlatform.current().assertUnscaled(scale);
-
-				return new Result(snapshot(root, scale), screenshot(root));
-			} finally {
-				frame.dispose();
-			}
-		});
+				return new Result(snapshot(root[0], scale), screenshot(root[0]));
+			});
+		} finally {
+			if (frame[0] != null)
+				onEdt(() -> {
+					frame[0].dispose();
+					return null;
+				});
+		}
 	}
 
 	/** Restores the global state that tests may have changed, so every layout starts like a fresh application. */
