@@ -32,6 +32,7 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 		<error-prone.version>2.19.1</error-prone.version>
+		<test.uiScaleArgs>-Dsun.java2d.uiScale=1 -Dglass.win.uiScale=1 -Dglass.gtk.uiScale=1</test.uiScaleArgs>
 		<altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
 	</properties>
 
@@ -79,17 +80,19 @@
 				<version>11.0.1</version>
 			</dependency>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.13.2</version>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.13.4</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -201,7 +204,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M8</version>
+				<version>3.5.3</version>
+				<configuration>
+					<!-- layout tests compare pixel positions, so force 100% UI scaling (local machines often use 125%/150%) -->
+					<argLine>${test.uiScaleArgs}</argLine>
+				</configuration>
 			</plugin>
 
 			<plugin>

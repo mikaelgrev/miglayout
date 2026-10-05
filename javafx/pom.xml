@@ -50,7 +50,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit</artifactId>
+			<artifactId>testfx-junit5</artifactId>
 			<version>${testfx.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -69,16 +69,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>org.ow2.asm</groupId>
-						<artifactId>asm</artifactId>
-						<version>7.2</version>
-					</dependency>
-				</dependencies>
 				<configuration>
 					<!-- TestFX uses reflection on JavaFX internals; IntelliJ picks this argLine up for its JUnit runs too -->
 					<argLine>
+						${test.uiScaleArgs}
 						--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
 						--add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
 						--enable-native-access=javafx.graphics

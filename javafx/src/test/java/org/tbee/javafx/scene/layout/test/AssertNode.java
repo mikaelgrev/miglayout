@@ -5,7 +5,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,10 +23,10 @@ public class AssertNode {
 
     public AssertNode assertXYWH(double x, double y, double w, double h, double accuracy) {
         try {
-            Assert.assertEquals(description + ", X", x, node.getLayoutX(), accuracy);
-            Assert.assertEquals(description + ", Y", y, node.getLayoutY(), accuracy);
-            Assert.assertEquals(description + ", W", w, width(node), accuracy);
-            Assert.assertEquals(description + ", H", h, height(node), accuracy);
+            Assertions.assertEquals(x, node.getLayoutX(), accuracy, description + ", X");
+            Assertions.assertEquals(y, node.getLayoutY(), accuracy, description + ", Y");
+            Assertions.assertEquals(w, width(node), accuracy, description + ", W");
+            Assertions.assertEquals(h, height(node), accuracy, description + ", H");
         }
         catch (java.lang.AssertionError e) {
             AssertNode.generateSource("migPane", node, Collections.emptyList(), false, AssertNode.A.XYWH);
@@ -43,9 +43,9 @@ public class AssertNode {
                 break;
             }
         }
-        Assert.assertEquals(description + ", PivotX", x, r.getPivotX(), accuracy);
-        Assert.assertEquals(description + ", PivotY", y, r.getPivotY(), accuracy);
-        Assert.assertEquals(description + ", Angle", angle, r.getAngle(), accuracy);
+        Assertions.assertEquals(x, r.getPivotX(), accuracy, description + ", PivotX");
+        Assertions.assertEquals(y, r.getPivotY(), accuracy, description + ", PivotY");
+        Assertions.assertEquals(angle, r.getAngle(), accuracy, description + ", Angle");
         return this;
     }
 
@@ -57,36 +57,36 @@ public class AssertNode {
                 break;
             }
         }
-        Assert.assertEquals(description + ", PivotX", x, s.getPivotX(), accuracy);
-        Assert.assertEquals(description + ", PivotY", y, s.getPivotY(), accuracy);
-        Assert.assertEquals(description + ", X", scaleX, s.getX(), accuracy);
-        Assert.assertEquals(description + ", Y", scaleY, s.getY(), accuracy);
+        Assertions.assertEquals(x, s.getPivotX(), accuracy, description + ", PivotX");
+        Assertions.assertEquals(y, s.getPivotY(), accuracy, description + ", PivotY");
+        Assertions.assertEquals(scaleX, s.getX(), accuracy, description + ", X");
+        Assertions.assertEquals(scaleY, s.getY(), accuracy, description + ", Y");
         return this;
     }
 
     public AssertNode assertArcCenterRadiusAngleLength(double x, double y, double radiusX, double radiusY, double startAngle, double length, double accuracy) {
         Arc arc = (Arc)node;
-        Assert.assertEquals(description + ", CenterX", x, arc.getCenterX(), accuracy);
-        Assert.assertEquals(description + ", CenterY", y, arc.getCenterY(), accuracy);
-        Assert.assertEquals(description + ", RadiusX", radiusX, arc.getRadiusX(), accuracy);
-        Assert.assertEquals(description + ", RadiusY", radiusY, arc.getRadiusY(), accuracy);
-        Assert.assertEquals(description + ", StartAngle", startAngle, arc.getStartAngle(), accuracy);
-        Assert.assertEquals(description + ", Length", length, arc.getLength(), accuracy);
+        Assertions.assertEquals(x, arc.getCenterX(), accuracy, description + ", CenterX");
+        Assertions.assertEquals(y, arc.getCenterY(), accuracy, description + ", CenterY");
+        Assertions.assertEquals(radiusX, arc.getRadiusX(), accuracy, description + ", RadiusX");
+        Assertions.assertEquals(radiusY, arc.getRadiusY(), accuracy, description + ", RadiusY");
+        Assertions.assertEquals(startAngle, arc.getStartAngle(), accuracy, description + ", StartAngle");
+        Assertions.assertEquals(length, arc.getLength(), accuracy, description + ", Length");
         return this;
     }
 
     public AssertNode assertClass(Class clazz) {
-        Assert.assertEquals(description, clazz, node.getClass());
+        Assertions.assertEquals(clazz, node.getClass(), description);
         return this;
     }
 
     public AssertNode assertClassName(String className) {
-        Assert.assertEquals(description, className, node.getClass().getName());
+        Assertions.assertEquals(className, node.getClass().getName(), description);
         return this;
     }
 
     public AssertNode assertTextText(String text) {
-        Assert.assertEquals(description, text, ((javafx.scene.text.Text)node).getText());
+        Assertions.assertEquals(text, ((javafx.scene.text.Text)node).getText(), description);
         return this;
     }
 

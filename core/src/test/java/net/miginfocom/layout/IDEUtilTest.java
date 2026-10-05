@@ -30,11 +30,14 @@
 
 package net.miginfocom.layout;
 
-import static org.junit.Assert.*;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ErrorCollector;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link IDEUtil}.
@@ -43,11 +46,20 @@ import org.junit.rules.ErrorCollector;
  */
 public class IDEUtilTest
 {
-	@Rule
-	public ErrorCollector errorCollector = new ErrorCollector();
+	/** Collects all assertion failures of a test, so that one run reports every mismatch (like JUnit 4's ErrorCollector). */
+	private final List<Throwable> errors = new ArrayList<>();
 
-	@BeforeClass
-	public static void initialize() {
+	@AfterEach
+	void reportCollectedErrors() {
+		if( errors.isEmpty() )
+			return;
+		AssertionError error = new AssertionError( errors.size() + " assertion(s) failed, see suppressed exceptions" );
+		errors.forEach( error::addSuppressed );
+		throw error;
+	}
+
+	@BeforeAll
+	static void initialize() {
 		// MigLayout: enable design time for LayoutUtil.putCCString()
 		LayoutUtil.setDesignTime( null, true );
 	}
@@ -393,9 +405,9 @@ public class IDEUtilTest
 
 	private void myAssertEquals( String message, Object expected, Object actual ) {
 		try {
-			assertEquals( message, expected, actual );
+			assertEquals( expected, actual, message );
 		} catch( Throwable ex ) {
-			errorCollector.addError( ex );
+			errors.add( ex );
 		}
 	}
 }

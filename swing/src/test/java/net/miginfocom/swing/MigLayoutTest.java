@@ -1,14 +1,15 @@
 package net.miginfocom.swing;
 
-import junit.framework.TestCase;
 import net.miginfocom.layout.PlatformDefaults;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Locale;
-//import org.junit.runners.JUnit4;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 /**
  * MigLayoutTest
@@ -16,8 +17,7 @@ import java.util.Locale;
  * @author anavarro
  * @author Jeanette Winzenburg, Berlin
  */
-//@RunWith(JUnit4.class)
-public class MigLayoutTest extends TestCase{
+public class MigLayoutTest {
 
     // reported: http://migcalendar.com/forums/viewtopic.php?f=8&t=3833
     /**
@@ -25,19 +25,16 @@ public class MigLayoutTest extends TestCase{
      */
     @Test
     public void testDPIScaling() {
-       if (Toolkit.getDefaultToolkit().getScreenResolution() == PlatformDefaults.getDefaultDPI()) {
-           LOG.log(System.Logger.Level.INFO, "dpi == default, nothing to test: " +
-                   Toolkit.getDefaultToolkit().getScreenResolution());
-           return;
-       }
-       float factor = (float) Toolkit.getDefaultToolkit().getScreenResolution() / PlatformDefaults.getDefaultDPI();
+        int screenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
+        assumeFalse(screenResolution == PlatformDefaults.getDefaultDPI(),
+                "dpi == default, nothing to test: " + screenResolution);
+        // TODO: the assert fails under windows
+        assumeFalse(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("windows"),
+                "dpi scaling assert fails under windows");
 
-       SwingComponentWrapper wrapper = new SwingComponentWrapper(new JButton());
-
-       // TODO: the assert fails under windows
-       if (!System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("windows")) {
-           assertEquals("dpi scaling factor", factor, wrapper.getPixelUnitFactor(true));
-       }
+        float factor = (float) screenResolution / PlatformDefaults.getDefaultDPI();
+        SwingComponentWrapper wrapper = new SwingComponentWrapper(new JButton());
+        assertEquals(factor, wrapper.getPixelUnitFactor(true), "dpi scaling factor");
     }
 
     // reported: http://migcalendar.com/forums/viewtopic.php?f=8&t=3834
@@ -51,23 +48,11 @@ public class MigLayoutTest extends TestCase{
 
     /**
      * Set PlatformDefaults properties to defaults.
-     *
      */
-    private void setPlatformDefaults() {
-//        PlatformDefaults.setPlatform(PlatformDefaults.WINDOWS_XP);
+    @BeforeEach
+    public void setPlatformDefaults() {
         PlatformDefaults.setLogicalPixelBase(PlatformDefaults.BASE_SCALE_FACTOR);
         PlatformDefaults.setHorizontalScaleFactor(null);
         PlatformDefaults.setVerticalScaleFactor(null);
     }
-
-
-    @Override
-    @Before
-    public void setUp() throws Exception {
-        setPlatformDefaults();
-    }
-
-    @SuppressWarnings("unused")
-    private static final System.Logger LOG = System.getLogger(MigLayoutTest.class
-            .getName());
 }

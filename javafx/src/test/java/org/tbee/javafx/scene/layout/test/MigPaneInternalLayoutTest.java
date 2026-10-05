@@ -19,10 +19,11 @@ import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.layout.PlatformDefaults;
 
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.tbee.javafx.scene.layout.MigPane;
 
 /**
@@ -37,7 +38,8 @@ import org.tbee.javafx.scene.layout.MigPane;
  * @author Tom Eugelink
  *
  */
-public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.ApplicationTest {
+@Disabled("Superseded by the layout snapshot tests")
+public class MigPaneInternalLayoutTest extends org.testfx.framework.junit5.ApplicationTest {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -70,9 +72,9 @@ public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.Applic
 	private Pane pane = null;
 	private Label label = null;
 
-	@Before
+	@BeforeEach
 	public void before() {
-		Assume.assumeTrue(isUnix());
+		Assumptions.assumeTrue(isUnix());
 	}
 
 	private boolean isUnix() {
@@ -331,8 +333,8 @@ public class MigPaneInternalLayoutTest extends org.testfx.framework.junit.Applic
 	List<String> EXCLUDED_CLASSES = java.util.Arrays.asList(new String[]{"org.tbee.javafx.scene.layout.MigPane$DebugRectangle"});
 
 	private void assertWH(MigPane migPane, double w, double h) {
-		Assert.assertEquals(w, migPane.getWidth(), 0.01);
-		Assert.assertEquals(h, migPane.getHeight(), 0.01);
+		Assertions.assertEquals(w, migPane.getWidth(), 0.01);
+		Assertions.assertEquals(h, migPane.getHeight(), 0.01);
 	}
 
 	private void setLabel(String s) {

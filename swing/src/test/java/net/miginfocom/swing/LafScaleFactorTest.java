@@ -1,15 +1,15 @@
 package net.miginfocom.swing;
 
 import net.miginfocom.layout.PlatformDefaults;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /** The "laf.scaleFactor" a look and feel publishes, such as FlatLaf, scales every size given in the default unit,
  * including the column and row sizes of the layout constraints. */
@@ -17,14 +17,14 @@ public class LafScaleFactorTest
 {
 	private int logicalPixelBase;
 
-	@Before
+	@BeforeEach
 	public void scaleByTheScaleFactor()
 	{
 		logicalPixelBase = PlatformDefaults.getLogicalPixelBase();
 		PlatformDefaults.setLogicalPixelBase(PlatformDefaults.BASE_SCALE_FACTOR);
 	}
 
-	@After
+	@AfterEach
 	public void removeScaleFactor()
 	{
 		UIManager.put("laf.scaleFactor", null);
