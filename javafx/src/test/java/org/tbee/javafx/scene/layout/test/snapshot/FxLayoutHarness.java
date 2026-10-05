@@ -149,7 +149,9 @@ public final class FxLayoutHarness
 	 */
 	static String dpiVariant()
 	{
-		int dpi = (int) Math.ceil(Screen.getPrimary().getDpi()); // same rounding as MigPane
+		// same logic as MigPane.getHorizontalScreenDPI(): headless CI machines report 0 DPI, MigPane then uses 96
+		double screenDpi = Screen.getPrimary().getDpi();
+		int dpi = screenDpi < 1.0 ? MigPane.SENSIBLE_DPI : (int) Math.ceil(screenDpi);
 		return dpi == PlatformDefaults.getDefaultDPI() ? "" : "-" + dpi + "dpi";
 	}
 

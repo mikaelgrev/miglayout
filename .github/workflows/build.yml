@@ -10,11 +10,13 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        # Pinned images: the layout snapshot tests compare real component sizes, which depend on the fonts
+        # of the image. Updating an image may require re-recording the snapshots (see SnapshotAssert).
+        os: [ubuntu-24.04, macos-14, windows-2022]
     runs-on: ${{ matrix.os }}
     env:
       DISPLAY: ':99'
@@ -37,15 +39,25 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Skip tests (because the offsets are different for each platform)
-        if: runner.os == 'Linux' || runner.os == 'Macos'
-        run: echo "SKIPTESTS=-DskipTests" >> $GITHUB_ENV
-
       - name: Setup xvfb (Linux)
         if: runner.os == 'Linux'
         run: |
+          sudo apt-get update
           sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0
           sudo /usr/bin/Xvfb :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
 
+      # --fail-at-end: also run the tests of the other modules when one fails, so all snapshots are produced
       - name: Build
-        run: mvn --no-transfer-progress -B --file pom.xml $SKIPTESTS verify
+        shell: bash
+        run: mvn --no-transfer-progress -B --fail-at-end --file pom.xml verify
+
+      # Actual layout snapshots, screenshots and diffs of this OS. Download these to review a failure, or to
+      # obtain the golden files for an OS: copy <module>/target/layout-snapshots/<os>/** to
+      # <module>/src/test/resources/layout-snapshots/<os>/ and commit them.
+      - name: Upload layout snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-snapshots-${{ matrix.os }}
+          path: '**/target/layout-snapshots/**'
+          if-no-files-found: ignore
