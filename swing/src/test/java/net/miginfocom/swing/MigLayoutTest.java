@@ -8,7 +8,6 @@ import org.junit.Test;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Locale;
-import java.util.logging.Logger;
 //import org.junit.runners.JUnit4;
 
 /**
@@ -27,7 +26,7 @@ public class MigLayoutTest extends TestCase{
     @Test
     public void testDPIScaling() {
        if (Toolkit.getDefaultToolkit().getScreenResolution() == PlatformDefaults.getDefaultDPI()) {
-           LOG.info("dpi == default, nothing to test: " +
+           LOG.log(System.Logger.Level.INFO, "dpi == default, nothing to test: " +
                    Toolkit.getDefaultToolkit().getScreenResolution());
            return;
        }
@@ -69,6 +68,6 @@ public class MigLayoutTest extends TestCase{
     }
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = Logger.getLogger(MigLayoutTest.class
+    private static final System.Logger LOG = System.getLogger(MigLayoutTest.class
             .getName());
 }
