@@ -43,8 +43,17 @@ public final class SnapshotAssert
 	/** @return The instance for the module the tests run in (Surefire and IntelliJ use the module directory). */
 	public static SnapshotAssert forCurrentModule()
 	{
+		return forCurrentModule("");
+	}
+
+	/**
+	 * @param variant Appended to the OS directory name for environments that lay out differently on the same OS,
+	 *                e.g. "-139dpi" (JavaFX scales by the screen DPI). Empty for the standard environment.
+	 */
+	public static SnapshotAssert forCurrentModule(String variant)
+	{
 		Path baseDir = Paths.get(System.getProperty("basedir", System.getProperty("user.dir")));
-		String os = TestPlatform.current().dirName();
+		String os = TestPlatform.current().dirName() + variant;
 		return new SnapshotAssert(
 				baseDir.resolve("src/test/resources/layout-snapshots").resolve(os),
 				baseDir.resolve("target/layout-snapshots").resolve(os),
@@ -53,7 +62,13 @@ public final class SnapshotAssert
 
 	public static void assertMatches(Class<?> testClass, String caseName, LayoutSnapshot actual, Screenshot screenshot)
 	{
-		forCurrentModule().check(testClass, caseName, actual, screenshot);
+		assertMatches("", testClass, caseName, actual, screenshot);
+	}
+
+	/** @param variant See {@link #forCurrentModule(String)}. */
+	public static void assertMatches(String variant, Class<?> testClass, String caseName, LayoutSnapshot actual, Screenshot screenshot)
+	{
+		forCurrentModule(variant).check(testClass, caseName, actual, screenshot);
 	}
 
 	public void check(Class<?> testClass, String caseName, LayoutSnapshot actual, Screenshot screenshot)

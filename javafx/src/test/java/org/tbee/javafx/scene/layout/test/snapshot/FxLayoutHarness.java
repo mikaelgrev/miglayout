@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
-import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,7 +30,7 @@ import org.tbee.javafx.scene.layout.MigPane;
  *     MigPane pane = new MigPane();
  *     pane.add(named(new Button("OK"), "ok"));
  *     return pane;
- * }, null);
+ * }, Sizing.preferred());
  * </pre>
  *
  * Every node that should appear in the snapshot needs an id ({@link Node#setId}). Children of nested
@@ -52,10 +51,19 @@ public final class FxLayoutHarness
 		private final LayoutSnapshot snapshot;
 		private final Screenshot screenshot;
 
-		Result(LayoutSnapshot snapshot, Screenshot screenshot)
+		private final String variant;
+
+		Result(LayoutSnapshot snapshot, Screenshot screenshot, String variant)
 		{
 			this.snapshot = snapshot;
 			this.screenshot = screenshot;
+			this.variant = variant;
+		}
+
+		/** @return The snapshot directory variant, see {@link FxLayoutHarness#dpiVariant()}. */
+		public String variant()
+		{
+			return variant;
 		}
 
 		public LayoutSnapshot snapshot()
@@ -70,27 +78,27 @@ public final class FxLayoutHarness
 	}
 
 	/** Lays out the container and compares it with the golden snapshot, see {@link SnapshotAssert}. */
-	public static void assertLayout(Class<?> testClass, String caseName, Supplier<? extends Parent> content, Dimension2D size)
+	public static void assertLayout(Class<?> testClass, String caseName, Supplier<? extends Parent> content, Sizing sizing)
 	{
-		Result result = layout(testClass.getSimpleName() + " - " + caseName, content, size);
-		SnapshotAssert.assertMatches(testClass, caseName, result.snapshot(), result.screenshot());
+		Result result = layout(testClass.getSimpleName() + " - " + caseName, content, sizing);
+		SnapshotAssert.assertMatches(result.variant(), testClass, caseName, result.snapshot(), result.screenshot());
 	}
 
 	/**
 	 * @param content Creates the container to lay out; called on the JavaFX application thread.
-	 * @param size The size of the container, or null to use its preferred size (like {@link Stage#sizeToScene()}).
+	 * @param sizing The size of the container, e.g. {@link Sizing#preferred()} (like {@link Stage#sizeToScene()}).
 	 */
-	public static Result layout(Supplier<? extends Parent> content, Dimension2D size)
+	public static Result layout(Supplier<? extends Parent> content, Sizing sizing)
 	{
-		return layout("layout snapshot", content, size);
+		return layout("layout snapshot", content, sizing);
 	}
 
 	/**
 	 * @param title The window title, shown when observing layouts ({@link ShowLayouts}).
 	 * @param content Creates the container to lay out; called on the JavaFX application thread.
-	 * @param size The size of the container, or null to use its preferred size (like {@link Stage#sizeToScene()}).
+	 * @param sizing The size of the container, e.g. {@link Sizing#preferred()} (like {@link Stage#sizeToScene()}).
 	 */
-	public static Result layout(String title, Supplier<? extends Parent> content, Dimension2D size)
+	public static Result layout(String title, Supplier<? extends Parent> content, Sizing sizing)
 	{
 		startToolkit();
 		Stage[] stage = new Stage[1];
@@ -103,7 +111,7 @@ public final class FxLayoutHarness
 				root[0] = content.get();
 				// The root is placed in a holder that gives it exactly the requested (or preferred) size, otherwise
 				// the OS may enforce a minimum window size and stretch it.
-				holder[0] = new Holder(root[0], size);
+				holder[0] = new Holder(root[0], sizing);
 				stage[0] = new Stage();
 				stage[0].setTitle(title);
 				stage[0].setScene(new Scene(holder[0]));
@@ -121,7 +129,7 @@ public final class FxLayoutHarness
 				holder[0].layout();
 				double scale = Screen.getPrimary().getOutputScaleX();
 				TestPlatform.current().assertUnscaled(scale);
-				return new Result(snapshot(root[0], scale), screenshot(root[0]));
+				return new Result(snapshot(root[0], scale), screenshot(root[0]), dpiVariant());
 			});
 		} finally {
 			if (stage[0] != null)
@@ -130,6 +138,19 @@ public final class FxLayoutHarness
 					return null;
 				});
 		}
+	}
+
+	/**
+	 * MigPane scales logical pixels (the default unit) by screen DPI / platform DPI, independent of the UI scale.
+	 * Screens with a non standard DPI therefore get their own snapshots, e.g. {@code windows-139dpi}, so they can be
+	 * used locally without breaking the standard snapshots that CI compares against.
+	 *
+	 * @return "" for the platform's standard DPI, otherwise "-<dpi>dpi".
+	 */
+	static String dpiVariant()
+	{
+		int dpi = (int) Math.ceil(Screen.getPrimary().getDpi()); // same rounding as MigPane
+		return dpi == PlatformDefaults.getDefaultDPI() ? "" : "-" + dpi + "dpi";
 	}
 
 	/** Restores the global state that tests may have changed, so every layout starts like a fresh application. */
@@ -202,27 +223,27 @@ public final class FxLayoutHarness
 		return node;
 	}
 
-	/** Places the single child at (0,0) with a fixed size, or its preferred size when no size is given. */
+	/** Places the single child at (0,0) with the size given by the {@link Sizing}. */
 	private static final class Holder extends Region
 	{
 		private final Parent child;
-		private final Dimension2D size;
+		private final Sizing sizing;
 
-		Holder(Parent child, Dimension2D size)
+		Holder(Parent child, Sizing sizing)
 		{
 			this.child = child;
-			this.size = size;
+			this.sizing = sizing;
 			getChildren().add(child);
 		}
 
 		private double childWidth()
 		{
-			return size != null ? size.getWidth() : child.prefWidth(-1);
+			return sizing.width(child.prefWidth(-1));
 		}
 
 		private double childHeight()
 		{
-			return size != null ? size.getHeight() : child.prefHeight(childWidth());
+			return sizing.height(child.prefHeight(childWidth()));
 		}
 
 		@Override

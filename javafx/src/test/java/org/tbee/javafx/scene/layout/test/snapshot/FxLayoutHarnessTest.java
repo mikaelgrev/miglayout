@@ -2,7 +2,6 @@ package org.tbee.javafx.scene.layout.test.snapshot;
 
 import java.util.List;
 
-import javafx.geometry.Dimension2D;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import net.miginfocom.layout.AC;
@@ -35,7 +34,7 @@ class FxLayoutHarnessTest
 	@Test
 	void packedUsesThePreferredSize()
 	{
-		List<String> lines = SnapshotAssert.significantLines(FxLayoutHarness.layout(FxLayoutHarnessTest::fixedLayout, null).snapshot().text());
+		List<String> lines = SnapshotAssert.significantLines(FxLayoutHarness.layout(FxLayoutHarnessTest::fixedLayout, Sizing.preferred()).snapshot().text());
 		assertEquals(List.of(
 				"container 110 60",
 				"a        Label    5  5 50 20",
@@ -47,9 +46,16 @@ class FxLayoutHarnessTest
 	@Test
 	void anExplicitSizeIsApplied()
 	{
-		FxLayoutHarness.Result result = FxLayoutHarness.layout(FxLayoutHarnessTest::fixedLayout, new Dimension2D(300, 200));
+		FxLayoutHarness.Result result = FxLayoutHarness.layout(FxLayoutHarnessTest::fixedLayout, Sizing.fixed(300, 200));
 		assertTrue(result.snapshot().text().contains("\ncontainer 300 200\n"), result.snapshot().text());
 		assertEquals(300, result.screenshot().width());
 		assertEquals(200, result.screenshot().height());
+	}
+
+	@Test
+	void theSizeCanBeRelativeToThePreferredSize()
+	{
+		FxLayoutHarness.Result result = FxLayoutHarness.layout(FxLayoutHarnessTest::fixedLayout, Sizing.preferredPlus(20, -10));
+		assertTrue(result.snapshot().text().contains("\ncontainer 130 50\n"), result.snapshot().text());
 	}
 }

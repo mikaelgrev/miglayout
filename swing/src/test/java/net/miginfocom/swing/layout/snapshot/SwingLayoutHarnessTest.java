@@ -1,6 +1,5 @@
 package net.miginfocom.swing.layout.snapshot;
 
-import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -32,7 +31,7 @@ class SwingLayoutHarnessTest
 	@Test
 	void packedUsesThePreferredSize()
 	{
-		List<String> lines = SnapshotAssert.significantLines(SwingLayoutHarness.layout(SwingLayoutHarnessTest::fixedLayout, null).snapshot().text());
+		List<String> lines = SnapshotAssert.significantLines(SwingLayoutHarness.layout(SwingLayoutHarnessTest::fixedLayout, Sizing.preferred()).snapshot().text());
 		assertEquals(List.of(
 				"container 110 60",
 				"a        JLabel  5  5 50 20",
@@ -44,9 +43,16 @@ class SwingLayoutHarnessTest
 	@Test
 	void anExplicitSizeIsApplied()
 	{
-		SwingLayoutHarness.Result result = SwingLayoutHarness.layout(SwingLayoutHarnessTest::fixedLayout, new Dimension(300, 200));
+		SwingLayoutHarness.Result result = SwingLayoutHarness.layout(SwingLayoutHarnessTest::fixedLayout, Sizing.fixed(300, 200));
 		assertTrue(result.snapshot().text().contains("\ncontainer 300 200\n"), result.snapshot().text());
 		assertEquals(300, result.screenshot().width());
 		assertEquals(200, result.screenshot().height());
+	}
+
+	@Test
+	void theSizeCanBeRelativeToThePreferredSize()
+	{
+		SwingLayoutHarness.Result result = SwingLayoutHarness.layout(SwingLayoutHarnessTest::fixedLayout, Sizing.preferredPlus(20, -10));
+		assertTrue(result.snapshot().text().contains("\ncontainer 130 50\n"), result.snapshot().text());
 	}
 }

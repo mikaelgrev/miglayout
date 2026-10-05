@@ -33,7 +33,7 @@ import net.miginfocom.swing.MigLayout;
  *     JPanel panel = new JPanel(new MigLayout());
  *     panel.add(named(new JButton("OK"), "ok"));
  *     return panel;
- * }, null);
+ * }, Sizing.preferred());
  * </pre>
  *
  * Every component that should appear in the snapshot needs a name ({@link Component#setName}). Children of nested
@@ -69,27 +69,27 @@ public final class SwingLayoutHarness
 	}
 
 	/** Lays out the container and compares it with the golden snapshot, see {@link SnapshotAssert}. */
-	public static void assertLayout(Class<?> testClass, String caseName, Supplier<? extends JComponent> content, Dimension size)
+	public static void assertLayout(Class<?> testClass, String caseName, Supplier<? extends JComponent> content, Sizing sizing)
 	{
-		Result result = layout(testClass.getSimpleName() + " - " + caseName, content, size);
+		Result result = layout(testClass.getSimpleName() + " - " + caseName, content, sizing);
 		SnapshotAssert.assertMatches(testClass, caseName, result.snapshot(), result.screenshot());
 	}
 
 	/**
 	 * @param content Creates the container to lay out; called on the event dispatch thread.
-	 * @param size The size of the container, or null to use its preferred size (like {@link JFrame#pack()}).
+	 * @param sizing The size of the container, e.g. {@link Sizing#preferred()} (like {@link JFrame#pack()}).
 	 */
-	public static Result layout(Supplier<? extends JComponent> content, Dimension size)
+	public static Result layout(Supplier<? extends JComponent> content, Sizing sizing)
 	{
-		return layout("layout snapshot", content, size);
+		return layout("layout snapshot", content, sizing);
 	}
 
 	/**
 	 * @param title The window title, shown when observing layouts ({@link ShowLayouts}).
 	 * @param content Creates the container to lay out; called on the event dispatch thread.
-	 * @param size The size of the container, or null to use its preferred size (like {@link JFrame#pack()}).
+	 * @param sizing The size of the container, e.g. {@link Sizing#preferred()} (like {@link JFrame#pack()}).
 	 */
-	public static Result layout(String title, Supplier<? extends JComponent> content, Dimension size)
+	public static Result layout(String title, Supplier<? extends JComponent> content, Sizing sizing)
 	{
 		if (GraphicsEnvironment.isHeadless())
 			throw new IllegalStateException("Layout snapshot tests need a display (on Linux CI use xvfb)");
@@ -105,7 +105,7 @@ public final class SwingLayoutHarness
 				frame[0].setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				// The root is placed in a holder that gives it exactly the requested (or preferred) size. Otherwise the
 				// OS would stretch it, e.g. a packed JFrame on Windows is at least ~176px wide because of the title bar.
-				JPanel holder = new JPanel(new FixedSizeLayout(size));
+				JPanel holder = new JPanel(new FixedSizeLayout(sizing));
 				holder.add(root[0]);
 				frame[0].setContentPane(holder);
 				frame[0].pack();
@@ -200,19 +200,20 @@ public final class SwingLayoutHarness
 		}
 	}
 
-	/** Places the single child at (0,0) with a fixed size, or its preferred size when no size is given. */
+	/** Places the single child at (0,0) with the size given by the {@link Sizing}. */
 	private static final class FixedSizeLayout implements LayoutManager
 	{
-		private final Dimension size;
+		private final Sizing sizing;
 
-		FixedSizeLayout(Dimension size)
+		FixedSizeLayout(Sizing sizing)
 		{
-			this.size = size;
+			this.sizing = sizing;
 		}
 
 		private Dimension childSize(Container parent)
 		{
-			return size != null ? new Dimension(size) : parent.getComponent(0).getPreferredSize();
+			Dimension pref = parent.getComponent(0).getPreferredSize();
+			return new Dimension((int) Math.round(sizing.width(pref.width)), (int) Math.round(sizing.height(pref.height)));
 		}
 
 		@Override

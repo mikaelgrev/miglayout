@@ -1,0 +1,15 @@
+# os: windows
+# os.version: Windows 11 10.0
+# java: Oracle Corporation 21.0.2
+# javafx: 11.0.1+1
+# font: Font[name=System Regular, family=System, style=Regular, size=12.0]
+# migPlatform: WINDOWS_XP
+# screenDPI: 139.0
+# uiScale: 1.0
+container 249 121
+nameLabel    Label      11 14  35 17
+nameField    TextField  56 10 183 25
+emailLabel   Label      10 49  36 17
+emailField   TextField  56 45 183 25
+okButton     Button     11 86 109 25
+cancelButton Button    130 86 109 25
