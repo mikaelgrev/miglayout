@@ -15,7 +15,8 @@ import org.opentest4j.AssertionFailedError;
 /**
  * Compares a {@link LayoutSnapshot} with the golden file recorded for the current OS.
  * <ul>
- * <li>Golden files: {@code src/test/resources/layout-snapshots/<os>/<TestClass>/<case>.txt} (commit these).</li>
+ * <li>Golden files: {@code src/test/resources/layout-snapshots/<env>/<TestClass>/<case>.txt} (commit these), where
+ *     {@code <env>} is the OS on CI and OS + computer name locally, see {@link TestPlatform#environmentName()}.</li>
  * <li>Every run writes the actual snapshot, a screenshot and, on mismatch, a diff to
  *     {@code target/layout-snapshots/<os>/<TestClass>/} (uploaded as CI artifact).</li>
  * <li>A missing golden file is recorded and the test fails, so new baselines are always reviewed.</li>
@@ -53,7 +54,7 @@ public final class SnapshotAssert
 	public static SnapshotAssert forCurrentModule(String variant)
 	{
 		Path baseDir = Paths.get(System.getProperty("basedir", System.getProperty("user.dir")));
-		String os = TestPlatform.current().dirName() + variant;
+		String os = TestPlatform.current().environmentName() + variant;
 		return new SnapshotAssert(
 				baseDir.resolve("src/test/resources/layout-snapshots").resolve(os),
 				baseDir.resolve("target/layout-snapshots").resolve(os),

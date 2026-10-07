@@ -142,7 +142,7 @@ public final class FxLayoutHarness
 
 	/**
 	 * MigPane scales logical pixels (the default unit) by screen DPI / platform DPI, independent of the UI scale.
-	 * Screens with a non standard DPI therefore get their own snapshots, e.g. {@code windows-139dpi}, so they can be
+	 * Screens with a non standard DPI therefore get their own snapshots, e.g. {@code windows-raelee-139dpi}, so they can be
 	 * used locally without breaking the standard snapshots that CI compares against.
 	 *
 	 * @return "" for the platform's standard DPI, otherwise "-<dpi>dpi".

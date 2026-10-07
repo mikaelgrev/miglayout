@@ -10,3 +10,6 @@ target/
 *.versionsBackup
 
 pom.xml.releaseBackup
+
+# layout snapshot screenshots are only for review (written to target/ on every run), only the .txt files are golden
+**/src/test/resources/layout-snapshots/**/*.png

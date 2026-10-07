@@ -1,0 +1,15 @@
+# os: windows
+# os.version: Windows Server 2022 10.0
+# java: Azul Systems, Inc. 21.0.12
+# javafx: 23.0.8+100
+# font: Font[name=System Regular, family=System, style=Regular, size=12.0]
+# migPlatform: WINDOWS_XP
+# screenDPI: 0.0
+# uiScale: 1.0
+container 240 107
+nameLabel    Label       8 11  35 17
+nameField    TextField  50  7 183 25
+emailLabel   Label       7 43  36 17
+emailField   TextField  50 39 183 25
+okButton     Button     76 75  75 25
+cancelButton Button    158 75  75 25

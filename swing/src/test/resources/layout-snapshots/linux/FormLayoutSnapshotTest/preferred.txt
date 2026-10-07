@@ -1,0 +1,15 @@
+# os: linux
+# os.version: Linux 6.17.0-1022-azure
+# java: Azul Systems, Inc. 21.0.12
+# lookAndFeel: Metal (Ocean)
+# font: javax.swing.plaf.FontUIResource[family=Dialog,name=Dialog,style=bold,size=12]
+# migPlatform: GNOME
+# screenDPI: 100
+# uiScale: 1.0
+container 234 93
+nameLabel    JLabel       8  8  45 15
+nameField    JTextField  59  6 169 19
+emailLabel   JLabel       6 33  47 15
+emailField   JTextField  59 31 169 19
+okButton     JButton    143 62  85 25
+cancelButton JButton     52 62  85 25

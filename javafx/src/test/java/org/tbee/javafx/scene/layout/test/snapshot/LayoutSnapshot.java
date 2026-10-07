@@ -59,6 +59,7 @@ public final class LayoutSnapshot
 		private Builder()
 		{
 			header.put("os", TestPlatform.current().dirName());
+			header.put("env", TestPlatform.current().environmentName());
 			header.put("os.version", System.getProperty("os.name") + " " + System.getProperty("os.version"));
 			header.put("java", System.getProperty("java.vendor") + " " + System.getProperty("java.version"));
 		}
