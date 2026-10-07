@@ -1,0 +1,16 @@
+# os: linux
+# env: linux
+# os.version: Linux 7.0.0-1012-azure
+# java: Azul Systems, Inc. 21.0.12
+# javafx: 23.0.8+100
+# font: Font[name=System Regular, family=System, style=Regular, size=13.0]
+# migPlatform: GNOME
+# screenDPI: 95.0
+# uiScale: 1.0
+container 473 152
+nameLabel    Label       9 10  43 16
+nameField    TextField  58  6 409 24
+emailLabel   Label       6 40  46 16
+emailField   TextField  58 36 409 24
+okButton     Button    383 72  84 24
+cancelButton Button    293 72  84 24

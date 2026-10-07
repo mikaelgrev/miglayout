@@ -1,0 +1,16 @@
+# os: macos
+# env: macos
+# os.version: Mac OS X 26.6.2
+# java: Azul Systems, Inc. 21.0.12
+# javafx: 23.0.8+100
+# font: Font[name=System Regular, family=System, style=Regular, size=13.0]
+# migPlatform: MAC_OSX
+# screenDPI: 38.0
+# uiScale: 1.0
+container 274 125
+nameLabel    Label      18 20  36 17
+nameField    TextField  61 16 197 25
+emailLabel   Label      16 52  38 17
+emailField   TextField  61 48 197 25
+okButton     Button    186 84  72 25
+cancelButton Button    107 84  72 25
