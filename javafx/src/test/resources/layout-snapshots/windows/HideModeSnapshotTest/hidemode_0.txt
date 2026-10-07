@@ -1,0 +1,13 @@
+# os: windows
+# env: windows
+# os.version: Windows Server 2025 10.0
+# java: Azul Systems, Inc. 21.0.12
+# javafx: 23.0.8+100
+# font: Font[name=System Regular, family=System, style=Regular, size=12.0]
+# migPlatform: WINDOWS_XP
+# screenDPI: 0.0
+# uiScale: 1.0
+container 194 24
+a Region   0 0 60 24
+b Region  67 0 60 24
+c Region 134 0 60 24

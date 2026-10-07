@@ -1,0 +1,13 @@
+# os: macos
+# env: macos
+# os.version: Mac OS X 26.6.2
+# java: Azul Systems, Inc. 21.0.12
+# lookAndFeel: Metal (Ocean)
+# font: javax.swing.plaf.FontUIResource[family=Dialog,name=Dialog,style=bold,size=12]
+# migPlatform: MAC_OSX
+# screenDPI: 37
+# uiScale: 1.0
+container 100 24
+a JLabel   0 0 60 24
+b JLabel  60 0 60 24
+c JLabel 120 0 60 24

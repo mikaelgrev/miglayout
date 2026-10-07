@@ -1,0 +1,14 @@
+# os: macos
+# env: macos
+# os.version: Mac OS X 26.6.2
+# java: Azul Systems, Inc. 21.0.12
+# javafx: 23.0.8+100
+# font: Font[name=System Regular, family=System, style=Regular, size=13.0]
+# migPlatform: MAC_OSX
+# screenDPI: 38.0
+# uiScale: 1.0
+container 134 60
+a Region  5  6 60 24
+b Region 67  6 60 24
+c Region  5 31 60 24
+d Region 67 31 60 24
