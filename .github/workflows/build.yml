@@ -16,7 +16,7 @@ jobs:
       matrix:
         # Pinned images: the layout snapshot tests compare real component sizes, which depend on the fonts
         # of the image. Updating an image may require re-recording the snapshots (see SnapshotAssert).
-        os: [ubuntu-24.04, macos-14, windows-2022]
+        os: [ubuntu-26.04, macos-26, windows-2025]
     runs-on: ${{ matrix.os }}
     env:
       DISPLAY: ':99'
