@@ -29,12 +29,7 @@ class SnapshotAssertTest
 
 	private SnapshotAssert snapshotAssert(boolean update)
 	{
-		return snapshotAssert(update, true);
-	}
-
-	private SnapshotAssert snapshotAssert(boolean update, boolean record)
-	{
-		return new SnapshotAssert(tmp.resolve("golden"), tmp.resolve("out"), update, record);
+		return new SnapshotAssert(tmp.resolve("golden"), tmp.resolve("out"), update);
 	}
 
 	private static LayoutSnapshot snapshot(int buttonX)
@@ -58,21 +53,16 @@ class SnapshotAssertTest
 	}
 
 	@Test
-	void aMissingGoldenFileIsSkippedByDefault()
-	{
-		snapshotAssert(false, false).check(SnapshotAssertTest.class, "case 1", snapshot(40), null);
-		assertFalse(Files.exists(golden()));
-		assertTrue(Files.exists(out(".txt")));
-	}
-
-	@Test
-	void aMissingGoldenFileFailsWhenRecording()
+	void aMissingGoldenFileIsRecordedAndFails()
 	{
 		AssertionFailedError e = assertThrows(AssertionFailedError.class,
-				() -> snapshotAssert(false, true).check(SnapshotAssertTest.class, "case 1", snapshot(40), null));
+				() -> snapshotAssert(false).check(SnapshotAssertTest.class, "case 1", snapshot(40), null));
 		assertTrue(e.getMessage().contains("recorded a new one"), e.getMessage());
 		assertTrue(Files.exists(golden()));
 		assertTrue(Files.exists(out(".txt")));
+
+		// the next run passes
+		snapshotAssert(false).check(SnapshotAssertTest.class, "case 1", snapshot(40), null);
 	}
 
 	@Test
