@@ -29,16 +29,19 @@ import org.opentest4j.AssertionFailedError;
 public final class SnapshotAssert
 {
 	public static final String UPDATE_PROPERTY = "miglayout.updateSnapshots";
+	public static final String RECORD_PROPERTY = "miglayout.recordSnapshots";
 
 	private final Path goldenRoot;
 	private final Path outputRoot;
 	private final boolean update;
+	private final boolean record;
 
-	public SnapshotAssert(Path goldenRoot, Path outputRoot, boolean update)
+	public SnapshotAssert(Path goldenRoot, Path outputRoot, boolean update, boolean record)
 	{
 		this.goldenRoot = goldenRoot;
 		this.outputRoot = outputRoot;
 		this.update = update;
+		this.record = record;
 	}
 
 	/** @return The instance for the module the tests run in (Surefire and IntelliJ use the module directory). */
@@ -58,7 +61,8 @@ public final class SnapshotAssert
 		return new SnapshotAssert(
 				baseDir.resolve("src/test/resources/layout-snapshots").resolve(os),
 				baseDir.resolve("target/layout-snapshots").resolve(os),
-				Boolean.getBoolean(UPDATE_PROPERTY));
+				Boolean.getBoolean(UPDATE_PROPERTY),
+				Boolean.getBoolean(RECORD_PROPERTY));
 	}
 
 	public static void assertMatches(Class<?> testClass, String caseName, LayoutSnapshot actual, Screenshot screenshot)
@@ -86,6 +90,8 @@ public final class SnapshotAssert
 		delete(diffFile);
 
 		if (!Files.exists(golden)) {
+			if (!record)
+				return; // baseline not present yet: skip, so a new test does not fail a normal build
 			write(golden, actual.text().getBytes(StandardCharsets.UTF_8));
 			throw new AssertionFailedError("No layout snapshot existed, recorded a new one: " + golden.toAbsolutePath()
 					+ "\nReview it (and the screenshot in " + outDir.toAbsolutePath() + ") and commit it.\n\n" + actual.text());
