@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 /**
  * MigLayoutTest
@@ -22,19 +20,19 @@ public class MigLayoutTest {
     // reported: http://migcalendar.com/forums/viewtopic.php?f=8&t=3833
     /**
      * Auto-DPI-scaling not working.
+     * <p>
+     * Up to Java 8 MigLayout scaled logical pixels by screen DPI / default DPI itself. Since Java 9 Swing scales the
+     * whole UI with the system scale factor, so MigLayout must NOT scale again (that would scale twice):
+     * the pixel unit factor is 1 whatever the screen DPI is (see SwingComponentWrapper.getPixelUnitFactor).
+     * This test used to expect the Java 8 behaviour; it was never noticed because it only ran on Linux/macOS,
+     * where CI skipped the tests, and only when the DPI was not the default.
      */
     @Test
     public void testDPIScaling() {
-        int screenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
-        assumeFalse(screenResolution == PlatformDefaults.getDefaultDPI(),
-                "dpi == default, nothing to test: " + screenResolution);
-        // TODO: the assert fails under windows
-        assumeFalse(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).contains("windows"),
-                "dpi scaling assert fails under windows");
-
-        float factor = (float) screenResolution / PlatformDefaults.getDefaultDPI();
         SwingComponentWrapper wrapper = new SwingComponentWrapper(new JButton());
-        assertEquals(factor, wrapper.getPixelUnitFactor(true), "dpi scaling factor");
+        int screenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
+        assertEquals(1f, wrapper.getPixelUnitFactor(true), "horizontal pixel unit factor at " + screenResolution + " dpi");
+        assertEquals(1f, wrapper.getPixelUnitFactor(false), "vertical pixel unit factor at " + screenResolution + " dpi");
     }
 
     // reported: http://migcalendar.com/forums/viewtopic.php?f=8&t=3834
