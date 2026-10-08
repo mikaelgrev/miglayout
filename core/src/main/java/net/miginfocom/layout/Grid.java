@@ -898,7 +898,7 @@ public final class Grid
 			return;
 
 		for (Map.Entry<String, Boolean> o : linkTargetIDs.entrySet()) {
-			if (o.getValue())
+			if (Boolean.TRUE.equals(o.getValue()))
 				LinkHandler.clearBounds(container.getLayout(), o.getKey());
 		}
 	}
