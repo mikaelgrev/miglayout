@@ -43,6 +43,8 @@ import java.io.ObjectStreamException;
  */
 public final class DimConstraint implements Externalizable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** How this entity can be resized in the dimension that this constraint represents.
 	 */
 	final ResizeConstraint resize = new ResizeConstraint();

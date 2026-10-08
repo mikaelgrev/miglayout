@@ -444,6 +444,7 @@ public final class Grid
 	/**
 	 * @deprecated since 5.0 Last boolean is not needed and is gotten from the new {@link net.miginfocom.layout.ComponentWrapper#getContentBias()} instead;
 	 */
+	@Deprecated
 	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean notUsed)
 	{
 		return layoutImpl(bounds, alignX, alignY, debug, false);

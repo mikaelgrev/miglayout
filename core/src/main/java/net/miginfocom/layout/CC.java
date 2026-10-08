@@ -40,6 +40,8 @@ import java.util.ArrayList;
  */
 public class CC implements Externalizable
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final BoundSize DEF_GAP = BoundSize.NULL_SIZE;    // Only used to denote default wrap/newline gap.
 
 	static final String[] DOCK_SIDES = {"north", "west", "south", "east"};
@@ -260,6 +262,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC growPrio(int ... widthHeight)
 	{
 		switch (widthHeight.length) {
@@ -304,6 +307,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC grow(float ... widthHeight)
 	{
 		switch (widthHeight.length) {
@@ -336,6 +340,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC shrinkPrio(int ... widthHeight)
 	{
 		switch (widthHeight.length) {
@@ -368,6 +373,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC shrink(float ... widthHeight)
 	{
 		switch (widthHeight.length) {
@@ -400,6 +406,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC endGroup(String ... xy)
 	{
 		switch (xy.length) {
@@ -432,6 +439,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new ComponentConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC sizeGroup(String ... xy)
 	{
 		switch (xy.length) {
@@ -654,6 +662,7 @@ public class CC implements Externalizable
 	 * @see #setSpanY(int)
 	 * @since 3.7.2. Replacing cell(int, int) and cell(int, int, int, int)
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC cell(int ... colRowWidthHeight)
 	{
 		switch (colRowWidthHeight.length) {
@@ -704,6 +713,7 @@ public class CC implements Externalizable
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
 	 * @since 3.7.2
 	 */
+	@SuppressWarnings("fallthrough")
 	public final CC gap(String ... args)
 	{
 		switch (args.length) {

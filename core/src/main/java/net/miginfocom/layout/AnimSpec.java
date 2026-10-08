@@ -41,6 +41,8 @@ import java.io.Serializable;
  */
 public class AnimSpec implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 //	public static final AnimSpec OFF = new AnimSpec(-1, 0, 0);
 	public static final AnimSpec DEF = new AnimSpec(0, 0, 0.2f, 0.2f);
 

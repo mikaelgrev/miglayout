@@ -40,6 +40,8 @@ import java.io.*;
  */
 final class ResizeConstraint implements Externalizable
 {
+	private static final long serialVersionUID = 1L;
+
 	static final Float WEIGHT_100 = 100f;
 
 	/** How flexible the entity should be, relative to other entities, when it comes to growing. <code>null</code> or

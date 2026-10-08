@@ -85,6 +85,7 @@ public class BoundSize implements Serializable
 	 * @param gapPush If the size should be hinted as "pushing" and thus want to occupy free space if no one else is claiming it.
 	 * @param createString The string used to create the BoundsSize.
 	 */
+	@SuppressWarnings("this-escape")
 	public BoundSize(UnitValue min, UnitValue preferred, UnitValue max, boolean gapPush, String createString)
 	{
 		this.min = min;

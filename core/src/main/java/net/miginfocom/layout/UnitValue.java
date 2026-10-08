@@ -290,6 +290,7 @@ public final class UnitValue implements Serializable
 	 * connected to any component.
 	 * @return The size in pixels.
 	 */
+	@SuppressWarnings("fallthrough")
 	public final float getPixelsExact(float refValue, ContainerWrapper parent, ComponentWrapper comp)
 	{
 		if (parent == null)
@@ -631,6 +632,7 @@ public final class UnitValue implements Serializable
 	 * @see #LPX
 	 * @deprecated Use {@link PlatformDefaults#getDefaultHorizontalUnit()} and {@link PlatformDefaults#getDefaultVerticalUnit()} instead.
 	 */
+	@Deprecated
 	public static int getDefaultUnit()
 	{
 		return PlatformDefaults.getDefaultHorizontalUnit();
@@ -642,6 +644,7 @@ public final class UnitValue implements Serializable
 	 * @see #LPX
 	 * @deprecated Use {@link PlatformDefaults#setDefaultHorizontalUnit(int)} and {@link PlatformDefaults#setDefaultVerticalUnit(int)} instead.
 	 */
+	@Deprecated
 	public static void setDefaultUnit(int unit)
 	{
 		PlatformDefaults.setDefaultHorizontalUnit(unit);

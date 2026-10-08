@@ -39,6 +39,8 @@ import java.io.*;
  */
 public class LC implements Externalizable
 {
+	private static final long serialVersionUID = 1L;
+
 	// See the corresponding set/get method for documentation of the property!
 
 	private int wrapAfter = LayoutUtil.INF;
