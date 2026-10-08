@@ -1,0 +1,12 @@
+# os: linux
+# env: linux
+# os.version: Linux 7.0.0-1012-azure
+# java: Azul Systems, Inc. 21.0.12
+# javafx: 23.0.8+100
+# font: Font[name=System Regular, family=System, style=Regular, size=13.0]
+# migPlatform: GNOME
+# screenDPI: 95.0
+# uiScale: 1.0
+container 200 100
+b1 Region 20 40 60 24
+b2 Region 90 40 60 24

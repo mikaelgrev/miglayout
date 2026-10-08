@@ -1,0 +1,12 @@
+# os: linux
+# env: linux
+# os.version: Linux 7.0.0-1012-azure
+# java: Azul Systems, Inc. 21.0.12
+# lookAndFeel: Metal (Ocean)
+# font: javax.swing.plaf.FontUIResource[family=Dialog,name=Dialog,style=bold,size=12]
+# migPlatform: GNOME
+# screenDPI: 100
+# uiScale: 1.0
+container 200 100
+b1 JLabel 20 40 60 24
+b2 JLabel 20 74 60 24
