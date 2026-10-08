@@ -825,7 +825,7 @@ public class IDEUtil
 	private static boolean isDialogInsets(UnitValue[] insets)
 	{
 		for (int i = 0; i < 4; i++) {
-			if (PlatformDefaults.getDialogInsets(i) != insets[i])
+			if (!LayoutUtil.equals(PlatformDefaults.getDialogInsets(i), insets[i]))
 				return false;
 		}
 		return true;
@@ -834,7 +834,7 @@ public class IDEUtil
 	private static boolean isPanelInsets(UnitValue[] insets)
 	{
 		for (int i = 0; i < 4; i++) {
-			if (PlatformDefaults.getPanelInsets(i) != insets[i])
+			if (!LayoutUtil.equals(PlatformDefaults.getPanelInsets(i), insets[i]))
 				return false;
 		}
 		return true;

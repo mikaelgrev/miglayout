@@ -229,11 +229,6 @@ public final class DimConstraint implements Externalizable
 		this.gapAfter = size;
 	}
 
-	boolean hasGapAfter()
-	{
-		return gapAfter != null && gapAfter.isUnset() == false;
-	}
-
 	boolean isGapAfterPush()
 	{
 		return gapAfter != null && gapAfter.getGapPush();
@@ -260,11 +255,6 @@ public final class DimConstraint implements Externalizable
 	public void setGapBefore(BoundSize size)
 	{
 		this.gapBefore = size;
-	}
-
-	boolean hasGapBefore()
-	{
-		return gapBefore != null && gapBefore.isUnset() == false;
 	}
 
 	boolean isGapBeforePush()

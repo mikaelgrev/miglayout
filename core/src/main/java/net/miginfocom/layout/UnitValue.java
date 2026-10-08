@@ -592,7 +592,7 @@ public final class UnitValue implements Serializable
 	@Override
 	public final int hashCode()
 	{
-		return (int) (value * 12345) + (oper >>> 5) + unit >>> 17;
+		return (int) (value * 12345) + (oper >>> 5) + (unit << 4);
 	}
 
 	/** Adds a global unit converter that can convert from some <code>unit</code> to pixels.
