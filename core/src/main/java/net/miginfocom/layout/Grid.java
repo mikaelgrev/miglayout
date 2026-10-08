@@ -1463,7 +1463,7 @@ public final class Grid
 		DimConstraint[] primDCs = (isRows ? rowConstr : colConstr).getConstraints();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<LinkedDimGroup>[] groupLists = new ArrayList[primIndexes.size()];
+		ArrayList<LinkedDimGroup>[] groupLists = (ArrayList<LinkedDimGroup>[]) new ArrayList<?>[primIndexes.size()];
 
 		int gIx = 0;
 		for (int i : primIndexes) {
@@ -2441,7 +2441,7 @@ public final class Grid
 	private static synchronized void putSizesAndIndexes(Object parComp, int[] sizes, int[] ixArr, boolean isRows)
 	{
 		if (PARENT_ROWCOL_SIZES_MAP == null)    // Lazy since only if designing in IDEs
-			PARENT_ROWCOL_SIZES_MAP = new WeakHashMap[] {new WeakHashMap<Object,int[][]>(4), new WeakHashMap<Object,int[][]>(4)};
+			PARENT_ROWCOL_SIZES_MAP = (WeakHashMap<Object, int[][]>[]) new WeakHashMap<?, ?>[]{new WeakHashMap<Object, int[][]>(4), new WeakHashMap<Object, int[][]>(4)};
 
 		PARENT_ROWCOL_SIZES_MAP[isRows ? 0 : 1].put(parComp, new int[][]{ixArr, sizes});
 	}

@@ -42,6 +42,10 @@ import java.util.HashMap;
  */
 public class IDEUtil
 {
+	public IDEUtil()
+	{
+	}
+
 	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue ZERO = UnitValue.ZERO;

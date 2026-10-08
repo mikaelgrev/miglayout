@@ -37,6 +37,10 @@ package net.miginfocom.layout;
  */
 public abstract class UnitConverter
 {
+	public UnitConverter()
+	{
+	}
+
 	/** Value to return if this converter can not handle the <code>unit</code> sent in as an argument
 	 * to the convert method.
 	 */

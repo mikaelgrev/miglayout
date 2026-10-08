@@ -41,6 +41,10 @@ package net.miginfocom.layout;
  */
 public abstract class LayoutCallback
 {
+	public LayoutCallback()
+	{
+	}
+
 	/** Returns a position similar to the "pos" the component constraint.
 	 * @param comp The component wrapper that holds the actual component (JComponent is Swing and Control in SWT).
 	 * <b>Should not be altered.</b>

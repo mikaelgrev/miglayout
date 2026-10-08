@@ -152,8 +152,7 @@ public final class LinkHandler
 		if (temporary == false)
 			values.put(key, bounds);
 
-		// TODO: generic array creation is not supported, so array should be migrated to List or a class
-		LAYOUTS.put(layout, new HashMap[] {values, values_temp});
+		LAYOUTS.put(layout, (HashMap<String, int[]>[]) new HashMap<?, ?>[] {values, values_temp});
 
 		return true;
 	}
