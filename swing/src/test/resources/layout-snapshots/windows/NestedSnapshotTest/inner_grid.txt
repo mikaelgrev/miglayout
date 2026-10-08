@@ -1,0 +1,15 @@
+# os: windows
+# env: windows
+# os.version: Windows Server 2025 10.0
+# java: Azul Systems, Inc. 21.0.12
+# lookAndFeel: Metal (Ocean)
+# font: javax.swing.plaf.FontUIResource[family=Dialog,name=Dialog,style=bold,size=12]
+# migPlatform: WINDOWS_XP
+# screenDPI: 96
+# uiScale: 1.0
+container 111 96
+o1    JLabel  5  5  80 20
+inner JPanel  5 32 101 59
+i1    JLabel  8 35  40 24
+i2    JLabel 53 35  50 24
+i3    JLabel  8 64  30 24
