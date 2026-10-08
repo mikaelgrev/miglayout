@@ -1,0 +1,15 @@
+# os: windows
+# env: windows-raelee
+# os.version: Windows 11 10.0
+# java: Oracle Corporation 21.0.2
+# javafx: 11.0.1+1
+# font: Font[name=System Regular, family=System, style=Regular, size=12.0]
+# migPlatform: WINDOWS_XP
+# screenDPI: 139.0
+# uiScale: 1.0
+container 156 76
+o1    Region    7  7  80 20
+inner MigPane   7 37 142 32
+i1    Region   11 41  40 24
+i2    Region   58 41  50 24
+i3    Region  115 41  30 24
