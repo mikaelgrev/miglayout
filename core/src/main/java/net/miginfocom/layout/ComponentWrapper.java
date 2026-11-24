@@ -200,6 +200,21 @@ public interface ComponentWrapper
 	 */
 	public abstract boolean hasBaseline();
 
+	/** Returns whether {@link #getBaseline(int, int)} is computed from the width and height alone, so that a layout can
+	 * safely remember and re-return it when it needs the baseline for the same size, instead of computing it again.
+	 * <p>
+	 * Override this and return <code>false</code> for a component whose baseline also depends on earlier calls,
+	 * as it does for Swing components with HTML text (whose text view keeps and uses the size it was last asked for).
+	 * The layout then invokes {@link #getBaseline(int, int)} every time, as it always did in previous versions.
+	 * @return <code>true</code> if the baseline for a given width and height can be remembered while the component
+	 * does not change. The default is <code>false</code>.
+	 * @since 11.6
+	 */
+	default boolean isBaselineCacheable()
+	{
+		return false;
+	}
+
 	/** Returns the container for this component.
 	 * @return The container for this component. Will return <code>null</code> if the component has no parent.
 	 */
