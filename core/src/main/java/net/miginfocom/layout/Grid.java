@@ -530,7 +530,7 @@ public final class Grid
 								cw.y += bounds[1];
 
 								if (!trialRun)
-									cw.transferBounds(bounds, addVisualPadding);
+									cw.transferBounds(addVisualPadding);
 
 								if (callbackList != null) {
 									for (LayoutCallback callback : callbackList)
@@ -1905,7 +1905,7 @@ public final class Grid
 
 		/** Transfers the bounds to the component
 		 */
-		private void transferBounds(int[] bounds, boolean addVisualPadding)
+		private void transferBounds(boolean addVisualPadding)
 		{
 			if (cc.isExternal())
 				return;
@@ -1925,6 +1925,11 @@ public final class Grid
 					compW += (visualPadding[1] + visualPadding[3]);
 					compH += (visualPadding[0] + visualPadding[2]);
 
+					//Keep the padded component within its parent. compX and compY are relative to the parent,
+					//so the far edges are the parent's own width and height, not those of the layout bounds,
+					//which leave out the insets.
+					int parentW = container.getWidth();
+					int parentH = container.getHeight();
 					if (compX < 0) {
 						compW -= -compX;
 						compX = 0;
@@ -1933,11 +1938,11 @@ public final class Grid
 						compH -= -compY;
 						compY = 0;
 					}
-					if (compX + compW > bounds[2]) {
-						compW = bounds[2] - compX;
+					if (compX + compW > parentW) {
+						compW = parentW - compX;
 					}
-					if (compY + compH > bounds[3]) {
-						compH = bounds[3] - compY;
+					if (compY + compH > parentH) {
+						compH = parentH - compY;
 					}
 				}
 			}
