@@ -227,27 +227,32 @@ public class LayoutPassBenchmark
 		return baseline;
 	}
 
+	// The components below override the 'getBaseline' method to count its invocations.
+	// However, the fact that they are overridden leads MigLayout to NOT cache the results.
+	// But we want to measure performance with caching turned on, so each component promises
+	// with "migLayout.baselineCacheable", that the 'getBaseline' can be cached.
+
 	private static class Label extends JLabel
 	{
-		Label(String text) { super(text); }
+		Label(String text) { super(text); putClientProperty("migLayout.baselineCacheable", Boolean.TRUE); }
 		@Override public int getBaseline(int w, int h) { return counted(super.getBaseline(w, h)); }
 	}
 
 	private static class Button extends JButton
 	{
-		Button(String text) { super(text); }
+		Button(String text) { super(text); putClientProperty("migLayout.baselineCacheable", Boolean.TRUE); }
 		@Override public int getBaseline(int w, int h) { return counted(super.getBaseline(w, h)); }
 	}
 
 	private static class TextField extends JTextField
 	{
-		TextField(String text, int columns) { super(text, columns); }
+		TextField(String text, int columns) { super(text, columns); putClientProperty("migLayout.baselineCacheable", Boolean.TRUE); }
 		@Override public int getBaseline(int w, int h) { return counted(super.getBaseline(w, h)); }
 	}
 
 	private static class ComboBox extends JComboBox<String>
 	{
-		ComboBox(String[] items) { super(items); }
+		ComboBox(String[] items) { super(items); putClientProperty("migLayout.baselineCacheable", Boolean.TRUE); }
 		@Override public int getBaseline(int w, int h) { return counted(super.getBaseline(w, h)); }
 	}
 
