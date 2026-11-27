@@ -84,6 +84,41 @@ public class SwingComponentWrapper implements ComponentWrapper
 			VISUAL_PADDING_KEYS.put(classID, classID + "." + VISUAL_PADDING_PROPERTY);
 	}
 
+	/** A key to the client property that says whether MigLayout may remember a component's baseline for a size within one
+	 * layout: <code>Boolean.TRUE</code> promises that {@link Component#getBaseline(int, int)} gives the same answer for
+	 * the same size while the component does not change, <code>Boolean.FALSE</code> makes MigLayout ask every time.
+	 * Without it, MigLayout decides for the standard Swing components, see {@link #isBaselineCacheable()}.
+	 * @since 11.6
+	 */
+	public static final String BASELINE_CACHEABLE_PROPERTY = "migLayout.baselineCacheable";
+
+	/** Whether a class does NOT override getBaseline(int, int), which guarantees us that it
+	 * then always asks the component's UI delegate for it. */
+	private static final ClassValue<Boolean> GETS_BASELINE_FROM_UI = new ClassValue<>() {
+		@Override protected Boolean computeValue(Class<?> type) {
+			try {
+				return type.getMethod("getBaseline", int.class, int.class).getDeclaringClass() == JComponent.class;
+			} catch (NoSuchMethodException e) {
+				return Boolean.FALSE;
+			}
+		}
+	};
+
+	/** Whether a UI delegate's getBaseline(JComponent, int, int) comes from a look and feel whose answers are known to
+	 * depend on the size alone: the JDK's Basic, Metal, Synth and Nimbus, Motif and GTK, and FlatLaf. */
+	private static final ClassValue<Boolean> GETS_BASELINE_FROM_KNOWN_UI = new ClassValue<>() {
+		@Override protected Boolean computeValue(Class<?> type) {
+			try {
+				String name = type.getMethod("getBaseline", JComponent.class, int.class, int.class).getDeclaringClass().getName();
+				return  name.startsWith("javax.swing.plaf.") || name.startsWith("com.sun.java.swing.plaf.motif.") ||
+						name.startsWith("com.sun.java.swing.plaf.gtk.") || name.startsWith("com.formdev.flatlaf.");
+			} catch (NoSuchMethodException e) {
+				return Boolean.FALSE;
+			}
+		}
+	};
+
+
 	private final Component c;
 	private int compType = TYPE_UNSET;
 	private Boolean bl = null;
@@ -392,6 +427,85 @@ public class SwingComponentWrapper implements ComponentWrapper
 		} catch (HeadlessException ex) {
 			return 768;
 		}
+	}
+
+	/** Whether the baseline for a size can be remembered within one layout: whether the component measures it
+	 * afresh, from the size alone, every time.
+	 * <p>
+	 * That holds for labels, buttons and text fields with plain text, for combo boxes that show plain text with the look
+	 * and feel's own renderer or edit it in a text field, and for spinners with a standard editor, as long as neither
+	 * they nor their UI delegates have a getBaseline of their own beyond those of the look and feels named above. It
+	 * does not hold for HTML text, which the UI positions using the text view's layout from the previous question before
+	 * laying it out for this one, nor for complex text (Hebrew, Arabic), whose text view answers its first question
+	 * before it was ever laid out, nor for components that keep other state between questions, such as scroll panes,
+	 * which ask their view at its current size. These are asked every time. The client property
+	 * {@link #BASELINE_CACHEABLE_PROPERTY} decides for any component that has it.
+	 */
+	@Override
+	public boolean isBaselineCacheable()
+	{
+		return isBaselineCacheable(c);
+	}
+
+	private static boolean isBaselineCacheable(Component c)
+	{
+		if (c instanceof JComponent) {
+			Object own = ((JComponent) c).getClientProperty(BASELINE_CACHEABLE_PROPERTY);
+			if (own instanceof Boolean)
+				return (Boolean) own;
+		}
+		if (c == null || !GETS_BASELINE_FROM_UI.get(c.getClass()))
+			return false;
+
+		if (c instanceof JLabel)
+			return isPlainText((JComponent) c) && isKnownUI(((JLabel) c).getUI());
+
+		if (c instanceof AbstractButton)
+			return isPlainText((JComponent) c) && isKnownUI(((AbstractButton) c).getUI());
+
+		if (c instanceof JTextField) {
+			JTextField field = (JTextField) c;
+			return !Boolean.TRUE.equals(field.getDocument().getProperty("i18n")) && isKnownUI(field.getUI());
+		}
+
+		if (c instanceof JComboBox) {
+			JComboBox<?> combo = (JComboBox<?>) c;
+			if (!isKnownUI(combo.getUI()))
+				return false;
+			if (combo.isEditable()) {
+				ComboBoxEditor editor = combo.getEditor();
+				Component field = editor != null ? editor.getEditorComponent() : null;
+				return field instanceof JTextField && isBaselineCacheable(field);
+			}
+			// The UI renders the prototype or the first item, and asks the renderer for its baseline
+			ListCellRenderer<?> renderer = combo.getRenderer();
+			if (!(renderer instanceof JLabel && renderer instanceof javax.swing.plaf.UIResource && GETS_BASELINE_FROM_UI.get(renderer.getClass())
+					&& isKnownUI(((JLabel) renderer).getUI())))
+				return false;
+			Object value = combo.getPrototypeDisplayValue();
+			if (value == null && combo.getItemCount() > 0)
+				value = combo.getItemAt(0);
+			return value == null || value instanceof Icon || !BasicHTML.isHTMLString(value.toString());
+		}
+
+		if (c instanceof JSpinner) {
+			// The UI asks the editor, and the standard editors ask their first child, the text field
+			JComponent editor = ((JSpinner) c).getEditor();
+			return isKnownUI(((JSpinner) c).getUI()) && editor instanceof JSpinner.DefaultEditor
+					&& editor.getClass().getName().startsWith("javax.swing.JSpinner$") && editor.getComponentCount() > 0
+					&& editor.getComponent(0) instanceof JTextField && isBaselineCacheable(editor.getComponent(0));
+		}
+		return false;
+	}
+
+	private static boolean isPlainText(JComponent c)
+	{
+		return c.getClientProperty(BasicHTML.propertyKey) == null;
+	}
+
+	private static boolean isKnownUI(javax.swing.plaf.ComponentUI ui)
+	{
+		return ui != null && GETS_BASELINE_FROM_KNOWN_UI.get(ui.getClass());
 	}
 
 	@Override

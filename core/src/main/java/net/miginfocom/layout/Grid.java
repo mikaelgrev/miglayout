@@ -121,6 +121,12 @@ public final class Grid
 
 	private final ArrayList<LayoutCallback> callbackList;
 
+	/** Counts certain calls from outside that can make the grid re-evaluate the baselines of components, and the calls to
+	 * the layout callbacks. A component is expected to change its baseline between two versions of this counter which
+	 * causes the baseline cache inside {@link CompWrap#getBaseline(int)} to be invalidated.
+	 * So the grid remembers baselines only in between versions of this! */
+	private int baselinePassCounter = 0;
+
 	/** Constructor.
 	 * @param container The container that will be laid out.
 	 * @param lc The form flow constraints.
@@ -447,6 +453,7 @@ public final class Grid
 	@Deprecated
 	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug, boolean notUsed)
 	{
+		baselinePassCounter++;
 		return layoutImpl(bounds, alignX, alignY, debug, false);
 	}
 
@@ -461,6 +468,7 @@ public final class Grid
 	 */
 	public boolean layout(int[] bounds, UnitValue alignX, UnitValue alignY, boolean debug)
 	{
+		baselinePassCounter++;
 		return layoutImpl(bounds, alignX, alignY, debug, false);
 	}
 
@@ -535,6 +543,7 @@ public final class Grid
 								if (callbackList != null) {
 									for (LayoutCallback callback : callbackList)
 										callback.correctBounds(cw.comp);
+									baselinePassCounter++; // A callback may have changed a component
 								}
 							}
 						}
@@ -598,6 +607,7 @@ public final class Grid
 
 	public final int[] getWidth(int refHeight)
 	{
+		baselinePassCounter++;
 		checkSizeCalcs(lastRefWidth, refHeight);
 		return width.clone();
 	}
@@ -609,6 +619,7 @@ public final class Grid
 
 	public final int[] getHeight(int refWidth)
 	{
+		baselinePassCounter++;
 		checkSizeCalcs(refWidth, lastRefHeight);
 		return height.clone();
 	}
@@ -662,6 +673,7 @@ public final class Grid
 		if (callbackList != null) {
 			for (int i = 0; i < callbackList.size() && callbackPos == null; i++)
 				callbackPos = callbackList.get(i).getPosition(cw);   // NOT a copy!
+			baselinePassCounter++; // A callback may have changed a component
 		}
 
 		// If one is null, return the other (which many also be null)
@@ -682,6 +694,7 @@ public final class Grid
 	private BoundSize[] getCallbackSize(ComponentWrapper cw)
 	{
 		if (callbackList != null) {
+			baselinePassCounter++; // A callback may change a component
 			for (LayoutCallback callback : callbackList) {
 				BoundSize[] bs = callback.getSize(cw);   // NOT a copy!
 				if (bs != null)
@@ -1749,6 +1762,13 @@ public final class Grid
 		private final int[] horSizes = new int[3];
 		private final int[] verSizes = new int[3];
 
+		// The width, height and baseline of the last answer given by getBaseline(int), three ints per size type.
+		// An answer is given again to any size type that asks with the same width and height, within the same
+		// baselinePass of the grid. A width of LayoutUtil.NOT_SET marks a size type that has not been asked for yet.
+		private int[] baselines = null;
+		private int baselinePassCapture = -1;
+		private boolean baselineCacheable;
+
 		private int x = LayoutUtil.NOT_SET, y = LayoutUtil.NOT_SET, w = LayoutUtil.NOT_SET, h = LayoutUtil.NOT_SET;
 
 		private int forcedPushGaps = 0;   // 1 == before, 2 = after. Bitwise.
@@ -2033,7 +2053,31 @@ public final class Grid
 
 		private int getBaseline(int sizeType)
 		{
-			return comp.getBaseline(getSize(sizeType, true), getSize(sizeType, false));
+			int width = getSize(sizeType, true);
+			int height = getSize(sizeType, false);
+
+			if (baselinePassCapture != baselinePassCounter) {
+				baselinePassCapture = baselinePassCounter;
+				baselineCacheable = comp.isBaselineCacheable();
+				if (baselineCacheable) {
+					if (baselines == null)
+						baselines = new int[9];
+					baselines[0] = baselines[3] = baselines[6] = LayoutUtil.NOT_SET;
+				}
+			}
+			if (!baselineCacheable)
+				return comp.getBaseline(width, height);
+
+			for (int ix = 0; ix < baselines.length; ix += 3) {
+				if (baselines[ix] == width && baselines[ix + 1] == height)
+					return baselines[ix + 2];
+			}
+
+			int ix = sizeType * 3;
+			baselines[ix] = width;
+			baselines[ix + 1] = height;
+			baselines[ix + 2] = comp.getBaseline(width, height);
+			return baselines[ix + 2];
 		}
 
 		void adjustMinHorSizeUp(int minSize)
